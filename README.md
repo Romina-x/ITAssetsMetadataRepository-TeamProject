@@ -12,9 +12,9 @@ Pre-requisties:
 
 1. Set up Local Database: <br>
  1.1. Open MySQL Command Line Client<br>
- 1.1.1. mysql> create database db_example; -- Creates the new database<br>
+ 1.1.1. mysql> create database md_repo; -- Creates the new database<br>
  1.1.2. mysql> create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user<br>
- 1.1.3 mysql> grant all on db_example.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database<br>
+ 1.1.3. mysql> grant all on md_repo.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database<br>
 
 2. In CMD at location of the project run the command "mvn spring-boot:run" to begin the database
 
