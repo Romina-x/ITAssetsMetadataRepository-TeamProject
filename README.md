@@ -19,7 +19,7 @@ Pre-requisties:
 2. In CMD at location of the project run the command "mvn spring-boot:run" to begin the database
 
 3. To test/interact with the database use curl commands in a new CMD terminal.<br>
- 3.1. Testing entry "curl http://localhost:8080/demo/add -d name=First -d email=someemail@someemailprovider.com"<br>
+ 3.1. Testing entry "curl http://localhost:8080/demo/add -d type=Specification -d title=Initial_Specification -d link=https://moodle.royalholloway.ac.uk -d lineNum=100 -d progLang=English"<br>
  3.2. Viewing entry "curl http://localhost:8080/demo/all"
  <br>
  
