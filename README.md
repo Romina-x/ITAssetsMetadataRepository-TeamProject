@@ -7,10 +7,20 @@ You may edit it as you like, but please do not remove the default topics or the 
 ---
 
 # Running the SQL db:
-Prerequisties:
+Pre-requisties:
     - MySQL v5.6+
 
-1. In CMD at location of the project run the command "mvn spring-boot:run" to begin the database
-2. To test/interact with the database use curl commands in a new CMD terminal.
-2.a. Testing entry "curl http://localhost:8080/demo/add -d name=First -d email=someemail@someemailprovider.com"
-2.b. Viewing entry "curl http://localhost:8080/demo/all"
+1. Set up Local Database: <br>
+ 1.1. Open MySQL Command Line Client<br>
+ 1.1.1. mysql> create database db_example; -- Creates the new database<br>
+ 1.1.2. mysql> create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user<br>
+ 1.1.3 mysql> grant all on db_example.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database<br>
+
+2. In CMD at location of the project run the command "mvn spring-boot:run" to begin the database
+
+3. To test/interact with the database use curl commands in a new CMD terminal.<br>
+ 3.1. Testing entry "curl http://localhost:8080/demo/add -d name=First -d email=someemail@someemailprovider.com"<br>
+ 3.2. Viewing entry "curl http://localhost:8080/demo/all"
+ <br>
+ 
+ NOTE: Do not use powershell to run the commands.
