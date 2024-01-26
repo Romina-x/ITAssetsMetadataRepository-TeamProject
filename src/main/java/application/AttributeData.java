@@ -13,5 +13,9 @@ public class AttributeData {
 	public DataType getType() {
 		return DataType.STRING;
 	}
+	
+	public AttributeData(float data) {
+		
+	}
 
 }

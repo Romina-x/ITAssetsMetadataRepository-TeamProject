@@ -22,5 +22,12 @@ class AttributeDataTest {
 		assertEquals(new AttributeData("Howdy-do").getType(), DataType.STRING);
 	}
 	//Created method getType which returns DataType.STRING
+	
+	@Test
+	//Test 3, test that an AttributeData object can be created with a float parameter
+	void floatTest() {
+		assertNotNull(new AttributeData(59f));
+	}
+	//Created another empty constructor with a float parameter
 
 }
