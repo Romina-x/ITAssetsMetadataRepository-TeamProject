@@ -9,5 +9,9 @@ public class AttributeData {
 	
 	public AttributeData(String data) {
 	}
+	
+	public DataType getType() {
+		return DataType.STRING;
+	}
 
 }
