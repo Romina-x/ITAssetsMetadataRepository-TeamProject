@@ -29,5 +29,12 @@ class AttributeDataTest {
 		assertNotNull(new AttributeData(59f));
 	}
 	//Created another empty constructor with a float parameter
+	
+	@Test
+	//Test 4, test that getType works for floats
+	void getTypeFloatTest()	{
+		assertEquals(new AttributeData(32f).getType(), DataType.FLOAT);
+	}
+	//Added attribute type of type DataType which is assigned in each constructor and returned by getType
 
 }

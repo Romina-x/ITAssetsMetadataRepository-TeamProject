@@ -7,14 +7,18 @@ package application;
  */
 public class AttributeData {
 	
+	private DataType type;
+	
 	public AttributeData(String data) {
+		this.type = DataType.STRING;
 	}
 	
 	public DataType getType() {
-		return DataType.STRING;
+		return type;
 	}
 	
 	public AttributeData(float data) {
+		this.type = DataType.FLOAT;
 		
 	}
 
