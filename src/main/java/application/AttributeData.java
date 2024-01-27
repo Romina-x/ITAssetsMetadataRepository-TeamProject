@@ -24,9 +24,8 @@ public class AttributeData <T> {
 		return type;
 	}
 	
-	//public AttributeData(float data) {
-		//this.type = DataType.FLOAT;
-		
-	//}
+	public T getValue() {
+		return value;
+	}
 
 }
