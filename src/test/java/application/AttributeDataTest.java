@@ -2,6 +2,8 @@ package application;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -46,5 +48,13 @@ class AttributeDataTest {
 		assertEquals(new AttributeData<String>("Haiii").getValue(), "Haiii");
 	}
 	//Created a method getValue() which returns value attribute.
+	
+	@Test
+	//Test 6, test invalid is assigned to invalid types
+	void otherTest() {
+		assertEquals(new AttributeData<Integer>(13).getType(), DataType.INVALID);
+	}
+	//Changed else statement to set type to invalid
+	
 
 }

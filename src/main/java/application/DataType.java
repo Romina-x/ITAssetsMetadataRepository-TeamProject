@@ -5,7 +5,7 @@ package application;
  * Enum containing the various types of data that can be stored within the AttributeData class.
  */
 public enum DataType {
-	FLOAT("FLOAT"), STRING("STRING"), SYMBOL("SYMBOL"), LIST("LIST"), INVALID("INVALID");
+	FLOAT("FLOAT"), STRING("STRING"), LIST("LIST"), INVALID("INVALID");
 	
 	private String value;
 

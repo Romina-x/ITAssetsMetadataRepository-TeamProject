@@ -15,8 +15,10 @@ public class AttributeData <T> {
 		this.value = data;
 		if (value instanceof String) {
 			this.type = DataType.STRING;
-		} else {
+		} else if (value instanceof Float){
 			this.type = DataType.FLOAT;
+		} else {
+			this.type = DataType.INVALID;
 		}
 	}
 	
