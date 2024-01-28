@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Dictionary;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +30,7 @@ public class Asset {
   
   private String progLang;
   
-  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang) {
+  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang, Dictionary<String,String> other) {
 	  
   }
   
