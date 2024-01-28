@@ -45,18 +45,18 @@ public class MainController {
     return assetRepository.findAll();
   }
   
-   //Web page mappings
-  @GetMapping("/createAsset")
+  // 
+  // Create asset page
+  @GetMapping("/createAsset")        //GET request : When you go to localhost:8080/createAsset
   public String assetForm(Model model) {
-      model.addAttribute("createAsset", new Asset());
+      model.addAttribute("createAsset", new Asset()); //Gives the form an asset object to add attributes to
       return "createAsset"; //renders createAsset.html
   }
 
-  @PostMapping("/createAsset")
+  @PostMapping("/createAsset")       //POST request : When you submit the form
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
-      assetRepository.save(asset);
-      //model.addAttribute("result", asset);
-      return "result";  //renders result.html
+      assetRepository.save(asset); //Add the asset object to the database
+      return "result";  //renders result.html 
   }
 
 }
