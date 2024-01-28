@@ -2,8 +2,6 @@ package application;
 
 import org.springframework.data.repository.CrudRepository;
 
-import application.Asset;
-
 // This will be AUTO IMPLEMENTED by Spring into a Bean called assetRepository
 // CRUD refers Create, Read, Update, Delete
 

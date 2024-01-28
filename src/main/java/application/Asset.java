@@ -17,18 +17,18 @@ public class Asset {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
   private Integer id;
-  
+
   private String type;
 
   private String title;
 
   private String link;
-  
+
   private Integer lineNum;
-  
+
   private String progLang;
 
-  
+
   public Integer getId() {
     return id;
   }
@@ -36,7 +36,7 @@ public class Asset {
   public void setId(Integer id) {
     this.id = id;
   }
-  
+
   public String getType() {
     return type;
   }
@@ -44,7 +44,7 @@ public class Asset {
   public void setType(String type) {
     this.type = type;
   }
-  
+
   public String getTitle() {
     return title;
   }
@@ -60,7 +60,7 @@ public class Asset {
   public void setLink(String link) {
     this.link = link;
   }
-  
+
   public Integer getLineNum() {
     return lineNum;
   }
@@ -68,7 +68,7 @@ public class Asset {
   public void setLineNum(Integer lineNum) {
     this.lineNum = lineNum;
   }
-  
+
   public String getProgLang() {
     return progLang;
   }
