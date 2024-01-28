@@ -1,6 +1,8 @@
 package application;
 
-import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Scanner;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,16 @@ public class Asset {
   
   private String progLang;
   
-  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang, Dictionary<String,String> other) {
+  private Map<String, AttributeData> otherAttributes;
+  
+  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang, Map<String,String> other) {
+	  Map<String, AttributeData> otherAtts = new Hashtable<String, AttributeData>();
+	  Scanner reader = new Scanner(System.in);
+	  for (String key : other.keySet()) {
+		  System.out.println("Please enter " + key + ":");
+		  otherAtts.put(key, new AttributeData(reader.nextLine()));
+	  }
+	  this.otherAttributes = otherAtts;
 	  
   }
   
@@ -84,5 +95,9 @@ public class Asset {
 
   public void setProgLang(String progLang) {
     this.progLang = progLang;
+  }
+  
+  public Map<String, AttributeData> getOtherAttributes() {
+	return otherAttributes;
   }
 }

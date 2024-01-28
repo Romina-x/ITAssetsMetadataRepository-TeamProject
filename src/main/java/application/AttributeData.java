@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Objects;
+
 /**
  * @Author Kyle Piazza-Nickson
  * Container class for all types of data that can be stored in the attribute dictionary for any given asset.
@@ -29,5 +31,27 @@ public class AttributeData <T> {
 	public T getValue() {
 		return value;
 	}
+	
+	@Override
+	public String toString() {
+	    return value.toString();	
+	}
+	
+	 @Override
+	 public boolean equals(Object obj) {
+		 if (this == obj) {
+	       return true;
+	     }
+	     if (obj == null) {
+	       return false;
+	     }
+	     if (getClass() != obj.getClass()) {
+	       return false;
+	     }
+	     AttributeData other = (AttributeData) obj;
+	     return this.type.equals(other.getType()) && 
+	     this.value.getClass().equals(other.value.getClass()) && 
+	     this.value.equals(other.getValue());
+	   }
 
 }
