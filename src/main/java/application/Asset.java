@@ -27,6 +27,13 @@ public class Asset {
   private Integer lineNum;
   
   private String progLang;
+  
+  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang) {
+	  
+  }
+  
+  public Asset() {
+  }
 
   
   public Integer getId() {
