@@ -1,6 +1,7 @@
 package application;
 
 import java.util.Hashtable;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -34,12 +35,26 @@ public class Asset {
   
   private Map<String, AttributeData> otherAttributes;
   
-  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang, Map<String,String> other) {
+  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang, Map<String,String> other) throws InvalidTypeException {
 	  Map<String, AttributeData> otherAtts = new Hashtable<String, AttributeData>();
 	  Scanner reader = new Scanner(System.in);
 	  for (String key : other.keySet()) {
 		  System.out.println("Please enter " + key + ":");
-		  otherAtts.put(key, new AttributeData(reader.nextLine()));
+		  switch(other.get(key)) {
+		  case "STRING":
+			  AttributeData attValue = new AttributeData(reader.nextLine());
+			  otherAtts.put(key, attValue);
+			  break;
+		  case "FLOAT":
+			  try {
+				  otherAtts.put(key, new AttributeData(Float.valueOf(reader.nextLine())));
+			  } catch (NumberFormatException e) {
+				  throw (new InvalidTypeException("Please enter a value of type" + other.get(key)));
+			  }
+			  break;
+		  default:
+			  throw (new InvalidTypeException("Invalid attribute type"));
+		  }
 	  }
 	  this.otherAttributes = otherAtts;
 	  
