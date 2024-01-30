@@ -1,10 +1,12 @@
 package application;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
+ * @author Romina Petrozzi
  */
-
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/asset") // This means URL's start with /asset (after Application path)
 public class MainController {
@@ -27,6 +29,17 @@ public class MainController {
   private AssetRepository assetRepository;
 
 
+  /**
+   * This method is a map only for POST requests. It takes the parameters supplied by the user and
+   * inputs it into the database.
+   *
+   * @param type the type format that the asset aligns to
+   * @param title what the asset should be called
+   * @param link location of where the asset is hosted
+   * @param lineNum how long the asset is
+   * @param progLang what language is the asset written in (English/Java/etc)
+   * @return
+   */
   @PostMapping(path = "/add") // Map ONLY POST Requests
   public @ResponseBody String addNewAsset(@RequestParam String type, @RequestParam String title,
       @RequestParam String link, @RequestParam Integer lineNum, @RequestParam String progLang) {
@@ -43,14 +56,25 @@ public class MainController {
     return "Saved";
   }
 
-
-  @GetMapping(path = "/all")
+  /**
+   * This method fetches all the assets stored in the database and returns a JSON file of the
+   * content to the web page.
+   *
+   * @return all assets and their attributes
+   */
+  @GetMapping(path = "/find/all")
   public @ResponseBody Iterable<Asset> getAllAssets() {
     // This returns a JSON or XML with the assets
     return assetRepository.findAll();
   }
 
-  // Create asset page
+  /**
+   * This method intitalises the model to allow for population of the attribute data for a specific
+   * asset. This is the GET request to localhost:8080/createAsset.
+   *
+   * @param model functions as a Java object to hold the assets attribute data
+   * @return
+   */
   @GetMapping("/createAsset") // GET request : When you go to localhost:8080/createAsset
   public String assetForm(Model model) {
     model.addAttribute("createAsset", new Asset()); // Gives the form an asset object to add
@@ -58,10 +82,31 @@ public class MainController {
     return "createAsset"; // renders createAsset.html
   }
 
+  /**
+   * This method is the POST request to send the content of the form for submission to the database.
+   * It onward routes to the result.html page.
+   *
+   * @param asset
+   * @param model
+   * @return onward path routing for the result.html page
+   */
   @PostMapping("/createAsset") // POST request : When you submit the form
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     assetRepository.save(asset); // Add the asset object to the database
     return "result"; // renders result.html
+  }
+
+  /**
+   * This method is a query function to request the details of an asset by its Id number in the url
+   * localhost:8080/find/{id}.
+   * 
+   * @param id this is the query id
+   * @return JSON of the asset returned by the id number search
+   */
+  @GetMapping(path = "/find/{id}")
+  public @ResponseBody Optional<Asset> getAssetById(@PathVariable("id") Integer id) {
+    // This returns a JSON or XML with the assets
+    return assetRepository.findById(id);
   }
 
 }
