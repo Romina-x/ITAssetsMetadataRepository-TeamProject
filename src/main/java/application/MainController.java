@@ -4,12 +4,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -100,7 +102,7 @@ public class MainController {
    * This method is a query function to request the details of an asset by its Id number in the url
    * localhost:8080/find/{id}.
    * 
-   * @param id this is the query id
+   * @param id of the asset to be queried
    * @return JSON of the asset returned by the id number search
    */
   @GetMapping(path = "/find/{id}")
@@ -108,6 +110,18 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return assetRepository.findById(id);
   }
+  
+  /**
+   * This method allows for the deletion of individual assets by referencing their id numbers in the url
+   * localhost:8080/delete/{id}.
+   *
+   * @param id of the asset to be deleted
+   */
+  @RequestMapping(value="/delete/{id}", method= {RequestMethod.DELETE,RequestMethod.GET})
+  public @ResponseBody void deleteAsset(@PathVariable("id") Integer id) {
+    assetRepository.deleteById(id);
+  }
+
 
 }
 
