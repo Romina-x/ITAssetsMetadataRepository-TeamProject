@@ -6,8 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
- * This class creates an Entity model of a Asset for storage into the database with a standard format.
- * This is the minimal version of the information required by the database.
+ * This class creates an Entity model of a Asset for storage into the database with a standard
+ * format. This is the minimal version of the information required by the database.
  *
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
@@ -15,7 +15,7 @@ import jakarta.persistence.Id;
 @Entity // This tells Hibernate to make a table out of this class
 public class Asset {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   private String type;
