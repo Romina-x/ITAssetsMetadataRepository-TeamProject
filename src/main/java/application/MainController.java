@@ -44,7 +44,7 @@ public class MainController {
   }
 
 
-  @GetMapping(path = "/asset/all")
+  @GetMapping(path = "/all")
   public @ResponseBody Iterable<Asset> getAllAssets() {
     // This returns a JSON or XML with the assets
     return assetRepository.findAll();
