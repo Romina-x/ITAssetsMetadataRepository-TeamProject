@@ -18,12 +18,6 @@ export const mainListItems = (
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <LogoutIcon />
-      </ListItemIcon>
-      <ListItemText primary="Log out" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
         <EditIcon />
       </ListItemIcon>
       <ListItemText primary="Edit Asset" />
@@ -40,5 +34,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="View Asset" />
     </ListItemButton> 
+    <ListItemButton>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Log out" />
+    </ListItemButton>
   </React.Fragment>
 );

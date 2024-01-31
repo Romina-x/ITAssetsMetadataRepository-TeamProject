@@ -76,12 +76,12 @@ export default function FormPropsTextFields() {
         placeholder="William"
         multiline
       />
-
+      
       <Stack direction="row" spacing={2}>
-        <Button variant="contained" endIcon={<SaveIcon />}>
+        <Button variant="contained" endIcon={<SaveIcon style={{ color: 'black' }} />}>
           Saved
         </Button>
-        <Button variant="outlined" startIcon={<CancelIcon />}>
+        <Button variant="outlined" startIcon={<CancelIcon style={{ color: 'black' }}/>}>
           Cancel
         </Button>
       </Stack>
