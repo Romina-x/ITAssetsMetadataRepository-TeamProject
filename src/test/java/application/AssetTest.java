@@ -56,5 +56,16 @@ class AssetTest {
 	//TEST FAILED
 	//Added equals method to AttributeData
 	//TEST PASSED
+	
+	@Test
+	//Test 4, test that the Asset constructor throws InvalidType if the user enters the wrong type
+	void validateMap() throws InvalidTypeException {
+		Map<String, String> dict= new Hashtable<String, String>();
+        dict.put("Coolness", "FLOAT");
+        dict.put("Catchphrase", "STRING");
+        dict.put("Copies of Shark Tale owned", "FLOAT");
+        assertThrows(InvalidTypeException.class, () -> new Asset(34, "Text File", "What's Poppin'?.txt", "HTTPS:\\What'sPoppin'?.com" , 35, "Java", dict));
+	}
+	//Added switch case to check type and throws InvalidTypeException upon failure
 
 }
