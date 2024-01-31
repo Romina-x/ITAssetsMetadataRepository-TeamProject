@@ -167,11 +167,16 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4, width: '100%' }}>
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <AssetInput />
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
