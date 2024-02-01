@@ -4,8 +4,9 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
 
 const types = [
   {
@@ -29,62 +30,94 @@ export default function FormPropsTextFields() {
       sx={{
         "& .MuiTextField-root": { m: 1, width: "40ch" },
         background: "white",
-        width: '100%',
-        maxWidth: '100%',
-        margin: 0
+        width: "100%",
+        maxWidth: "100%",
+        margin: 0,
       }}
       noValidate
       autoComplete="off"
     >
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Type"
-        defaultValue="Code"
-        helperText="Type of your Data"
+      <Grid
+        container
+        spacing={3}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          paddingBottom: 5,
+
+        }}
       >
-        {types.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-      <TextField
-        id="outlined-textarea"
-        label="Title"
-        placeholder="Module A"
-        multiline
-      />
-      <TextField
-        id="outlined-textarea"
-        label="Link"
-        placeholder="Paste URL here"
-        multiline
-      />
-      <TextField
-        id="outlined-textarea"
-        label="Line Number"
-        placeholder=""
-        multiline
-      />
-      <TextField
-        id="outlined-textarea"
-        label="Programming language"
-        placeholder="Java,Python,etc"
-        multiline
-      />
-      <TextField
-        id="outlined-textarea"
-        label="Author"
-        placeholder="William"
-        multiline
-      />
-      
+        <Grid item xs={6}
+        alignItems="center"
+        >
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="Type"
+            defaultValue="Code"
+          >
+            {types.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Title"
+            placeholder="Module A"
+            multiline
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Link"
+            placeholder="Paste URL here"
+            multiline
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Line Number"
+            placeholder=""
+            multiline
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Programming language"
+            placeholder="Java,Python,etc"
+            multiline
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Author"
+            placeholder="William"
+            multiline
+          />
+        </Grid>
+      </Grid>
+
       <Stack direction="row" spacing={2}>
-        <Button variant="contained" endIcon={<SaveIcon style={{ color: 'black' }} />}>
+        <Button
+          variant="contained"
+          endIcon={<SaveIcon />}
+          style={{ background: "black" }}
+        >
           Saved
         </Button>
-        <Button variant="outlined" startIcon={<CancelIcon style={{ color: 'black' }}/>}>
+        <Button
+          variant="outlined"
+          startIcon={<CancelIcon />}
+        >
           Cancel
         </Button>
       </Stack>
