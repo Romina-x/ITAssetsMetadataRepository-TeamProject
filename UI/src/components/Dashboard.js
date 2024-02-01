@@ -42,6 +42,7 @@ const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: 'black' ,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -49,6 +50,7 @@ const AppBar = styled(MuiAppBar, {
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
+    backgroundColor: 'black' ,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -93,7 +95,7 @@ export default function Dashboard() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Grid container>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
@@ -115,10 +117,10 @@ export default function Dashboard() {
             </IconButton>
             <Typography
               component="h1"
-              variant="h6"
+              variant="h4"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, fontFamily: 'Calibri'}}
             >
               Dashboard
             </Typography>
@@ -128,7 +130,7 @@ export default function Dashboard() {
               </Badge>
             </IconButton>
             <IconButton color="inherit">
-              <Badge badgeContent={1} color="secondary">
+              <Badge badgeContent={8} color="secondary">
                 <AccountCircleIcon />
               </Badge>
             </IconButton>
@@ -165,17 +167,22 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4, width: '100%' }}>
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <AssetInput />
               </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+
+              </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
-      </Box>
+      </Grid>
     </ThemeProvider>
   );
 }
