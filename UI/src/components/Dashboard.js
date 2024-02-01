@@ -20,7 +20,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Deposits from './Deposits';
-import Orders from './Orders';
+import ViewAssets from './ViewAssets';
 import AssetInput from './AssetInput';
 
 function Copyright(props) {
@@ -167,11 +167,14 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4, width: '100%' }}>
+          <Container maxWidth="lg" sx={{ width: '100%' }}>
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12}>
                 <AssetInput />
+              </Grid>
+              <Grid item xs={12}>
+                <ViewAssets />
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
