@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head> 
+    <title>Delete Asset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<h1>Delete Asset</h1>
+    <form action="/submit" method="GET" onsubmit="constructURL(event)">
+        <label for="id">Enter ID:</label><br>
+        <input type="number" id="id" name="id" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        function constructURL(event) {
+            event.preventDefault(); 
+            const id = document.getElementById('id').value; 
+            const url = `/asset/delete/${id}`; 
+            window.location.href = url; 
+        }
+    </script>
+</body>
+</html>
