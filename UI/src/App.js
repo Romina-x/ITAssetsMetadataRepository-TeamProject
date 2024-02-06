@@ -1,8 +1,15 @@
-import Dashboard from './components/Dashboard';
+import Dashboard from "./components/Dashboard";
+import ViewAssets from "./components/ViewAssets";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <Dashboard />
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<Dashboard page="add" />} />
+        <Route exact path="/view" element={<Dashboard page="view" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
