@@ -121,7 +121,22 @@ public class MainController {
   public @ResponseBody void deleteAsset(@PathVariable("id") Integer id) {
     assetRepository.deleteById(id);
   }
+  
 
+  @GetMapping("/editAsset/{id}")
+  public String editAssetForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Asset> assetOptional = assetRepository.findById(id);
+    model.addAttribute("asset", assetOptional.get());
+    model.addAttribute("id", id);
+    return "editAsset";
+  }
+  
+  @PostMapping("/editAsset/{id}")
+  public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
+    updatedAsset.setId(id);
+    assetRepository.save(updatedAsset);
+    return "result";
+  }
 
 }
 

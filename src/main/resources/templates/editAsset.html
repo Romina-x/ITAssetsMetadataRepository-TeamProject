@@ -7,7 +7,7 @@
 </head>
 <body>
 	<h1>Edit Asset</h1>
-    <form action="#" th:action="@{/asset/editAsset/{id}}" th:object="${asset}" method="post">
+    <form action="#" th:action="@{/asset/editAsset/__${id}__}" th:object="${asset}" method="post">
 
         <p>Type: <input type="text" th:field="*{type}" /></p>
         <p>Title: <input type="text" th:field="*{title}" /></p>
