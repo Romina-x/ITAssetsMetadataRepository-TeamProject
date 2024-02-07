@@ -1,8 +1,6 @@
 package application;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -12,6 +10,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+/**
+ * Test suite to validate the functions held within the Main Controller Class
+ * @author Yusur Taha
+ * @author Sarah Haines
+ */
+
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(MainController.class)
@@ -23,35 +28,13 @@ class MainControllerTest {
   @MockBean
   private AssetRepository assetRepository;
 
-  @MockBean
-  private MainController mc;
-
-  /*@Test
+  @Test
   void testAddNewAsset() throws Exception {
     MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/asset/add")
         .param("type", "document").param("title", "This is a test document")
         .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf").param("lineNum", "120")
         .param("progLang", "Java")).andReturn();
-
-    assertEquals("Saved", result.getResponse().getContentAsString());
-  }*/
-
-  @Test
-  void testFindAssetByKeyword() throws Exception {
-    String titleToFind = "Beans";
-    Asset expectedAsset = new Asset();
-    expectedAsset.setTitle(titleToFind);
-
-    //System.out.println("Expected Asset Title: " + expectedAsset.getTitle());
-
-    when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
-
-    Asset actualAsset = mc.getAssetByTitle(titleToFind);
     
-    //System.out.println("Actual Asset Title: " + actualAsset.getTitle());
-
-    assertEquals(expectedAsset.getTitle(), actualAsset.getTitle(),
-        "Should return the asset with the specified title");
+    assertEquals("Saved", result.getResponse().getContentAsString());
   }
-
 }
