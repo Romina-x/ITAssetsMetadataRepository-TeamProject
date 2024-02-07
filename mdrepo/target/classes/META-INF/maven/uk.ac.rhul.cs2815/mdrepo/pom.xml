@@ -1,8 +1,0 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>uk.ac.rhul.cs2815</groupId>
-  <artifactId>mdrepo</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>The Metadata Repository</name>
-  <description>A team project to deliver a Metadata Repository as a umbrella application to capture metadata about assets</description>
-</project>
