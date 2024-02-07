@@ -20,6 +20,8 @@ public class User {
   
   private String name;
   
+  private String password;
+  
   private Permissions role;
   
   public void setId(Integer id) {
@@ -28,6 +30,10 @@ public class User {
   
   public void setName(String name) {
 	  this.name = name;
+  }
+  
+  public void setPassword(String password) {
+	  this.password = password;
   }
   
   public void setRole(Permissions role) {
@@ -40,6 +46,10 @@ public class User {
   
   public String getName() {
 	  return this.name;
+  }
+  
+  public String getPassword() {
+	  return this.password;
   }
   
   public Permissions getRole() {
