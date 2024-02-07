@@ -1,6 +1,8 @@
 package application;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,6 +63,30 @@ public class MainController {
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     assetRepository.save(asset); // Add the asset object to the database
     return "result"; // renders result.html
+  }
+  
+  @GetMapping("/assets")
+  public List<Asset> searchAssets(
+          @RequestParam(required = false) String title,
+          @RequestParam(required = false) String type,
+          @RequestParam(required = false) String link,
+          @RequestParam(required = false) String programmingLanguage
+  ) {
+      AssetSpecificationBuilder builder = new AssetSpecificationBuilder();
+      if (title != null) {
+          builder.with("title", title);
+      }
+      if (type != null) {
+          builder.with("type", type);
+      }
+      if (link != null) {
+          builder.with("link", link);
+      }
+      if (programmingLanguage != null) {
+          builder.with("programmingLanguage", programmingLanguage);
+      }
+      Specification<Asset> spec = builder.build();
+      return assetRepository.findAll(spec);
   }
 
 }

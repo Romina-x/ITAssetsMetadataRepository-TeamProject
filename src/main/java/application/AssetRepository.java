@@ -1,6 +1,7 @@
 package application;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called assetRepository
 // CRUD refers Create, Read, Update, Delete
@@ -12,6 +13,6 @@ import org.springframework.data.repository.CrudRepository;
  * @author Sarah Haines
  */
 
-public interface AssetRepository extends CrudRepository<Asset, Integer> {
+public interface AssetRepository extends JpaRepository<Asset, Long>, JpaSpecificationExecutor<Asset> {
 
 }
