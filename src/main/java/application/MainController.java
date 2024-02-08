@@ -123,6 +123,13 @@ public class MainController {
   }
   
 
+  /**
+   * This method renders the edit asset page depending on a given asset id.
+   * 
+   * @param id
+   * @param model
+   * @return edit asset page or error page
+   */
   @GetMapping("/editAsset/{id}")
   public String editAssetForm(@PathVariable("id") Integer id, Model model) {
     Optional<Asset> assetOptional = assetRepository.findById(id);
@@ -137,6 +144,13 @@ public class MainController {
     }
   }
   
+  /**
+   * This method handles the submitted edit form and updates the asset within the database.
+   * 
+   * @param id
+   * @param updatedAsset
+   * @return asset added page
+   */
   @PostMapping("/editAsset/{id}")
   public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
     updatedAsset.setId(id);
