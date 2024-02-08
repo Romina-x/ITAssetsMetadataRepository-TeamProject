@@ -1,5 +1,7 @@
 package application;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called assetRepository
@@ -12,6 +14,4 @@ import org.springframework.data.repository.CrudRepository;
  * @author Sarah Haines
  */
 
-public interface AssetRepository extends CrudRepository<Asset, Integer> {
-
-}
+public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {}
