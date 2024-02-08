@@ -22,6 +22,9 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Deposits from './Deposits';
 import ViewAssets from './ViewAssets';
 import AssetInput from './AssetInput';
+import TypeInput from './TypeInput';
+import ViewTypes from './ViewTypes';
+
 
 function Copyright(props) {
   return (
@@ -175,6 +178,12 @@ export default function Dashboard() {
               </Grid>
               <Grid item xs={12}>
                 <ViewAssets />
+              </Grid>
+              <Grid item xs={12}>
+                <TypeInput />
+              </Grid>
+              <Grid item xs={12}>
+                <ViewTypes />
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
