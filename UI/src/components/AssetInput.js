@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,6 +25,23 @@ const types = [
 ];
 
 export default function FormPropsTextFields() {
+  const [save, setSave] = useState("Save");
+  const [cancel, setCancel] = useState("Cancel");
+
+  useEffect(() => {
+    if (save === "Saved") {
+      const timer = setTimeout(() => {
+        setSave("Save");
+      }, 3000); // Changes back to "Saved" after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [save]);
+
+  const handleSaveButtonClick = () => {
+    setSave("Saved");
+    // logic for what happens when the asset is saved goes here
+  };
+
   return (
     <Box
       component="form"
@@ -111,8 +129,9 @@ export default function FormPropsTextFields() {
           variant="contained"
           endIcon={<SaveIcon />}
           style={{ background: "black" }}
+          onClick={handleSaveButtonClick}
         >
-          Saved
+          {save}
         </Button>
         <Button
           variant="outlined"
