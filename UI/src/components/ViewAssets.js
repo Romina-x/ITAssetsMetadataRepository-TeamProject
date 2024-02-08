@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,51 +6,28 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 
-// Generate Order Data
-function createData(id, type, title,link, lineNum, progLang) {
-  return { id, type, title,link, lineNum, progLang};
-}
-
-const rows = [
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  ),
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  ),
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  ),
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  )
-];
-
-function preventDefault(event) {
-  event.preventDefault();
-}
-
 export default function ViewAssets() {
+  React.useEffect(() => {
+    const getAssets = async () => {
+      try {
+        const response = await fetch('/asset/find/all');
+        console.log(response);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const jsonData = await response.json();
+        setAssets(jsonData);
+        console.log(jsonData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    getAssets();
+  }, []);
+
+  const [assets, setAssets] = React.useState([])
+
   return (
     <React.Fragment>
       <Title>Assets</Title>
@@ -66,13 +42,13 @@ export default function ViewAssets() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.link}</TableCell>
-              <TableCell>{row.lineNum}</TableCell>
-              <TableCell align="right">{row.progLang}</TableCell>
+          {assets.map((a) => (
+            <TableRow key={a.id}>
+              <TableCell>{a.type}</TableCell>
+              <TableCell>{a.title}</TableCell>
+              <TableCell>{a.link}</TableCell>
+              <TableCell>{a.lineNum}</TableCell>
+              <TableCell align="right">{a.progLang}</TableCell>
             </TableRow>
           ))}
         </TableBody>
