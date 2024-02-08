@@ -3,8 +3,10 @@ package application;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +36,19 @@ public class MainController {
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
 
+  
+  /**
+   * This method allows for the application of CORS cross origin compatibility with the API
+   *
+   * @return 
+   */
+  @RequestMapping(value = "/products")
+  @CrossOrigin(origins = "http://localhost:8080")
+  public ResponseEntity<Object> getProduct() {
+     return null;
+  }
+  
+  
   /**
    * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
    * inputs it into the database.
