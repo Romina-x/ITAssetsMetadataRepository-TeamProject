@@ -126,9 +126,15 @@ public class MainController {
   @GetMapping("/editAsset/{id}")
   public String editAssetForm(@PathVariable("id") Integer id, Model model) {
     Optional<Asset> assetOptional = assetRepository.findById(id);
-    model.addAttribute("asset", assetOptional.get());
-    model.addAttribute("id", id);
-    return "editAsset";
+    if (assetOptional.isPresent()) { //check if asset to edit is present
+        Asset asset = assetOptional.get();
+        model.addAttribute("asset", asset);
+        model.addAttribute("id", id);
+        return "editAsset";
+    } else {
+        // Handle asset not found
+        return "assetNotFound"; // Render error.html 
+    }
   }
   
   @PostMapping("/editAsset/{id}")
