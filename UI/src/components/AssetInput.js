@@ -37,9 +37,30 @@ export default function FormPropsTextFields() {
     }
   }, [save]);
 
+  useEffect(() => {
+    if (cancel === "Cancelled") {
+      const timer = setTimeout(() => {
+        document.getElementById("cancel-button").style.backgroundColor = "white";
+        document.getElementById("cancel-button").style.color = "blue";
+        setCancel("Cancel");
+      }, 1500); // Changes back to "Cancel" after 3 seconds
+      return () => clearTimeout(timer);
+    }
+
+  }, [cancel]);
+
+
   const handleSaveButtonClick = () => {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
+  };
+
+  const handleCancelButtonClick = () => {
+    const cancelButtonStyle = document.getElementById("cancel-button").style;
+    cancelButtonStyle.backgroundColor = "blue";
+    cancelButtonStyle.color = "red";
+    setCancel("Cancelled");
+    // logic for canceling goes here
   };
 
   return (
@@ -134,10 +155,12 @@ export default function FormPropsTextFields() {
           {save}
         </Button>
         <Button
+          id="cancel-button"
           variant="outlined"
           startIcon={<CancelIcon />}
+          onClick={handleCancelButtonClick}
         >
-          Cancel
+          {cancel}
         </Button>
       </Stack>
     </Box>
