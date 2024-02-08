@@ -261,6 +261,7 @@ public class MainController {
     newUser.setPassword("Grug_M0m3nt");
     newUser.setRole(Permissions.ADMIN);
     userRepository.save(newUser);
+    
   }
   
   @GetMapping(path = "/user/find/all")
