@@ -24,6 +24,10 @@ public class User {
   
   private Permissions role;
   
+  public User() {
+	  
+  }
+  
   public void setId(Integer id) {
 	  this.id = id;
   }

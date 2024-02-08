@@ -252,6 +252,22 @@ public class MainController {
     typeRepository.deleteById(id);
     return "resultDeleteType";
   }
+  
+  @PostMapping(path = "/user/add") // Map ONLY POST Requests
+  public void addNewUser() {
+
+    User newUser = new User();
+    newUser.setName("Grug");
+    newUser.setPassword("Grug_M0m3nt");
+    newUser.setRole(Permissions.ADMIN);
+    userRepository.save(newUser);
+  }
+  
+  @GetMapping(path = "/user/find/all")
+  public @ResponseBody Iterable<User> getAllUsers() {
+    // This returns a JSON or XML with the assets
+    return userRepository.findAll();
+  }
 
 }
 
