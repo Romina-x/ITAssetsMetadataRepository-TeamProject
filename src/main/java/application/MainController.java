@@ -33,6 +33,11 @@ public class MainController {
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
+  
+  @Autowired 
+  public MainController(AssetRepository assetRepository) {
+    this.assetRepository = assetRepository; 
+  }
 
   /**
    * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
@@ -101,6 +106,8 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return assetRepository.findAll();
   }
+  
+  
   
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
@@ -300,6 +307,15 @@ public class MainController {
     return actionLogRepository.findById(id);
   }
   
+  @GetMapping(path = "/asset/find/byTitle")
+  public @ResponseBody Asset getAssetByTitle(@RequestParam String title) {
+    Iterable<Asset> allAssets = assetRepository.findAll(); 
+    for (Asset asset : allAssets) {
+        if (asset.getTitle().equals(title)) {
+            return asset;
+        }
+    } return null; 
+  }
 
 }
 

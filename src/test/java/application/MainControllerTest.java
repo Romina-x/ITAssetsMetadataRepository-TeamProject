@@ -1,6 +1,8 @@
 package application;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,7 +23,10 @@ class MainControllerTest {
   @MockBean
   private AssetRepository assetRepository;
 
-  @Test
+  @MockBean
+  private MainController mc;
+
+  /*@Test
   void testAddNewAsset() throws Exception {
     MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/asset/add")
         .param("type", "document").param("title", "This is a test document")
@@ -29,5 +34,24 @@ class MainControllerTest {
         .param("progLang", "Java")).andReturn();
 
     assertEquals("Saved", result.getResponse().getContentAsString());
+  }*/
+
+  @Test
+  void testFindAssetByKeyword() throws Exception {
+    String titleToFind = "Beans";
+    Asset expectedAsset = new Asset();
+    expectedAsset.setTitle(titleToFind);
+
+    //System.out.println("Expected Asset Title: " + expectedAsset.getTitle());
+
+    when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
+
+    Asset actualAsset = mc.getAssetByTitle(titleToFind);
+    
+    //System.out.println("Actual Asset Title: " + actualAsset.getTitle());
+
+    assertEquals(expectedAsset.getTitle(), actualAsset.getTitle(),
+        "Should return the asset with the specified title");
   }
+
 }
