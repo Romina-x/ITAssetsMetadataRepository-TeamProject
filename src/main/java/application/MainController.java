@@ -253,14 +253,16 @@ public class MainController {
     return "resultDeleteType";
   }
   
-  @PostMapping(path = "/user/add") // Map ONLY POST Requests
-  public void addNewUser() {
+  @GetMapping(path = "/user/add") // Map ONLY POST Requests
+  public @ResponseBody String addNewUser() {
 
     User newUser = new User();
     newUser.setName("Grug");
     newUser.setPassword("Grug_M0m3nt");
     newUser.setRole(Permissions.ADMIN);
     userRepository.save(newUser);
+    
+    return "Saved";
     
   }
   
