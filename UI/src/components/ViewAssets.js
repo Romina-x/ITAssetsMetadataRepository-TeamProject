@@ -5,22 +5,14 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import * as AssetAPI from '../AssetAPI';
 
 export default function ViewAssets() {
   React.useEffect(() => {
     const getAssets = async () => {
-      try {
-        const response = await fetch('/asset/find/all');
-        console.log(response);
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setAssets(jsonData);
-        console.log(jsonData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      const res = await AssetAPI.getAll();
+      console.log(res)
+      setAssets(res)
     };
 
     getAssets();
@@ -44,10 +36,10 @@ export default function ViewAssets() {
         <TableBody>
           {assets.map((a) => (
             <TableRow key={a.id}>
+              <TableCell>{a.id}</TableCell>
               <TableCell>{a.type}</TableCell>
-              <TableCell>{a.title}</TableCell>
               <TableCell>{a.link}</TableCell>
-              <TableCell>{a.lineNum}</TableCell>
+              <TableCell>{a.title}</TableCell>
               <TableCell align="right">{a.progLang}</TableCell>
             </TableRow>
           ))}
