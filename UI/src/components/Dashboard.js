@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
+import { userListItems, adminListItems } from "./listItems";
 import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
@@ -94,10 +94,15 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
+  const [user, setUser] = React.useState('user');
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const userChange = () => {
+    setUser((user) => (user === 'user' ? 'admin' : 'user'));
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -135,7 +140,7 @@ export default function Dashboard(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={userChange}>
               <Badge badgeContent={8} color="secondary">
                 <AccountCircleIcon />
               </Badge>
@@ -156,7 +161,7 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{mainListItems}</List>
+          <List component="nav">{user === 'user' ? userListItems : adminListItems}</List>
         </Drawer>
         <Box
           component="main"
