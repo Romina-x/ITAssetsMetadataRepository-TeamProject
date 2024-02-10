@@ -10,9 +10,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Test suite to validate the functions held within the Main Controller Class
+ * 
  * @author Yusur Taha
  * @author Sarah Haines
  */
@@ -27,14 +29,67 @@ class MainControllerTest {
 
   @MockBean
   private AssetRepository assetRepository;
+  @MockBean
+  private TypeRepository typeRepository;
+  @MockBean
+  private ActionLogRepository actionLogRepository;
 
+
+  /**
+   * Test to validate the string response of the method which runs the map for the post request of
+   * create new asset
+   * 
+   * @throws Exception
+   */
   @Test
+  //test 1 
   void testAddNewAsset() throws Exception {
     MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/asset/add")
         .param("type", "document").param("title", "This is a test document")
         .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf").param("lineNum", "120")
         .param("progLang", "Java")).andReturn();
-    
+
     assertEquals("Saved", result.getResponse().getContentAsString());
   }
+
+  /**
+   * Test to validate the string response of the method which runs the map for the post request of
+   * create new type
+   * 
+   * @throws Exception
+   */
+  @Test
+  void testAddNewType() throws Exception {
+    MvcResult result =
+        mvc.perform(MockMvcRequestBuilders.post("/type/add").param("type", "document")
+            .param("customAttribute1", "Size").param("customAttribute2", "Security Level")
+            .param("customAttribute3", "Revision").param("customAttribute4", "Author")).andReturn();
+
+    assertEquals("Saved", result.getResponse().getContentAsString());
+
+  }
+
+  /**
+   * Test to validate the string response of the method which allows for population of the attribute data for a specific
+   * asset.
+   * 
+   * @throws Exception
+   */
+  @Test
+  //test 2 
+  void testAssetForm() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/asset/createAsset"))
+        .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
+        .andExpect(MockMvcResultMatchers.view().name("createAsset")) // view name returned in the
+                                                                     // response should be
+                                                                     // "createAsset"
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));// model attribute
+                                                                                 // named
+                                                                                 // "createAsset"
+                                                                                 // should exist in
+                                                                                 // the response
+  }
+
+
+
 }
