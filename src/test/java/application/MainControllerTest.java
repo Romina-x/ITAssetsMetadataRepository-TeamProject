@@ -1,6 +1,12 @@
 package application;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,10 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.ui.Model;
 
 /**
- * Test suite to validate the functions held within the Main Controller Class
- * 
+ * Test suite to validate the functions held within the Main Controller Class.
+ *
  * @author Yusur Taha
  * @author Sarah Haines
  */
@@ -36,13 +43,12 @@ class MainControllerTest {
 
 
   /**
-   * Test to validate the string response of the method which runs the map for the post request of
-   * create new asset
-   * 
-   * @throws Exception
+   * Test string response of method which runs the map for the post request of create new asset.
+   *
+   * @throws Exception , could be any checked exception.
    */
   @Test
-  //test 1 
+  // test 1
   void testAddNewAsset() throws Exception {
     MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/asset/add")
         .param("type", "document").param("title", "This is a test document")
@@ -53,10 +59,9 @@ class MainControllerTest {
   }
 
   /**
-   * Test to validate the string response of the method which runs the map for the post request of
-   * create new type
-   * 
-   * @throws Exception
+   * Test string response of the method which runs the map for the post request of create new type.
+   *
+   * @throws Exception , could be any checked exception.
    */
   @Test
   void testAddNewType() throws Exception {
@@ -70,24 +75,56 @@ class MainControllerTest {
   }
 
   /**
-   * Test to validate the string response of the method which allows for population of the attribute data for a specific
-   * asset.
-   * 
-   * @throws Exception
+   * Test to validate the string response of the method which allows for population of the attribute
+   * data for a specific asset.
+   *
+   * @throws Exception , could be any checked exception.
    */
   @Test
-  //test 2 
+  // test 2
   void testAssetForm() throws Exception {
     mvc.perform(MockMvcRequestBuilders.get("/asset/createAsset"))
         .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
-        .andExpect(MockMvcResultMatchers.view().name("createAsset")) // view name returned in the
-                                                                     // response should be
-                                                                     // "createAsset"
-        .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));// model attribute
-                                                                                 // named
-                                                                                 // "createAsset"
-                                                                                 // should exist in
-                                                                                 // the response
+        .andExpect(MockMvcResultMatchers.view().name("createAsset"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));
+
+  }
+
+  /**
+   * Test to validate the string response of method which populates database with asset attributes
+   * data.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  // test 3
+  void testAssetSubmit() throws Exception {
+    // Create mocks for Asset, Model, AssetRepository, and ActionLogRepository
+    Asset asset = new Asset();
+    Model model = mock(Model.class);
+    AssetRepository assetRepository = mock(AssetRepository.class);
+    ActionLogRepository actionLogRepository = mock(ActionLogRepository.class);
+
+    // Create an instance of MainController with mocks
+    MainController controller = new MainController(assetRepository, actionLogRepository);
+
+    // Mock the behavior of assetRepository.save(asset) to return the asset
+    when(assetRepository.save(asset)).thenReturn(asset);
+
+    String result = "";
+    // Call the controller method
+    result = controller.assetSubmit(asset, model);
+    verify(assetRepository).save(asset); // Verify interactions on mock objects
+
+    // Verifies that actionLogRepository.save() is called with any ActionLog object
+    verify(actionLogRepository).save(any(ActionLog.class));
+
+    // Verifies that model.addAttribute() is called with "savedAsset" as attribute name
+    // And any asset as its value
+    verify(model).addAttribute(eq("savedAsset"), any(Asset.class));
+
+    assertEquals("result", result);
+
   }
 
 

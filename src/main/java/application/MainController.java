@@ -39,6 +39,11 @@ public class MainController {
     this.assetRepository = assetRepository; 
   }
 
+  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
+    this.assetRepository = assetRepository; 
+    this.actionLogRepository = actionLogRepository; 
+  }
+
   /**
    * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
    * inputs it into the database.
@@ -92,6 +97,7 @@ public class MainController {
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     Asset savedAsset = assetRepository.save(asset); // Add the asset object to the database
     addActionLog(savedAsset.getId(), "Added asset"); // Adds an action record to the log
+    model.addAttribute("savedAsset", savedAsset); // Add savedAsset to the model
     return "result"; // renders result.html
   }
 
