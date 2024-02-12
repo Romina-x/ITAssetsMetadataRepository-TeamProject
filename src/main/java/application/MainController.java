@@ -313,6 +313,7 @@ public class MainController {
     return actionLogRepository.findById(id);
   }
   
+<<<<<<< HEAD
   @GetMapping(path = "/asset/find/byTitle")
   public @ResponseBody Asset getAssetByTitle(@RequestParam String title) {
     Iterable<Asset> allAssets = assetRepository.findAll(); 
@@ -322,6 +323,21 @@ public class MainController {
         }
     } return null; 
   }
+=======
+  @GetMapping(path = "/asset/findTitle/{title}")
+  public @ResponseBody Asset getAssetByTitle(@PathVariable("title") String title) {
+   Iterable<Asset> allAssets = assetRepository.findAll(); // find collection of assets which can be
+                                                           // iterated over
+    for (Asset asset : allAssets) { // look through collection of assets 
+      System.out.println(asset.getTitle());
+      if (asset.getTitle().equals(title)) {
+        return asset;
+      }
+    }
+    return null;
+  }
+  
+>>>>>>> 4651285 (Fixed the findByTitle method with Romina, need to make changes to search branch, test not successful yet)
 
 }
 
