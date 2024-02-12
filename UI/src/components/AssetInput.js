@@ -28,6 +28,13 @@ export default function FormPropsTextFields() {
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
 
+  const [type, setType] = useState("Code");
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
+  const [lineNumber, setLineNumber] = useState("");
+  const [programmingLanguage, setProgrammingLanguage] = useState("");
+  const [author, setAuthor] = useState("");
+
   useEffect(() => {
     if (save === "Saved") {
       const timer = setTimeout(() => {
@@ -49,7 +56,6 @@ export default function FormPropsTextFields() {
 
   }, [cancel]);
 
-
   const handleSaveButtonClick = () => {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
@@ -60,7 +66,13 @@ export default function FormPropsTextFields() {
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
-    // logic for canceling goes here
+    
+    setType("Code");
+    setTitle("");
+    setLink("");
+    setLineNumber("");
+    setProgrammingLanguage("");
+    setAuthor("");
   };
 
   return (
@@ -94,7 +106,8 @@ export default function FormPropsTextFields() {
             id="outlined-select-currency"
             select
             label="Type"
-            defaultValue="Code"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           >
             {types.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -109,6 +122,8 @@ export default function FormPropsTextFields() {
             label="Title"
             placeholder="Module A"
             multiline
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -117,6 +132,8 @@ export default function FormPropsTextFields() {
             label="Link"
             placeholder="Paste URL here"
             multiline
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -125,6 +142,8 @@ export default function FormPropsTextFields() {
             label="Line Number"
             placeholder=""
             multiline
+            value={lineNumber}
+            onChange={(e) => setLineNumber(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -133,6 +152,8 @@ export default function FormPropsTextFields() {
             label="Programming language"
             placeholder="Java,Python,etc"
             multiline
+            value={programmingLanguage}
+            onChange={(e) => setProgrammingLanguage(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -141,6 +162,8 @@ export default function FormPropsTextFields() {
             label="Author"
             placeholder="William"
             multiline
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </Grid>
       </Grid>
