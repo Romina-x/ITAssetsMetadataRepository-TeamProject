@@ -253,13 +253,22 @@ public class MainController {
     return "resultDeleteType";
   }
   
-  @GetMapping(path = "/user/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser() {
+  @PostMapping(path = "/user/add") // Map ONLY POST Requests
+  public @ResponseBody String addNewUser(@RequestParam String name,
+	      @RequestParam String password, @RequestParam String role) {
+	  
+	Permissions userRole = null;
+	
+    for(Permissions perm: Permissions.values()) {
+    	if(perm.toString().equalsIgnoreCase(role)) {
+    		userRole = perm;
+    	}
+    }
 
     User newUser = new User();
-    newUser.setName("Grug");
-    newUser.setPassword("Grug_M0m3nt");
-    newUser.setRole(Permissions.ADMIN);
+    newUser.setName(name);
+    newUser.setPassword(password);
+    newUser.setRole(userRole);
     userRepository.save(newUser);
     
     return "Saved";
