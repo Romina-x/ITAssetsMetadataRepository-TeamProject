@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- *  This program is a simple class to run the database application.
+ * This program is a simple class to run the database application.
  *
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
@@ -19,17 +19,17 @@ public class AccessingDataMysqlApplication {
     SpringApplication.run(AccessingDataMysqlApplication.class, args);
   }
 
- 
+
   @Bean
   public WebMvcConfigurer corsConfigurer() {
-     return new WebMvcConfigurer() {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-          registry.addMapping("/**")
-                  .allowedOrigins("http://localhost:3000") // Adjust this to your React app's URL
-                  .allowedMethods("GET", "POST", "PUT", "DELETE")
-                  .allowedHeaders("*")
-                  .allowCredentials(true);
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("http://localhost:3000") // Adjust this to your
+                                                                           // React app's URL
+            .allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*")
+            .allowCredentials(true);
       }
-     };
+    };
   }
+}
