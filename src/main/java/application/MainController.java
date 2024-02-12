@@ -277,8 +277,12 @@ public class MainController {
   
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
-    // This returns a JSON or XML with the assets
     return userRepository.findAll();
+  }
+  
+  @GetMapping(path = "/user/find/{id}")
+  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
+    return userRepository.findById(id);
   }
 
 }
