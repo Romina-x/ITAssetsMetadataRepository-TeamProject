@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -40,6 +41,9 @@ class MainControllerTest {
   private TypeRepository typeRepository;
   @MockBean
   private ActionLogRepository actionLogRepository;
+
+  @Autowired
+  private MainController mc;
 
 
   /**
@@ -125,7 +129,28 @@ class MainControllerTest {
 
     assertEquals("result", result);
 
+  }
 
+  /**
+   * Test to validate that upon searching for a specific title, the asset with the same title is
+   * retrieved.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testGetAssetByTitle() throws Exception {
+
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    String titleToFind = "Beans";
+    Asset expectedAsset = new Asset();
+    expectedAsset.setTitle(titleToFind);
+
+    when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
+
+    Asset actualAsset = mc.getAssetByTitle(titleToFind);
+
+    assertEquals(expectedAsset.getTitle(), actualAsset.getTitle(),
+        "Should return the asset with the specified title");
 
   }
 

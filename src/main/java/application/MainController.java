@@ -40,13 +40,13 @@ public class MainController {
   }
 
   public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
-    this.assetRepository = assetRepository; 
-    this.actionLogRepository = actionLogRepository; 
+    this.assetRepository = assetRepository;
+    this.actionLogRepository = actionLogRepository;
   }
 
   /**
-   * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
-   * inputs it into the database.
+   * This method is a map only for POST requests. It takes the parameters supplied by the user for
+   * the asset and inputs it into the database.
    *
    * @param type the type format that the asset aligns to
    * @param title what the asset should be called
@@ -67,7 +67,7 @@ public class MainController {
     n.setLink(link);
     n.setLineNum(lineNum);
     n.setProgLang(progLang);
-    assetRepository.save(n);    
+    assetRepository.save(n);
     return "Saved";
   }
 
@@ -80,14 +80,14 @@ public class MainController {
    */
   @GetMapping("/asset/createAsset") // GET request : When you go to localhost:8080/createAsset
   public String assetForm(Model model) {
-    model.addAttribute("createAsset", new Asset()); // Gives the form an asset object to add
-                                                    // attributes to
+    //Gives the form an asset object to add attributes to
+    model.addAttribute("createAsset", new Asset());
     return "createAsset"; // renders createAsset.html
   }
 
   /**
-   * This method is the POST request to send the content of the asset form for submission to the database.
-   * It onward routes to the result.html page.
+   * This method is the POST request to send the content of the asset form for submission to the
+   * database. It onward routes to the result.html page.
    *
    * @param asset
    * @param model
@@ -112,13 +112,11 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return assetRepository.findAll();
   }
-  
-  
-  
+
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
    * localhost:8080/asset/find/{id}.
-   * 
+   *
    * @param id of the asset to be queried
    * @return JSON of the asset returned by the id number search
    */
@@ -129,18 +127,18 @@ public class MainController {
   }
 
   /**
-   * This method manages the GET request and renders the delete asset page 
+   * This method manages the GET request and renders the delete asset page.
    * 
    * @param model
    * @return routing for the /deleteAsset page
    */
   @GetMapping("/asset/deleteAsset") // GET request : When you go to localhost:8080/type/deleteAsset
   public String deleteAsset(Model model) {
-    model.addAttribute("deleteAsset", new Asset()); // Gives the form a Asset object to add attributes
-                                                  // to
+    //Gives the form a Asset object to add attributes to
+    model.addAttribute("deleteAsset", new Asset()); 
     return "deleteAsset"; // renders deleteAsset.html
   }
-  
+
   /**
    * This method allows for the deletion of individual assets by referencing their id numbers in the
    * url localhost:8080/asset/delete/{id}.
@@ -155,18 +153,22 @@ public class MainController {
     return "resultDeleteAsset"; // renders resultDeleteAsset.html
   }
 
-////  End of Asset functions. Start of Type functions.
-  
+  //// End of Asset functions. Start of Type functions.
+
   /**
-   * This method is a map only for POST requests. It takes the parameters supplied by the user for the type and
-   * inputs it into the database.
+   * This method is a map only for POST requests. It takes the parameters supplied by the user for
+   * the type and inputs it into the database.
    *
    * @param type the type format that the asset aligns to
-   * @param customAttribute1 the title of the first custom attribute held only within this type of asset 
-   * @param customAttribute2 the title of the second custom attribute held only within this type of asset
-   * @param customAttribute3 the title of the third custom attribute held only within this type of asset
-   * @param customAttribute4 the title of the four custom attribute held only within this type of asset
-   * @return confirmation string 
+   * @param customAttribute1 the title of the first custom attribute held only within this type of
+   *        asset
+   * @param customAttribute2 the title of the second custom attribute held only within this type of
+   *        asset
+   * @param customAttribute3 the title of the third custom attribute held only within this type of
+   *        asset
+   * @param customAttribute4 the title of the four custom attribute held only within this type of
+   *        asset
+   * @return confirmation string
    */
   @PostMapping(path = "/type/add") // Map ONLY POST Requests
   public @ResponseBody String addNewType(@RequestParam String type,
@@ -187,8 +189,8 @@ public class MainController {
 
 
   /**
-   * This method fetches all the types stored in the database and returns a JSON file of the
-   * content to the web page.
+   * This method fetches all the types stored in the database and returns a JSON file of the content
+   * to the web page.
    *
    * @return all types and their custom attributes
    */
@@ -207,16 +209,16 @@ public class MainController {
    */
   @GetMapping("/type/createType") // GET request : When you go to localhost:8080/type/createType
   public String typeForm(Model model) {
-    model.addAttribute("createType", new Type()); // Gives the form a Type object to add attributes
-                                                  // to
+    //Gives the form a Type object to add attributes to
+    model.addAttribute("createType", new Type());
     return "createType"; // renders createType.html
   }
 
   /**
-   * This method is the POST request to send the content of the type form for submission to the database.
-   * It onward routes to the resultCreateType.html page.
+   * This method is the POST request to send the content of the type form for submission to the
+   * database. It onward routes to the resultCreateType.html page.
    *
-   * @param type  
+   * @param type
    * @param model
    * @return onward path routing for the resultCreateType.html page
    */
@@ -230,7 +232,7 @@ public class MainController {
   /**
    * This method is a query function to request the details of a type by its Id number in the url
    * localhost:8080/type/find/{id}.
-   * 
+   *
    * @param id of the type to be queried
    * @return JSON of the type returned by the id number search
    */
@@ -241,15 +243,15 @@ public class MainController {
   }
 
   /**
-   * This method manages the GET request and renders the delete type page 
+   * This method manages the GET request and renders the delete type page.
    * 
    * @param model
    * @return routing for the /deleteType page
    */
   @GetMapping("/type/deleteType") // GET request : When you go to localhost:8080/type/deleteType
   public String deleteType(Model model) {
-    model.addAttribute("deleteType", new Type()); // Gives the form a Type object to add attributes
-                                                  // to
+    // Gives the form a Type object to add attributes to
+    model.addAttribute("deleteType", new Type()); 
     return "deleteType"; // renders deleteType.html
   }
 
@@ -266,20 +268,21 @@ public class MainController {
     addActionLog(id, "Deleted type"); // Adds an action record to the log
     return "resultDeleteType";
   }
-  
-////End of Type functions. Start of Log functions.
-  
-  
+
+  //// End of Type functions. Start of Log functions.
+
+
   /**
-   * This method is a map only for POST requests, It thakes the parameters supplied by the user for the action log and inputs it in to the database.
-   * 
+   * This method is a map only for POST requests, It thakes the parameters supplied by the user for
+   * the action log and inputs it in to the database.
+   *
    * @param itemId reference id for the item being recorded in the log
    * @param action what task was being undertaken on that item id (such as: deleted)
    * @return confirmation string
    */
   public @ResponseBody String addActionLog(@RequestParam Integer itemId,
       @RequestParam String action) {
-    
+
     ActionLog al = new ActionLog();
     al.setItemId(itemId);
     al.setAction(action);
@@ -287,7 +290,7 @@ public class MainController {
     actionLogRepository.save(al);
     return "Saved";
   }
-  
+
   /**
    * This method fetches all the action logs stored in the database and returns a JSON file of the
    * content to the web page.
@@ -299,11 +302,11 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return actionLogRepository.findAll();
   }
-  
+
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
    * localhost:8080/asset/find/{id}.
-   * 
+   *
    * @param id of the log entry to be queried
    * @return JSON of the action log to be returned by the id number search
    */
@@ -312,23 +315,19 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return actionLogRepository.findById(id);
   }
-  
-<<<<<<< HEAD
-  @GetMapping(path = "/asset/find/byTitle")
-  public @ResponseBody Asset getAssetByTitle(@RequestParam String title) {
-    Iterable<Asset> allAssets = assetRepository.findAll(); 
-    for (Asset asset : allAssets) {
-        if (asset.getTitle().equals(title)) {
-            return asset;
-        }
-    } return null; 
-  }
-=======
+
+  /**
+   * This method is a query function to request the details of an asset by its title in the url
+   * localhost:8080/asset/findTitle/{title}.
+   *
+   * @param title of asset user wants
+   * @return asset that has the same title as the searched title
+   */
   @GetMapping(path = "/asset/findTitle/{title}")
   public @ResponseBody Asset getAssetByTitle(@PathVariable("title") String title) {
-   Iterable<Asset> allAssets = assetRepository.findAll(); // find collection of assets which can be
-                                                           // iterated over
-    for (Asset asset : allAssets) { // look through collection of assets 
+    // find collection of assets which can be iterated over
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) { // look through collection of assets
       System.out.println(asset.getTitle());
       if (asset.getTitle().equals(title)) {
         return asset;
@@ -336,8 +335,7 @@ public class MainController {
     }
     return null;
   }
-  
->>>>>>> 4651285 (Fixed the findByTitle method with Romina, need to make changes to search branch, test not successful yet)
+
 
 }
 
