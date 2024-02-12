@@ -306,6 +306,19 @@ public class MainController {
     return actionLogRepository.findById(id);
   }
   
+  @GetMapping(path = "/asset/findTitle/{title}")
+  public @ResponseBody Asset getAssetByTitle(@PathVariable("title") String title) {
+   Iterable<Asset> allAssets = assetRepository.findAll(); // find collection of assets which can be
+                                                           // iterated over
+    for (Asset asset : allAssets) { // look through collection of assets 
+      System.out.println(asset.getTitle());
+      if (asset.getTitle().equals(title)) {
+        return asset;
+      }
+    }
+    return null;
+  }
+  
 
 }
 
