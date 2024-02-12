@@ -112,7 +112,7 @@ export default function FormPropsTextFields() {
           endIcon={<SaveIcon />}
           style={{ background: "black" }}
         >
-          Saved
+          Save
         </Button>
         <Button
           variant="outlined"

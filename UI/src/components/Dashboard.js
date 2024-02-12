@@ -180,8 +180,8 @@ export default function Dashboard(props) {
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12}>
-                {props.page === "add" && <AssetInput />}
-                {props.page === "view" && <ViewAssets />}
+                {props.page === "asset/add" && <AssetInput />}
+                {props.page === "asset/view" && <ViewAssets />}
                 {props.page === "type/add" && <TypeInput />}
                 {props.page === "type/view" && <ViewTypes />}
               </Grid>

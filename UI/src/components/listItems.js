@@ -20,7 +20,7 @@ export const adminListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/edit" className={styles.link}>
+    <Link to="/asset/edit" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <EditIcon />
@@ -28,7 +28,7 @@ export const adminListItems = (
         <ListItemText primary="Edit Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/add" className={styles.link}>
+    <Link to="/asset/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <AddIcon />
@@ -36,7 +36,7 @@ export const adminListItems = (
         <ListItemText primary="Add Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/view" className={styles.link}>
+    <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />
@@ -89,7 +89,7 @@ export const userListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/edit" className={styles.link}>
+    <Link to="/asset/edit" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <EditIcon />
@@ -97,7 +97,7 @@ export const userListItems = (
         <ListItemText primary="Edit Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/add" className={styles.link}>
+    <Link to="/asset/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <AddIcon />
@@ -105,7 +105,7 @@ export const userListItems = (
         <ListItemText primary="Add Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/view" className={styles.link}>
+    <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />
