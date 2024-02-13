@@ -70,6 +70,14 @@ export const adminListItems = (
         <ListItemText primary="Edit Type" />
       </ListItemButton>
     </Link>
+    <Link to="/type/delete" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DeleteIcon />
+        </ListItemIcon>
+        <ListItemText primary="Delete Type" />
+      </ListItemButton>
+    </Link>
     <Link to="/type/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>

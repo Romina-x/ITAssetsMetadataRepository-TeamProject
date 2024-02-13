@@ -12,6 +12,7 @@ function App() {
         <Route exact path="/type/view" element={<Dashboard page="type/view" />} />
         <Route exact path="/log/view" element={<Dashboard page="log/view" />} />
         <Route exact path="/asset/delete" element={<Dashboard page="asset/delete" />} />
+        <Route exact path="/type/delete" element={<Dashboard page="type/delete" />} />
 
 
       </Routes>

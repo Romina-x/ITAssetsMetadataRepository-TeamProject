@@ -24,6 +24,8 @@ import TypeInput from './TypeInput';
 import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
+import TypeDelete from './TypeDelete';
+
 
 function Copyright(props) {
   return (
@@ -188,6 +190,7 @@ export default function Dashboard(props) {
                 {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
                 {props.page === "asset/delete" && <AssetDelete />}
+                {props.page === "type/delete" && <TypeDelete />}
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
