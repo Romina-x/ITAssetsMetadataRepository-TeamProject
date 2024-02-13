@@ -186,7 +186,42 @@ public class MainController {
     typeRepository.save(t);
     return "Saved";
   }
+  
 
+  /**
+   * This method renders the edit asset page depending on a given asset id.
+   * 
+   * @param id
+   * @param model
+   * @return edit asset page or error page
+   */
+  @GetMapping("/editAsset/{id}")
+  public String editAssetForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Asset> assetOptional = assetRepository.findById(id);
+    if (assetOptional.isPresent()) { //check if asset to edit is present
+        Asset asset = assetOptional.get();
+        model.addAttribute("asset", asset);
+        model.addAttribute("id", id);
+        return "editAsset";
+    } else {
+        // Handle asset not found
+        return "assetNotFound"; // Render error.html 
+    }
+  }
+  
+  /**
+   * This method handles the submitted edit form and updates the asset within the database.
+   * 
+   * @param id
+   * @param updatedAsset
+   * @return asset added page
+   */
+  @PostMapping("/editAsset/{id}")
+  public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
+    updatedAsset.setId(id);
+    assetRepository.save(updatedAsset);
+    return "result";
+  }
 
   /**
    * This method fetches all the types stored in the database and returns a JSON file of the
