@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head> 
+    <title>Create Type</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<h1>Create Type</h1>
+    <form action="#" th:action="@{/type/createType}" th:object="${createType}" method="post">
+
+        <p>Type Title: <input type="text" th:field="*{typeName}" /></p>
+        <p>Enter Custom Attribute Title 1: <input type="text" th:field="*{customAttribute1}" /></p>
+        <p>Enter Custom Attribute Title 2: <input type="text" th:field="*{customAttribute2}" /></p>
+        <p>Enter Custom Attribute Title 3: <input type="text" th:field="*{customAttribute3}" /></p>
+        <p>Enter Custom Attribute Title 4: <input type="text" th:field="*{customAttribute4}" /></p>
+       
+        
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+</body>
+</html>

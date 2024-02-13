@@ -1,6 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
@@ -36,40 +37,8 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Type Name"
-            placeholder="Document"
-            multiline
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Custom Attribute Name 1"
-            placeholder="Author"
-            multiline
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Custom Attribute Name 2"
-            placeholder="Security Rating"
-            multiline
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Custom Attribute Name 3"
-            placeholder="Location"
-            multiline
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Custom Attribute Name 4"
-            placeholder="Project Name"
+            label="ID To Delete"
+            placeholder="3"
             multiline
           />
         </Grid>
@@ -81,7 +50,7 @@ export default function FormPropsTextFields() {
           endIcon={<SaveIcon />}
           style={{ background: "black" }}
         >
-          Save
+          Submit
         </Button>
         <Button
           variant="outlined"
