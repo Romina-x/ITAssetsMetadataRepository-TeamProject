@@ -173,6 +173,7 @@ export default function Dashboard(props) {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
+            marginTop: "64px",
           }}
         >
           <Toolbar />

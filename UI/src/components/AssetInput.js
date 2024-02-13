@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,6 +25,56 @@ const types = [
 ];
 
 export default function FormPropsTextFields() {
+  const [save, setSave] = useState("Save");
+  const [cancel, setCancel] = useState("Cancel");
+
+  const [type, setType] = useState("Code");
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
+  const [lineNumber, setLineNumber] = useState("");
+  const [programmingLanguage, setProgrammingLanguage] = useState("");
+  const [author, setAuthor] = useState("");
+
+  useEffect(() => {
+    if (save === "Saved") {
+      const timer = setTimeout(() => {
+        setSave("Save");
+      }, 3000); // Changes back to "Saved" after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [save]);
+
+  useEffect(() => {
+    if (cancel === "Cancelled") {
+      const timer = setTimeout(() => {
+        document.getElementById("cancel-button").style.backgroundColor = "white";
+        document.getElementById("cancel-button").style.color = "blue";
+        setCancel("Cancel");
+      }, 1500); // Changes back to "Cancel" after 3 seconds
+      return () => clearTimeout(timer);
+    }
+
+  }, [cancel]);
+
+  const handleSaveButtonClick = () => {
+    setSave("Saved");
+    // logic for what happens when the asset is saved goes here
+  };
+
+  const handleCancelButtonClick = () => {
+    const cancelButtonStyle = document.getElementById("cancel-button").style;
+    cancelButtonStyle.backgroundColor = "blue";
+    cancelButtonStyle.color = "red";
+    setCancel("Cancelled");
+    
+    setType("Code");
+    setTitle("");
+    setLink("");
+    setLineNumber("");
+    setProgrammingLanguage("");
+    setAuthor("");
+  };
+
   return (
     <Box
       component="form"
@@ -55,7 +106,8 @@ export default function FormPropsTextFields() {
             id="outlined-select-currency"
             select
             label="Type"
-            defaultValue="Code"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           >
             {types.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -70,6 +122,8 @@ export default function FormPropsTextFields() {
             label="Title"
             placeholder="Module A"
             multiline
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -78,6 +132,8 @@ export default function FormPropsTextFields() {
             label="Link"
             placeholder="Paste URL here"
             multiline
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -86,6 +142,8 @@ export default function FormPropsTextFields() {
             label="Line Number"
             placeholder=""
             multiline
+            value={lineNumber}
+            onChange={(e) => setLineNumber(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -94,6 +152,8 @@ export default function FormPropsTextFields() {
             label="Programming language"
             placeholder="Java,Python,etc"
             multiline
+            value={programmingLanguage}
+            onChange={(e) => setProgrammingLanguage(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -102,6 +162,8 @@ export default function FormPropsTextFields() {
             label="Author"
             placeholder="William"
             multiline
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </Grid>
       </Grid>
@@ -111,14 +173,17 @@ export default function FormPropsTextFields() {
           variant="contained"
           endIcon={<SaveIcon />}
           style={{ background: "black" }}
+          onClick={handleSaveButtonClick}
         >
-          Saved
+          {save}
         </Button>
         <Button
+          id="cancel-button"
           variant="outlined"
           startIcon={<CancelIcon />}
+          onClick={handleCancelButtonClick}
         >
-          Cancel
+          {cancel}
         </Button>
       </Stack>
     </Box>
