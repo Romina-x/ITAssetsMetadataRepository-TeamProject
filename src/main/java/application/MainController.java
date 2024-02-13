@@ -357,7 +357,7 @@ public class MainController {
    * @param model
    * @return edit type page or error page
    */
-  @GetMapping("/asset/editAsset/{id}")
+  @GetMapping("/type/editType/{id}")
   public String editTypeForm(@PathVariable("id") Integer id, Model model) {
     Optional<Type> typeOptional = typeRepository.findById(id);
     if (typeOptional.isPresent()) { //check if asset to edit is present
@@ -371,19 +371,19 @@ public class MainController {
     }
   }
   
-//  /**
-//   * This method handles the submitted edit form and updates the asset within the database.
-//   * 
-//   * @param id
-//   * @param updatedAsset
-//   * @return asset added page
-//   */
-//  @PostMapping("/asset/editAsset/{id}")
-//  public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
-//    updatedAsset.setId(id);
-//    assetRepository.save(updatedAsset);
-//    return "result";
-//  }
+  /**
+   * This method handles the submitted edit form and updates the type within the database.
+   * 
+   * @param id
+   * @param updatedType
+   * @return type added page
+   */
+  @PostMapping("/type/editType/{id}")
+  public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
+    updatedType.setId(id);
+    typeRepository.save(updatedType);
+    return "resultCreateType";
+  }
   
   
 }
