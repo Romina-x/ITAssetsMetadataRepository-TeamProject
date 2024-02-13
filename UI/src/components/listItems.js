@@ -20,20 +20,20 @@ export const adminListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/edit" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary="Edit Asset" />
-      </ListItemButton>
-    </Link>
     <Link to="/asset/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="Add Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/edit" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <EditIcon />
+        </ListItemIcon>
+        <ListItemText primary="Edit Asset" />
       </ListItemButton>
     </Link>
     <Link to="/asset/view" className={styles.link}>
@@ -44,14 +44,6 @@ export const adminListItems = (
         <ListItemText primary="View Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/type/edit" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary="Edit Type" />
-      </ListItemButton>
-    </Link>
     <Link to="/type/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
@@ -60,12 +52,28 @@ export const adminListItems = (
         <ListItemText primary="Add Type" />
       </ListItemButton>
     </Link>
+    <Link to="/type/edit" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <EditIcon />
+        </ListItemIcon>
+        <ListItemText primary="Edit Type" />
+      </ListItemButton>
+    </Link>
     <Link to="/type/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />
         </ListItemIcon>
         <ListItemText primary="View Type" />
+      </ListItemButton>
+    </Link>
+    <Link to="/log/view" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SourceIcon />
+        </ListItemIcon>
+        <ListItemText primary="View Log" />
       </ListItemButton>
     </Link>
     <Link to="/login" className={styles.link}>

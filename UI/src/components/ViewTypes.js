@@ -20,52 +20,6 @@ export default function ViewTypes() {
 
   const [types, setTypes] = React.useState([])
 
-
-// // Generate Order Data
-// function createData(id, typeName, customAttribute1, customAttribute2, customAttribute3, customAttribute4) {
-//   return { id, typeName, customAttribute1, customAttribute2, customAttribute3, customAttribute4 };
-// }
-
-// const rows = [
-//   createData(
-//     1,
-//     'powerpoint',
-//     'author',
-//     "security level",
-//     'location',
-//     "project name",
-//   ),
-//   createData(
-//     2,
-//     'document',
-//     'application',
-//     "end date",
-//     'file path',
-//     "doc id",
-//   ),
-//   createData(
-//     3,
-//     'sourcecode',
-//     'encrypted',
-//     "family",
-//     'contact',
-//     "data quality",
-//   ),
-//   createData(
-//     4,
-//     'emails',
-//     'author',
-//     "bcc",
-//     'cc',
-//     "course",
-//   )
-// ];
-
-// function preventDefault(event) {
-//   event.preventDefault();
-// }
-
-// export default function ViewTypes() {
   return (
     <React.Fragment>
       <Title>Types</Title>
