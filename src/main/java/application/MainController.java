@@ -195,7 +195,7 @@ public class MainController {
    * @param model
    * @return edit asset page or error page
    */
-  @GetMapping("/editAsset/{id}")
+  @GetMapping("/asset/editAsset/{id}")
   public String editAssetForm(@PathVariable("id") Integer id, Model model) {
     Optional<Asset> assetOptional = assetRepository.findById(id);
     if (assetOptional.isPresent()) { //check if asset to edit is present
@@ -216,7 +216,7 @@ public class MainController {
    * @param updatedAsset
    * @return asset added page
    */
-  @PostMapping("/editAsset/{id}")
+  @PostMapping("/asset/editAsset/{id}")
   public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
     updatedAsset.setId(id);
     assetRepository.save(updatedAsset);
