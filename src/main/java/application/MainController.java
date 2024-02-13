@@ -78,19 +78,6 @@ public class MainController {
   }
 
   /**
-   * This method fetches all the assets stored in the database and returns a JSON
-   * file of the
-   * content to the web page.
-   *
-   * @return all assets and their attributes
-   */
-  @GetMapping(path = "/find/all")
-  public @ResponseBody Iterable<Asset> getAllAssets() {
-    // This returns a JSON or XML with the assets
-    return assetRepository.findAll();
-  }
-
-  /**
    * This method intitalises the model to allow for population of the attribute
    * data for a specific
    * asset. This is the GET request to localhost:8080/createAsset.
@@ -132,6 +119,7 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return assetRepository.findAll();
   }
+  
   
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
