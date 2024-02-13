@@ -23,6 +23,7 @@ import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
 import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
+import AssetDelete from './AssetDelete';
 
 function Copyright(props) {
   return (
@@ -186,6 +187,7 @@ export default function Dashboard(props) {
                 {props.page === "type/add" && <TypeInput />}
                 {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
+                {props.page === "asset/delete" && <AssetDelete />}
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />

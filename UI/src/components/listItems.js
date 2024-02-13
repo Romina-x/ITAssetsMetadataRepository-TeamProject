@@ -9,6 +9,8 @@ import AddIcon from "@mui/icons-material/Add";
 import SourceIcon from "@mui/icons-material/Source";
 import { Link } from "react-router-dom";
 import styles from "../style/listItems.module.css";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export const adminListItems = (
   <React.Fragment>
@@ -34,6 +36,14 @@ export const adminListItems = (
           <EditIcon />
         </ListItemIcon>
         <ListItemText primary="Edit Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/delete" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DeleteIcon />
+        </ListItemIcon>
+        <ListItemText primary="Delete Asset" />
       </ListItemButton>
     </Link>
     <Link to="/asset/view" className={styles.link}>
