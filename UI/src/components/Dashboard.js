@@ -22,6 +22,10 @@ import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
 import ViewTypes from './ViewTypes';
+import ViewLogs from './ViewLogs';
+import AssetDelete from './AssetDelete';
+import TypeDelete from './TypeDelete';
+
 
 function Copyright(props) {
   return (
@@ -173,6 +177,7 @@ export default function Dashboard(props) {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
+            marginTop: "64px",
           }}
         >
           <Toolbar />
@@ -180,10 +185,13 @@ export default function Dashboard(props) {
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12}>
-                {props.page === "add" && <AssetInput />}
-                {props.page === "view" && <ViewAssets />}
+                {props.page === "asset/add" && <AssetInput />}
+                {props.page === "asset/view" && <ViewAssets />}
                 {props.page === "type/add" && <TypeInput />}
                 {props.page === "type/view" && <ViewTypes />}
+                {props.page === "log/view" && <ViewLogs />}
+                {props.page === "asset/delete" && <AssetDelete />}
+                {props.page === "type/delete" && <TypeDelete />}
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />

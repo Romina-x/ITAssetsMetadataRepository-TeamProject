@@ -9,6 +9,8 @@ import AddIcon from "@mui/icons-material/Add";
 import SourceIcon from "@mui/icons-material/Source";
 import { Link } from "react-router-dom";
 import styles from "../style/listItems.module.css";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export const adminListItems = (
   <React.Fragment>
@@ -20,15 +22,7 @@ export const adminListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/edit" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary="Edit Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/add" className={styles.link}>
+    <Link to="/asset/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <AddIcon />
@@ -36,20 +30,28 @@ export const adminListItems = (
         <ListItemText primary="Add Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/view" className={styles.link}>
+    <Link to="/asset/edit" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <EditIcon />
+        </ListItemIcon>
+        <ListItemText primary="Edit Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/delete" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DeleteIcon />
+        </ListItemIcon>
+        <ListItemText primary="Delete Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />
         </ListItemIcon>
         <ListItemText primary="View Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/type/edit" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary="Edit Type" />
       </ListItemButton>
     </Link>
     <Link to="/type/add" className={styles.link}>
@@ -60,12 +62,36 @@ export const adminListItems = (
         <ListItemText primary="Add Type" />
       </ListItemButton>
     </Link>
+    <Link to="/type/edit" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <EditIcon />
+        </ListItemIcon>
+        <ListItemText primary="Edit Type" />
+      </ListItemButton>
+    </Link>
+    <Link to="/type/delete" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DeleteIcon />
+        </ListItemIcon>
+        <ListItemText primary="Delete Type" />
+      </ListItemButton>
+    </Link>
     <Link to="/type/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />
         </ListItemIcon>
         <ListItemText primary="View Type" />
+      </ListItemButton>
+    </Link>
+    <Link to="/log/view" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SourceIcon />
+        </ListItemIcon>
+        <ListItemText primary="View Log" />
       </ListItemButton>
     </Link>
     <Link to="/login" className={styles.link}>
@@ -89,7 +115,7 @@ export const userListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/edit" className={styles.link}>
+    <Link to="/asset/edit" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <EditIcon />
@@ -97,7 +123,7 @@ export const userListItems = (
         <ListItemText primary="Edit Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/add" className={styles.link}>
+    <Link to="/asset/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <AddIcon />
@@ -105,7 +131,7 @@ export const userListItems = (
         <ListItemText primary="Add Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/view" className={styles.link}>
+    <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />

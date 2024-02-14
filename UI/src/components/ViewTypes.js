@@ -1,57 +1,25 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-
-// Generate Order Data
-function createData(id, typeName, customAttribute1, customAttribute2, customAttribute3, customAttribute4) {
-  return { id, typeName, customAttribute1, customAttribute2, customAttribute3, customAttribute4 };
-}
-
-const rows = [
-  createData(
-    1,
-    'powerpoint',
-    'author',
-    "security level",
-    'location',
-    "project name",
-  ),
-  createData(
-    2,
-    'document',
-    'application',
-    "end date",
-    'file path',
-    "doc id",
-  ),
-  createData(
-    3,
-    'sourcecode',
-    'encrypted',
-    "family",
-    'contact',
-    "data quality",
-  ),
-  createData(
-    4,
-    'emails',
-    'author',
-    "bcc",
-    'cc',
-    "course",
-  )
-];
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+import * as TypeAPI from '../TypeAPI';
 
 export default function ViewTypes() {
+  React.useEffect(() => {
+    const getTypes = async () => {
+      const res = await TypeAPI.getAll();
+      console.log(res)
+      setTypes(res)
+    };
+
+    getTypes();
+  }, []);
+
+  const [types, setTypes] = React.useState([])
+
   return (
     <React.Fragment>
       <Title>Types</Title>
@@ -67,14 +35,14 @@ export default function ViewTypes() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.id}</TableCell>
-              <TableCell>{row.typeName}</TableCell>
-              <TableCell>{row.customAttribute1}</TableCell>
-              <TableCell>{row.customAttribute2}</TableCell>
-              <TableCell>{row.customAttribute3}</TableCell>
-              <TableCell>{row.customAttribute4}</TableCell>
+          {types.map((t) => (
+            <TableRow key={t.id}>
+              <TableCell>{t.id}</TableCell>
+              <TableCell>{t.typeName}</TableCell>
+              <TableCell>{t.customAttribute1}</TableCell>
+              <TableCell>{t.customAttribute2}</TableCell>
+              <TableCell>{t.customAttribute3}</TableCell>
+              <TableCell>{t.customAttribute4}</TableCell>
             </TableRow>
           ))}
         </TableBody>
