@@ -39,7 +39,7 @@ export default function FormPropsTextFields() {
     if (save === "Saved") {
       const timer = setTimeout(() => {
         setSave("Save");
-      }, 3000); // Changes back to "Saved" after 3 seconds
+      }, 2000); // Changes back to "Saved" after 3 seconds
       return () => clearTimeout(timer);
     }
   }, [save]);
@@ -58,7 +58,15 @@ export default function FormPropsTextFields() {
 
   const handleSaveButtonClick = () => {
     setSave("Saved");
-    // logic for what happens when the asset is saved goes here
+    const assetData = {
+      type,
+      title,
+      link,
+      lineNumber,
+      programmingLanguage,
+      author,
+    };
+    console.log("Asset data:", assetData);
   };
 
   const handleCancelButtonClick = () => {
