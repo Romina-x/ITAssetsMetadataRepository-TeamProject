@@ -16,13 +16,13 @@ export const getAll = () =>
   fetch(`${api}/asset/find/all`, {headers})
     .then((res) => res.json())
 
-export const update = (asset, shelf) =>
-fetch(`${api}/books/${asset.id}`, {
+export const update = (asset) =>
+fetch(`${api}/asset/${asset.id}`, {
       method: "PUT",
       headers: {
         ...headers,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ shelf }),
+      body: JSON.stringify({ asset }),
     })
     .then((res) => res.json());

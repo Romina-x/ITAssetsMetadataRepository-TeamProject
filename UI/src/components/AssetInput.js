@@ -31,8 +31,8 @@ export default function FormPropsTextFields() {
   const [type, setType] = useState("Code");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [lineNumber, setLineNumber] = useState("");
-  const [programmingLanguage, setProgrammingLanguage] = useState("");
+  const [lineNum, setlineNum] = useState("");
+  const [progLang, setprogLang] = useState("");
   const [author, setAuthor] = useState("");
 
   useEffect(() => {
@@ -56,10 +56,45 @@ export default function FormPropsTextFields() {
 
   }, [cancel]);
 
-  const handleSaveButtonClick = () => {
+  const handleSaveButtonClick = async (event) => {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/asset/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          type,
+          title,
+          link,
+          lineNum,
+          progLang
+        })
+      });
+      
+      
+      if (!response.ok) {
+        throw new Error('Failed to add asset');
+      }
+      resetValue()
+      console.log('Asset added successfully');
+    } catch (error) {
+      console.error('Error adding asset:', error);
+    }
   };
+
+  const resetValue = () => {
+    setType("Code");
+    setTitle("");
+    setLink("");
+    setlineNum("");
+    setprogLang("");
+    setAuthor("");
+  }
 
   const handleCancelButtonClick = () => {
     const cancelButtonStyle = document.getElementById("cancel-button").style;
@@ -67,12 +102,7 @@ export default function FormPropsTextFields() {
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
     
-    setType("Code");
-    setTitle("");
-    setLink("");
-    setLineNumber("");
-    setProgrammingLanguage("");
-    setAuthor("");
+    resetValue()
   };
 
   return (
@@ -142,8 +172,8 @@ export default function FormPropsTextFields() {
             label="Line Number"
             placeholder=""
             multiline
-            value={lineNumber}
-            onChange={(e) => setLineNumber(e.target.value)}
+            value={lineNum}
+            onChange={(e) => setlineNum(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -152,8 +182,8 @@ export default function FormPropsTextFields() {
             label="Programming language"
             placeholder="Java,Python,etc"
             multiline
-            value={programmingLanguage}
-            onChange={(e) => setProgrammingLanguage(e.target.value)}
+            value={progLang}
+            onChange={(e) => setprogLang(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
