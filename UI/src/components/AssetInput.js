@@ -25,9 +25,11 @@ const types = [
 ];
 
 export default function FormPropsTextFields() {
+  //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
 
+  //state variables for form fields
   const [type, setType] = useState("Code");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
@@ -35,27 +37,30 @@ export default function FormPropsTextFields() {
   const [programmingLanguage, setProgrammingLanguage] = useState("");
   const [author, setAuthor] = useState("");
 
+  //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
     if (save === "Saved") {
       const timer = setTimeout(() => {
         setSave("Save");
-      }, 2000); // Changes back to "Saved" after 3 seconds
+      }, 2000); // Changes back to "Saved" after 2 seconds
       return () => clearTimeout(timer);
     }
   }, [save]);
 
+  //useEffect hook to handle changes after cancel button is clicked
   useEffect(() => {
     if (cancel === "Cancelled") {
       const timer = setTimeout(() => {
         document.getElementById("cancel-button").style.backgroundColor = "white";
         document.getElementById("cancel-button").style.color = "blue";
         setCancel("Cancel");
-      }, 1500); // Changes back to "Cancel" after 3 seconds
+      }, 1500); // Changes back to "Cancel" after 1.5 seconds
       return () => clearTimeout(timer);
     }
 
   }, [cancel]);
 
+  //function to handle changes when save button is clicked
   const handleSaveButtonClick = () => {
     setSave("Saved");
     const assetData = {
@@ -69,12 +74,14 @@ export default function FormPropsTextFields() {
     console.log("Asset data:", assetData);
   };
 
+    //function to handle changes when cancel button is clicked
   const handleCancelButtonClick = () => {
     const cancelButtonStyle = document.getElementById("cancel-button").style;
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
     
+    //resets form field values to their initial states
     setType("Code");
     setTitle("");
     setLink("");
