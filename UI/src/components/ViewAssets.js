@@ -1,57 +1,25 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-
-// Generate Order Data
-function createData(id, type, title,link, lineNum, progLang) {
-  return { id, type, title,link, lineNum, progLang};
-}
-
-const rows = [
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  ),
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  ),
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  ),
-  createData(
-    1,
-    'powerpoint',
-    'Lecture 1',
-    "www.google.com",
-    30,
-    "English",
-  )
-];
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+import * as AssetAPI from '../AssetAPI';
 
 export default function ViewAssets() {
+  React.useEffect(() => {
+    const getAssets = async () => {
+      const res = await AssetAPI.getAll();
+      console.log(res)
+      setAssets(res)
+    };
+
+    getAssets();
+  }, []);
+
+  const [assets, setAssets] = React.useState([])
+
   return (
     <React.Fragment>
       <Title>Assets</Title>
@@ -66,13 +34,13 @@ export default function ViewAssets() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.link}</TableCell>
-              <TableCell>{row.lineNum}</TableCell>
-              <TableCell align="right">{row.progLang}</TableCell>
+          {assets.map((a) => (
+            <TableRow key={a.id}>
+              <TableCell>{a.id}</TableCell>
+              <TableCell>{a.type}</TableCell>
+              <TableCell>{a.link}</TableCell>
+              <TableCell>{a.title}</TableCell>
+              <TableCell align="right">{a.progLang}</TableCell>
             </TableRow>
           ))}
         </TableBody>
