@@ -385,10 +385,66 @@ class MainControllerTest {
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
-    Asset actualAsset = mc.getAssetByLang(langToFind);
+    List<Asset> actualAssets = mc.getAssetByLang(langToFind);
 
-    assertEquals(expectedAsset.getProgLang(), actualAsset.getProgLang(),
-        "Should return the asset with the specified programming language");
+    assertEquals(expectedAsset.getProgLang(), actualAssets.get(0).getProgLang(),
+        "Should return an asset with the specified programming language.");
+
+  }
+
+  /**
+   * Test to validate that upon searching for a specific language, all assets with the same language
+   * are retrieved as a list.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetListByLang() throws Exception {
+
+    // Add actual assets to database
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    mc.addNewAsset("document", "Beans", "www.youtube.com", 123, "Java");
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German");
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English");
+
+    List<Asset> expectedAssets = new ArrayList<>();
+    when(assetRepository.findAll()).thenReturn(expectedAssets);
+
+    String langToFind = "English";
+
+    // make mock assets and add to list containing expected result
+    Asset expectedAsset1 = new Asset();
+    expectedAsset1.setTitle("fish");
+    expectedAsset1.setProgLang(langToFind);
+    expectedAssets.add(expectedAsset1);
+
+    Asset expectedAsset2 = new Asset();
+    expectedAsset2.setTitle("cat");
+    expectedAsset2.setProgLang(langToFind);
+    expectedAssets.add(expectedAsset2);
+
+    Asset expectedAsset3 = new Asset();
+    expectedAsset3.setTitle("sheep");
+    expectedAsset3.setProgLang(langToFind);
+    expectedAssets.add(expectedAsset3);
+
+    // get assets with language "English" and add to list
+    List<Asset> actualAssets = mc.getAssetByLang(langToFind);
+
+    for (int i = 0; i < expectedAssets.size(); i++) {
+      System.out.println("Asset title: " + expectedAssets.get(i).getTitle() + "\n"
+          + " Expected result language: " + expectedAssets.get(i).getProgLang());
+      System.out.println("Asset title: " + actualAssets.get(i).getTitle() + "\n"
+          + " Expected result language: " + actualAssets.get(i).getProgLang() + "\n");
+
+    }
+
+
+    // check that all assets in database with language "English" are returned
+    for (int i = 0; i < expectedAssets.size(); i++) {
+      assertEquals(expectedAssets.get(i).getProgLang(), actualAssets.get(i).getProgLang(),
+          "Should return a list of assets with the searched language English.");
+    }
 
   }
 
