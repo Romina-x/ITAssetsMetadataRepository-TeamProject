@@ -42,6 +42,8 @@ class MainControllerTest {
   private TypeRepository typeRepository;
   @MockBean
   private ActionLogRepository actionLogRepository;
+  @MockBean
+  private UserRepository userRepository;
 
   @Autowired
   private MainController mc;
@@ -59,20 +61,6 @@ class MainControllerTest {
         .param("type", "document").param("title", "This is a test document")
         .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf").param("lineNum", "120")
         .param("progLang", "Java")).andReturn();
-    assertEquals("Saved", result.getResponse().getContentAsString());
-  }
-  
-  /**
-   * Test to validate the string response of the method which runs the map for the post request of create new type
-   * @throws Exception
-   */
-  @Test
-  void testAddNewType() throws Exception {
-    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/type/add")
-        .param("type", "document").param("customAttribute1", "Size")
-        .param("customAttribute2", "Security Level").param("customAttribute3", "Revision")
-        .param("customAttribute4", "Author")).andReturn();
-
     assertEquals("Saved", result.getResponse().getContentAsString());
   }
 

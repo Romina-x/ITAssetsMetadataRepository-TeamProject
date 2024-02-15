@@ -68,8 +68,7 @@ public class MainController {
   }
 
   /**
-   * This method is a map only for POST requests. It takes the parameters supplied
-   * by the user for the asset and
+   * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
    * inputs it into the database.
    *
    * @param type     the type format that the asset aligns to
@@ -79,16 +78,22 @@ public class MainController {
    * @param progLang what language is the asset written in (English/Java/etc)
    * @return confirmation string
    */
-  @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
-  public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
-    try {
-      assetRepository.save(asset);
-      return ResponseEntity.ok("Asset saved successfully");
-    } catch (Exception e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-    }
+  @PostMapping(path = "/asset/add") // Map ONLY POST Requests
+  public @ResponseBody String addNewAsset(@RequestParam String type, @RequestParam String title,
+      @RequestParam String link, @RequestParam Integer lineNum, @RequestParam String progLang) {
+    // @ResponseBody means the returned String is the response, not a view name
+    // @RequestParam means it is a parameter from the GET or POST request
+
+    Asset n = new Asset();
+    n.setType(type);
+    n.setTitle(title);
+    n.setLink(link);
+    n.setLineNum(lineNum);
+    n.setProgLang(progLang);
+    assetRepository.save(n);    
+    return "Saved";
   }
+
 
   /**
    * This method intitalises the model to allow for population of the attribute
