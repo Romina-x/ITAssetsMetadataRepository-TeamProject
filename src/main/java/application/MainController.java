@@ -55,16 +55,6 @@ public class MainController {
     this.actionLogRepository = actionLogRepository;
   }
 
-  @Autowired
-  public MainController(AssetRepository assetRepository) {
-    this.assetRepository = assetRepository;
-  }
-
-  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
-    this.assetRepository = assetRepository;
-    this.actionLogRepository = actionLogRepository;
-  }
-
   /**
    * This method allows for the application of CORS cross origin compatibility
    * with the API
