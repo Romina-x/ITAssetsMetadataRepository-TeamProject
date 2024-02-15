@@ -1,7 +1,7 @@
 package application;
 
 /**
- * This enum holds possible roles that can be held by a user.
+ * This enumeration holds possible roles that can be held by a user.
  * @author - Kyle Piazza-Nickson
  */
 public enum Permissions {

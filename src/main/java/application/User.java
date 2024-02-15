@@ -24,6 +24,8 @@ public class User {
   private String password;
   
   //private Permissions role;
+  //Commented out and replaced with string for the sake of making the html createUser work in time
+  //will be re-implemented early next sprint
   
   private String role;
   
