@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,6 +25,92 @@ const types = [
 ];
 
 export default function FormPropsTextFields() {
+  //state variables for save and cancel buttons
+  const [save, setSave] = useState("Save");
+  const [cancel, setCancel] = useState("Cancel");
+
+  //state variables for form fields
+  const [type, setType] = useState("Code");
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
+  const [lineNum, setlineNum] = useState("");
+  const [progLang, setprogLang] = useState("");
+  const [author, setAuthor] = useState("");
+
+  //useEffect hook to handle changes after save button is clicked
+  useEffect(() => {
+    if (save === "Saved") {
+      const timer = setTimeout(() => {
+        setSave("Save");
+      }, 2000); // Changes back to "Saved" after 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [save]);
+
+  //useEffect hook to handle changes after cancel button is clicked
+  useEffect(() => {
+    if (cancel === "Cancelled") {
+      const timer = setTimeout(() => {
+        document.getElementById("cancel-button").style.backgroundColor = "white";
+        document.getElementById("cancel-button").style.color = "blue";
+        setCancel("Cancel");
+      }, 1500); // Changes back to "Cancel" after 1.5 seconds
+      return () => clearTimeout(timer);
+    }
+
+  }, [cancel]);
+
+  //function to handle changes when save button is clicked
+  const handleSaveButtonClick = async (event) => {
+    setSave("Saved");
+    // logic for what happens when the asset is saved goes here
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/asset/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          type,
+          title,
+          link,
+          lineNum,
+          progLang
+        })
+      });
+      
+      
+      if (!response.ok) {
+        throw new Error('Failed to add asset');
+      }
+      resetValue()
+      console.log('Asset added successfully');
+    } catch (error) {
+      console.error('Error adding asset:', error);
+    }
+  };
+
+  const resetValue = () => {
+    setType("Code");
+    setTitle("");
+    setLink("");
+    setlineNum("");
+    setprogLang("");
+    setAuthor("");
+  }
+
+  //function to handle changes when cancel button is clicked
+  const handleCancelButtonClick = () => {
+    const cancelButtonStyle = document.getElementById("cancel-button").style;
+    cancelButtonStyle.backgroundColor = "blue";
+    cancelButtonStyle.color = "red";
+    setCancel("Cancelled");
+    
+    resetValue()
+  };
+
   return (
     <Box
       component="form"
@@ -55,7 +142,8 @@ export default function FormPropsTextFields() {
             id="outlined-select-currency"
             select
             label="Type"
-            defaultValue="Code"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           >
             {types.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -70,6 +158,8 @@ export default function FormPropsTextFields() {
             label="Title"
             placeholder="Module A"
             multiline
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -78,6 +168,8 @@ export default function FormPropsTextFields() {
             label="Link"
             placeholder="Paste URL here"
             multiline
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -86,6 +178,8 @@ export default function FormPropsTextFields() {
             label="Line Number"
             placeholder=""
             multiline
+            value={lineNum}
+            onChange={(e) => setlineNum(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -94,6 +188,8 @@ export default function FormPropsTextFields() {
             label="Programming language"
             placeholder="Java,Python,etc"
             multiline
+            value={progLang}
+            onChange={(e) => setprogLang(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -102,6 +198,8 @@ export default function FormPropsTextFields() {
             label="Author"
             placeholder="William"
             multiline
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </Grid>
       </Grid>
@@ -111,14 +209,17 @@ export default function FormPropsTextFields() {
           variant="contained"
           endIcon={<SaveIcon />}
           style={{ background: "black" }}
+          onClick={handleSaveButtonClick}
         >
-          Saved
+          {save}
         </Button>
         <Button
+          id="cancel-button"
           variant="outlined"
           startIcon={<CancelIcon />}
+          onClick={handleCancelButtonClick}
         >
-          Cancel
+          {cancel}
         </Button>
       </Stack>
     </Box>

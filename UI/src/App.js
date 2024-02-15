@@ -1,8 +1,22 @@
-import Dashboard from './components/Dashboard';
+import Dashboard from "./components/Dashboard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <Dashboard />
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<Dashboard page="asset/add" />} />
+        <Route exact path="/asset/add" element={<Dashboard page="asset/add" />} />
+        <Route exact path="/asset/view" element={<Dashboard page="asset/view" />} />
+        <Route exact path="/type/add" element={<Dashboard page="type/add" />} />
+        <Route exact path="/type/view" element={<Dashboard page="type/view" />} />
+        <Route exact path="/log/view" element={<Dashboard page="log/view" />} />
+        <Route exact path="/asset/delete" element={<Dashboard page="asset/delete" />} />
+        <Route exact path="/type/delete" element={<Dashboard page="type/delete" />} />
+
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
