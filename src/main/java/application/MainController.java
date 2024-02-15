@@ -339,22 +339,23 @@ public class MainController {
   }
 
   /**
-   * This method is a query function to request the details of an asset by its type in the url
+   * This method is a query function to request the details of assets by their type in the url
    * localhost:8080/asset/findType/{type}.
    *
    * @param type of asset user wants
-   * @return asset that has same type as the searched type
+   * @return asset list that has assets of the same type as the searched type
    */
   @GetMapping(path = "/asset/findType/{type}")
-  public @ResponseBody Asset getAssetByType(@PathVariable("type") String type) {
+  public @ResponseBody List<Asset> getAssetByType(@PathVariable("type") String type) {
+    List<Asset> assetsWithType = new ArrayList<>();
+
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
-      System.out.println(asset.getType());
       if (asset.getType().equals(type)) {
-        return asset;
+        assetsWithType.add(asset);
       }
     }
-    return null;
+    return assetsWithType;
   }
 
   /**
@@ -368,7 +369,6 @@ public class MainController {
   public @ResponseBody Asset getAssetByLink(@PathVariable("link") String link) {
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
-      System.out.println(asset.getLink());
       if (asset.getLink().equals(link)) {
         return asset;
       }
@@ -387,7 +387,6 @@ public class MainController {
   public @ResponseBody Asset getAssetByLang(@PathVariable("progLang") String progLang) {
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
-      System.out.println(asset.getProgLang());
       if (asset.getProgLang().equals(progLang)) {
         return asset;
       }
