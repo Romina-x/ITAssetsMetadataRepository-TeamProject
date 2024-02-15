@@ -60,8 +60,4 @@ class MainControllerTest {
 
     assertEquals("Saved", result.getResponse().getContentAsString());
   }
-  
-
-
-  
 }
