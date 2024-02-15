@@ -568,7 +568,7 @@ public class MainController {
   }
 
   /**
-   * This method is a query function to request the details of an asset by its link in the url
+   * This method is a query function to request the details of assets by their link in the url
    * localhost:8080/asset/findLink/{link}.
    *
    * @param link of asset that user wants
@@ -588,21 +588,23 @@ public class MainController {
   }
 
   /**
-   * This method is a query function to request the details of an asset by its programming 
+   * This method is a query function to request the details of assets by their programming 
    * language in the url localhost:8080/asset/findProgLang/{progLang}.
    *
    * @param progLang of asset that user wants
    * @return asset that has same programming language as the searched link
    */
   @GetMapping(path = "/asset/findProgLang/{progLang}")
-  public @ResponseBody Asset getAssetByLang(@PathVariable("progLang") String progLang) {
+  public @ResponseBody List<Asset> getAssetByLang(@PathVariable("progLang") String progLang) {
+    List<Asset> assetsWithLang = new ArrayList<>();
+
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
       if (asset.getProgLang().equals(progLang)) {
-        return asset;
+        assetsWithLang.add(asset);
       }
     }
-    return null;
+    return assetsWithLang;
   }
   
 }

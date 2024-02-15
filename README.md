@@ -17,7 +17,6 @@ You may edit it as you like, but please do not remove the default topics or the 
 # Running the SQL db:
 Pre-requisties:
     - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))
-    - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))
 
 1. Set up Local Database: <br>
  1.1. Open MySQL Command Line Client<br>
