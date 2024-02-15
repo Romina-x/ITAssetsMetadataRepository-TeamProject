@@ -2,6 +2,7 @@ package application;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,26 @@ public class MainController {
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
+
+  @Autowired
+  public MainController(AssetRepository assetRepository) {
+    this.assetRepository = assetRepository;
+  }
+
+  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
+    this.assetRepository = assetRepository;
+    this.actionLogRepository = actionLogRepository;
+  }
+
+  @Autowired
+  public MainController(AssetRepository assetRepository) {
+    this.assetRepository = assetRepository;
+  }
+
+  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
+    this.assetRepository = assetRepository;
+    this.actionLogRepository = actionLogRepository;
+  }
 
   /**
    * This method allows for the application of CORS cross origin compatibility
@@ -89,8 +110,8 @@ public class MainController {
    */
   @GetMapping("/asset/createAsset") // GET request : When you go to localhost:8080/createAsset
   public String assetForm(Model model) {
-    model.addAttribute("createAsset", new Asset()); // Gives the form an asset object to add
-                                                    // attributes to
+    // Gives the form an asset object to add attributes to
+    model.addAttribute("createAsset", new Asset());
     return "createAsset"; // renders createAsset.html
   }
 
@@ -107,6 +128,7 @@ public class MainController {
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     Asset savedAsset = assetRepository.save(asset); // Add the asset object to the database
     addActionLog(savedAsset.getId(), "Added asset"); // Adds an action record to the log
+    model.addAttribute("savedAsset", savedAsset); // Add savedAsset to the model
     return "result"; // renders result.html
   }
 
@@ -127,7 +149,7 @@ public class MainController {
    * This method is a query function to request the details of an asset by its Id
    * number in the url
    * localhost:8080/asset/find/{id}.
-   * 
+   *
    * @param id of the asset to be queried
    * @return JSON of the asset returned by the id number search
    */
@@ -149,6 +171,7 @@ public class MainController {
     // to
     return "deleteAsset"; // renders deleteAsset.html
   }
+
 
   /**
    * This method allows for the deletion of individual assets by referencing their
@@ -259,8 +282,8 @@ public class MainController {
    */
   @GetMapping("/type/createType") // GET request : When you go to localhost:8080/type/createType
   public String typeForm(Model model) {
-    model.addAttribute("createType", new Type()); // Gives the form a Type object to add attributes
-                                                  // to
+    // Gives the form a Type object to add attributes to
+    model.addAttribute("createType", new Type());
     return "createType"; // renders createType.html
   }
 
@@ -284,7 +307,7 @@ public class MainController {
    * This method is a query function to request the details of a type by its Id
    * number in the url
    * localhost:8080/type/find/{id}.
-   * 
+   *
    * @param id of the type to be queried
    * @return JSON of the type returned by the id number search
    */
@@ -302,8 +325,8 @@ public class MainController {
    */
   @GetMapping("/type/deleteType") // GET request : When you go to localhost:8080/type/deleteType
   public String deleteType(Model model) {
-    model.addAttribute("deleteType", new Type()); // Gives the form a Type object to add attributes
-                                                  // to
+    // Gives the form a Type object to add attributes to
+    model.addAttribute("deleteType", new Type());
     return "deleteType"; // renders deleteType.html
   }
 
@@ -361,7 +384,7 @@ public class MainController {
    * This method is a query function to request the details of an asset by its Id
    * number in the url
    * localhost:8080/asset/find/{id}.
-   * 
+   *
    * @param id of the log entry to be queried
    * @return JSON of the action log to be returned by the id number search
    */
@@ -504,4 +527,82 @@ public class MainController {
     return "resultCreateUser"; // renders resultCreateUser.html
   }
 
+    /**
+   * This method is a query function to request the details of assets by their title in the url
+   * localhost:8080/asset/findTitle/{title}.
+   *
+   * @param title of asset user wants
+   * @return asset list that has assets of the same title as the searched title
+   */
+  @GetMapping(path = "/asset/findTitle/{title}")
+  public @ResponseBody List<Asset> getAssetByTitle(@PathVariable("title") String title) {
+    List<Asset> assetsWithTitle = new ArrayList<>();
+    // find collection of assets which can be iterated over
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) { // look through collection of assets
+      if (asset.getTitle().equals(title)) {
+        assetsWithTitle.add(asset);
+      }
+    }
+    return assetsWithTitle;
+  }
+
+  /**
+   * This method is a query function to request the details of assets by their type in the url
+   * localhost:8080/asset/findType/{type}.
+   *
+   * @param type of asset user wants
+   * @return asset list that has assets of the same type as the searched type
+   */
+  @GetMapping(path = "/asset/findType/{type}")
+  public @ResponseBody List<Asset> getAssetByType(@PathVariable("type") String type) {
+    List<Asset> assetsWithType = new ArrayList<>();
+
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      if (asset.getType().equals(type)) {
+        assetsWithType.add(asset);
+      }
+    }
+    return assetsWithType;
+  }
+
+  /**
+   * This method is a query function to request the details of an asset by its link in the url
+   * localhost:8080/asset/findLink/{link}.
+   *
+   * @param link of asset that user wants
+   * @return asset that has same link as the searched link
+   */
+  @GetMapping(path = "/asset/findLink/{link}")
+  public @ResponseBody List<Asset> getAssetByLink(@PathVariable("link") String link) {
+    List<Asset> assetsWithLink = new ArrayList<>();
+
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      if (asset.getLink().equals(link)) {
+        assetsWithLink.add(asset);
+      }
+    }
+    return assetsWithLink;
+  }
+
+  /**
+   * This method is a query function to request the details of an asset by its programming 
+   * language in the url localhost:8080/asset/findProgLang/{progLang}.
+   *
+   * @param progLang of asset that user wants
+   * @return asset that has same programming language as the searched link
+   */
+  @GetMapping(path = "/asset/findProgLang/{progLang}")
+  public @ResponseBody Asset getAssetByLang(@PathVariable("progLang") String progLang) {
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      if (asset.getProgLang().equals(progLang)) {
+        return asset;
+      }
+    }
+    return null;
+  }
+  
 }

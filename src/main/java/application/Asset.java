@@ -28,6 +28,17 @@ public class Asset {
 
   private String progLang;
 
+  public Asset() {}
+
+  public Asset(Integer id, String type, String title, String link, Integer lineNum,
+      String progLang) {
+    this.id = id;
+    this.type = type;
+    this.title = title;
+    this.link = link;
+    this.lineNum = lineNum;
+    this.progLang = progLang;
+  }
 
   public Integer getId() {
     return id;
