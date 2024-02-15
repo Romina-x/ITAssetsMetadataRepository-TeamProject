@@ -176,7 +176,7 @@ class MainControllerTest {
         "Should return the asset with the specified type");
 
   }
-  
+
   /**
    * Test to validate that upon searching for a specific link, an asset with the same link is
    * retrieved.
@@ -200,6 +200,28 @@ class MainControllerTest {
 
   }
 
+  /**
+   * Test to validate that upon searching for a specific programming language, an asset with the
+   * same programming language is retrieved.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetByLang() throws Exception {
+
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    String langToFind = "English";
+    Asset expectedAsset = new Asset();
+    expectedAsset.setTitle(langToFind);
+
+    when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
+
+    Asset actualAsset = mc.getAssetByLink(langToFind);
+
+    assertEquals(expectedAsset.getProgLang(), actualAsset.getProgLang(),
+        "Should return the asset with the specified programming language");
+
+  }
 
 
 

@@ -374,6 +374,24 @@ public class MainController {
     return null;
   }
 
+  /**
+   * This method is a query function to request the details of an asset by its programming 
+   * language in the url localhost:8080/asset/findProgLang/{progLang}.
+   *
+   * @param programming language of asset that user wants
+   * @return asset that has same programming language as the searched link
+   */
+  @GetMapping(path = "/asset/findProgLang/{progLang}")
+  public @ResponseBody Asset getAssetByLang(@PathVariable("progLang") String progLang) {
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      System.out.println(asset.getProgLang());
+      if (asset.getProgLang().equals(progLang)) {
+        return asset;
+      }
+    }
+    return null;
+  }
 
 }
 
