@@ -309,7 +309,7 @@ public class MainController {
     return "resultDeleteType";
   }
   
-////End of Type functions. Start of Log functions.
+/////End of Type functions. Start of Log functions.
   
   
   /**
