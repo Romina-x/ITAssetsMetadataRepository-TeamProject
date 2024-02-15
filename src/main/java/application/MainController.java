@@ -33,10 +33,10 @@ public class MainController {
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
-  
-  @Autowired 
+
+  @Autowired
   public MainController(AssetRepository assetRepository) {
-    this.assetRepository = assetRepository; 
+    this.assetRepository = assetRepository;
   }
 
   public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
@@ -80,7 +80,7 @@ public class MainController {
    */
   @GetMapping("/asset/createAsset") // GET request : When you go to localhost:8080/createAsset
   public String assetForm(Model model) {
-    //Gives the form an asset object to add attributes to
+    // Gives the form an asset object to add attributes to
     model.addAttribute("createAsset", new Asset());
     return "createAsset"; // renders createAsset.html
   }
@@ -134,8 +134,8 @@ public class MainController {
    */
   @GetMapping("/asset/deleteAsset") // GET request : When you go to localhost:8080/type/deleteAsset
   public String deleteAsset(Model model) {
-    //Gives the form a Asset object to add attributes to
-    model.addAttribute("deleteAsset", new Asset()); 
+    // Gives the form a Asset object to add attributes to
+    model.addAttribute("deleteAsset", new Asset());
     return "deleteAsset"; // renders deleteAsset.html
   }
 
@@ -209,7 +209,7 @@ public class MainController {
    */
   @GetMapping("/type/createType") // GET request : When you go to localhost:8080/type/createType
   public String typeForm(Model model) {
-    //Gives the form a Type object to add attributes to
+    // Gives the form a Type object to add attributes to
     model.addAttribute("createType", new Type());
     return "createType"; // renders createType.html
   }
@@ -251,7 +251,7 @@ public class MainController {
   @GetMapping("/type/deleteType") // GET request : When you go to localhost:8080/type/deleteType
   public String deleteType(Model model) {
     // Gives the form a Type object to add attributes to
-    model.addAttribute("deleteType", new Type()); 
+    model.addAttribute("deleteType", new Type());
     return "deleteType"; // renders deleteType.html
   }
 
@@ -335,20 +335,39 @@ public class MainController {
     }
     return null;
   }
-  
+
   /**
    * This method is a query function to request the details of an asset by its type in the url
    * localhost:8080/asset/findTitle/{title}.
    *
-   * @param type of asset user wants 
+   * @param type of asset user wants
    * @return asset that has same type as the searched type
    */
-  @GetMapping(path = "/asset/findType/{type}") 
+  @GetMapping(path = "/asset/findType/{type}")
   public @ResponseBody Asset getAssetByType(@PathVariable("type") String type) {
     Iterable<Asset> allAssets = assetRepository.findAll();
-    for (Asset asset : allAssets) { // look through collection of assets
+    for (Asset asset : allAssets) {
       System.out.println(asset.getType());
       if (asset.getTitle().equals(type)) {
+        return asset;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * This method is a query function to request the details of an asset by its link in the url
+   * localhost:8080/asset/findLink/{link}.
+   *
+   * @param link of asset that user wants
+   * @return asset that has same link as the searched link
+   */
+  @GetMapping(path = "/asset/findLink/{link}")
+  public @ResponseBody Asset getAssetByLink(@PathVariable("link") String link) {
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      System.out.println(asset.getLink());
+      if (asset.getTitle().equals(link)) {
         return asset;
       }
     }

@@ -170,12 +170,36 @@ class MainControllerTest {
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
-    Asset actualAsset = mc.getAssetByTitle(typeToFind);
+    Asset actualAsset = mc.getAssetByType(typeToFind);
 
     assertEquals(expectedAsset.getType(), actualAsset.getType(),
         "Should return the asset with the specified type");
 
   }
+  
+  /**
+   * Test to validate that upon searching for a specific link, an asset with the same link is
+   * retrieved.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetByLink() throws Exception {
+
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    String linkToFind = "www.youtube.com";
+    Asset expectedAsset = new Asset();
+    expectedAsset.setTitle(linkToFind);
+
+    when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
+
+    Asset actualAsset = mc.getAssetByLink(linkToFind);
+
+    assertEquals(expectedAsset.getLink(), actualAsset.getLink(),
+        "Should return the asset with the specified link");
+
+  }
+
 
 
 
