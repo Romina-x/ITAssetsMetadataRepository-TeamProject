@@ -8,19 +8,33 @@ You may edit it as you like, but please do not remove the default topics or the 
 
 # Running the SQL db:
 Pre-requisties:
-    - MySQL v5.6+
+    - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))
 
 1. Set up Local Database: <br>
  1.1. Open MySQL Command Line Client<br>
  1.1.1. mysql> create database md_repo; -- Creates the new database<br>
  1.1.2. mysql> create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user<br>
  1.1.3. mysql> grant all on md_repo.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database<br>
-
-2. In CMD at location of the project run the command "mvn spring-boot:run" to begin the database
-
-3. To test/interact with the database use curl commands in a new CMD terminal.<br>
- 3.1. Testing entry "curl http://localhost:8080/asset/add -d type=Specification -d title=Initial_Specification -d link=https://moodle.royalholloway.ac.uk -d lineNum=100 -d progLang=English"<br>
- 3.2. Viewing entry "curl http://localhost:8080/asset/find/all"
+<br>
+2. In CMD at location of the project run the command "mvn spring-boot:run" to begin the database<br>
+<br>
+3. To test/interact with the database use the URL paths as below:<br>
+ 3.1. Assets<br>
+  3.1.1 Adding an Asset: [http://localhost:8080/asset/createAsset](http://localhost:8080/asset/createAsset)<br>
+  3.1.2 View all Assets: [http://localhost:8080/asset/find/all](http://localhost:8080/asset/find/all)<br>
+  3.1.3 View ID# Asset: http://localhost:8080/asset/find/#<br>
+  3.1.4 Delete an Asset: http://localhost:8080/asset/delete/# (NOTE: this link will delete the asset without confirmation)<br>
+ <br>
+ 3.2. Types<br>
+  3.2.1 Adding a Type: [http://localhost:8080/type/createType](http://localhost:8080/type/createType)<br>
+  3.2.2 View all Types: [http://localhost:8080/type/find/all](http://localhost:8080/type/find/all)<br>
+  3.2.3 View ID# Type: http://localhost:8080/type/find/#<br>
+  3.2.4 Delete a Type: http://localhost:8080/type/delete/# (NOTE: this link will delete the type without confirmation)<br>
+ <br>
+ 3.3. Action Log<br>
+  3.3.1 View all Action Logs: [http://localhost:8080/log/find/all](http://localhost:8080/log/find/all)<br>
+  3.3.2 View ID# Action Log: http://localhost:8080/log/find/#<br>
  <br>
  
- NOTE: Do not use powershell to run the commands.
+ NOTE: Do not use powershell to run the commands.<br>
+ It is also possible to query the stored information in the database with the MySQL command line client with the standard commands.

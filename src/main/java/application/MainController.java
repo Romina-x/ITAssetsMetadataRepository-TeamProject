@@ -1,10 +1,12 @@
 package application;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +38,22 @@ public class MainController {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired // This gets the bean called actionLogRepository
+  private ActionLogRepository actionLogRepository;
 
+  
+  /**
+   * This method allows for the application of CORS cross origin compatibility with the API
+   *
+   * @return 
+   */
+  @RequestMapping(value = "/products")
+  @CrossOrigin(origins = "http://localhost:8080")
+  public ResponseEntity<Object> getProduct() {
+     return null;
+  }
+  
+  
   /**
    * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
    * inputs it into the database.
@@ -140,6 +157,7 @@ public class MainController {
   @RequestMapping(value = "/asset/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteAsset(@PathVariable("id") Integer id) {
     assetRepository.deleteById(id);
+    addActionLog(id, "Deleted asset"); // Adds an action record to the log
     return "resultDeleteAsset"; // renders resultDeleteAsset.html
   }
 
@@ -172,7 +190,42 @@ public class MainController {
     typeRepository.save(t);
     return "Saved";
   }
+  
 
+  /**
+   * This method renders the edit asset page depending on a given asset id.
+   * 
+   * @param id
+   * @param model
+   * @return edit asset page or error page
+   */
+  @GetMapping("/asset/editAsset/{id}")
+  public String editAssetForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Asset> assetOptional = assetRepository.findById(id);
+    if (assetOptional.isPresent()) { //check if asset to edit is present
+        Asset asset = assetOptional.get();
+        model.addAttribute("asset", asset);
+        model.addAttribute("id", id);
+        return "editAsset";
+    } else {
+        // Handle asset not found
+        return "assetNotFound"; // Render error.html 
+    }
+  }
+  
+  /**
+   * This method handles the submitted edit form and updates the asset within the database.
+   * 
+   * @param id
+   * @param updatedAsset
+   * @return asset added page
+   */
+  @PostMapping("/asset/editAsset/{id}")
+  public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
+    updatedAsset.setId(id);
+    assetRepository.save(updatedAsset);
+    return "result";
+  }
 
   /**
    * This method fetches all the types stored in the database and returns a JSON file of the
@@ -210,7 +263,8 @@ public class MainController {
    */
   @PostMapping("/type/createType") // POST request : When you submit the form
   public String typeSubmit(@ModelAttribute Type type, Model model) {
-    typeRepository.save(type); // Add the type object to the database
+    Type savedType = typeRepository.save(type); // Add the type object to the database
+    addActionLog(savedType.getId(), "Created type"); // Adds an action record to the log
     return "resultCreateType"; // renders resultCreateType.html
   }
 
@@ -250,6 +304,7 @@ public class MainController {
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteType(@PathVariable("id") Integer id) {
     typeRepository.deleteById(id);
+    addActionLog(id, "Deleted type"); // Adds an action record to the log
     return "resultDeleteType";
   }
   
@@ -270,7 +325,24 @@ public class MainController {
     newUser.setPassword(password);
     newUser.setRole(userRole);
     userRepository.save(newUser);
+////End of Type functions. Start of Log functions.
+  
+  
+  /**
+   * This method is a map only for POST requests, It thakes the parameters supplied by the user for the action log and inputs it in to the database.
+   * 
+   * @param itemId reference id for the item being recorded in the log
+   * @param action what task was being undertaken on that item id (such as: deleted)
+   * @return confirmation string
+   */
+  public @ResponseBody String addActionLog(@RequestParam Integer itemId,
+      @RequestParam String action) {
     
+    ActionLog al = new ActionLog();
+    al.setItemId(itemId);
+    al.setAction(action);
+    al.setTimestamp(LocalDateTime.now());
+    actionLogRepository.save(al);
     return "Saved";
     
   }
@@ -278,11 +350,32 @@ public class MainController {
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     return userRepository.findAll();
+  /**
+   * This method fetches all the action logs stored in the database and returns a JSON file of the
+   * content to the web page.
+   *
+   * @return all the action logs and their details
+   */
+  @GetMapping(path = "/log/find/all")
+  public @ResponseBody Iterable<ActionLog> getAllLog() {
+    // This returns a JSON or XML with the assets
+    return actionLogRepository.findAll();
   }
   
   @GetMapping(path = "/user/find/{id}")
   public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
     return userRepository.findById(id);
+  /**
+   * This method is a query function to request the details of an asset by its Id number in the url
+   * localhost:8080/asset/find/{id}.
+   * 
+   * @param id of the log entry to be queried
+   * @return JSON of the action log to be returned by the id number search
+   */
+  @GetMapping(path = "/log/find/{id}")
+  public @ResponseBody Optional<ActionLog> getLogById(@PathVariable("id") Integer id) {
+    // This returns a JSON or XML with the assets
+    return actionLogRepository.findById(id);
   }
   
   @GetMapping(path = "/user/find/{name}")
