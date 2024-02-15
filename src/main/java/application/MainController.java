@@ -335,6 +335,25 @@ public class MainController {
     }
     return null;
   }
+  
+  /**
+   * This method is a query function to request the details of an asset by its type in the url
+   * localhost:8080/asset/findTitle/{title}.
+   *
+   * @param type of asset user wants 
+   * @return asset that has same type as the searched type
+   */
+  @GetMapping(path = "/asset/findType/{type}") 
+  public @ResponseBody Asset getAssetByType(@PathVariable("type") String type) {
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) { // look through collection of assets
+      System.out.println(asset.getType());
+      if (asset.getTitle().equals(type)) {
+        return asset;
+      }
+    }
+    return null;
+  }
 
 
 }

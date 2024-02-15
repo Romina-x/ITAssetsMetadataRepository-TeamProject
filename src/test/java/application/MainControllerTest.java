@@ -154,6 +154,29 @@ class MainControllerTest {
 
   }
 
+  /**
+   * Test to validate that upon searching for a specific type, an asset with the same type is
+   * retrieved.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetByType() throws Exception {
+
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    String typeToFind = "video";
+    Asset expectedAsset = new Asset();
+    expectedAsset.setTitle(typeToFind);
+
+    when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
+
+    Asset actualAsset = mc.getAssetByTitle(typeToFind);
+
+    assertEquals(expectedAsset.getType(), actualAsset.getType(),
+        "Should return the asset with the specified type");
+
+  }
+
 
 
 }
