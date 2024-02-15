@@ -25,54 +25,90 @@ const types = [
 ];
 
 export default function FormPropsTextFields() {
+  //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
 
+  //state variables for form fields
   const [type, setType] = useState("Code");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [lineNumber, setLineNumber] = useState("");
-  const [programmingLanguage, setProgrammingLanguage] = useState("");
+  const [lineNum, setlineNum] = useState("");
+  const [progLang, setprogLang] = useState("");
   const [author, setAuthor] = useState("");
 
+  //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
     if (save === "Saved") {
       const timer = setTimeout(() => {
         setSave("Save");
-      }, 3000); // Changes back to "Saved" after 3 seconds
+      }, 2000); // Changes back to "Saved" after 2 seconds
       return () => clearTimeout(timer);
     }
   }, [save]);
 
+  //useEffect hook to handle changes after cancel button is clicked
   useEffect(() => {
     if (cancel === "Cancelled") {
       const timer = setTimeout(() => {
         document.getElementById("cancel-button").style.backgroundColor = "white";
         document.getElementById("cancel-button").style.color = "blue";
         setCancel("Cancel");
-      }, 1500); // Changes back to "Cancel" after 3 seconds
+      }, 1500); // Changes back to "Cancel" after 1.5 seconds
       return () => clearTimeout(timer);
     }
 
   }, [cancel]);
 
-  const handleSaveButtonClick = () => {
+  //function to handle changes when save button is clicked
+  const handleSaveButtonClick = async (event) => {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/asset/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          type,
+          title,
+          link,
+          lineNum,
+          progLang
+        })
+      });
+      
+      
+      if (!response.ok) {
+        throw new Error('Failed to add asset');
+      }
+      resetValue()
+      console.log('Asset added successfully');
+    } catch (error) {
+      console.error('Error adding asset:', error);
+    }
   };
 
+  const resetValue = () => {
+    setType("Code");
+    setTitle("");
+    setLink("");
+    setlineNum("");
+    setprogLang("");
+    setAuthor("");
+  }
+
+  //function to handle changes when cancel button is clicked
   const handleCancelButtonClick = () => {
     const cancelButtonStyle = document.getElementById("cancel-button").style;
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
     
-    setType("Code");
-    setTitle("");
-    setLink("");
-    setLineNumber("");
-    setProgrammingLanguage("");
-    setAuthor("");
+    resetValue()
   };
 
   return (
@@ -142,8 +178,8 @@ export default function FormPropsTextFields() {
             label="Line Number"
             placeholder=""
             multiline
-            value={lineNumber}
-            onChange={(e) => setLineNumber(e.target.value)}
+            value={lineNum}
+            onChange={(e) => setlineNum(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
@@ -152,8 +188,8 @@ export default function FormPropsTextFields() {
             label="Programming language"
             placeholder="Java,Python,etc"
             multiline
-            value={programmingLanguage}
-            onChange={(e) => setProgrammingLanguage(e.target.value)}
+            value={progLang}
+            onChange={(e) => setprogLang(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
