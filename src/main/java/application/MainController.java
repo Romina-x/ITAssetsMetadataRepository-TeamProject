@@ -350,6 +350,41 @@ public class MainController {
     return actionLogRepository.findById(id);
   }
   
-
+  /**
+   * This method renders the edit type page depending on a given type id.
+   * 
+   * @param id
+   * @param model
+   * @return edit type page or error page
+   */
+  @GetMapping("/type/editType/{id}")
+  public String editTypeForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Type> typeOptional = typeRepository.findById(id);
+    if (typeOptional.isPresent()) { //check if asset to edit is present
+        Type type = typeOptional.get();
+        model.addAttribute("type", type);
+        model.addAttribute("id", id);
+        return "editType";
+    } else {
+        // Handle type not found
+        return "typeNotFound"; // Render error.html 
+    }
+  }
+  
+  /**
+   * This method handles the submitted edit form and updates the type within the database.
+   * 
+   * @param id
+   * @param updatedType
+   * @return type added page
+   */
+  @PostMapping("/type/editType/{id}")
+  public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
+    updatedType.setId(id);
+    typeRepository.save(updatedType);
+    return "resultCreateType";
+  }
+  
+  
 }
 

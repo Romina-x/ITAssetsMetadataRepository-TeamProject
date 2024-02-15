@@ -24,12 +24,14 @@ Pre-requisties:
   3.1.2 View all Assets: [http://localhost:8080/asset/find/all](http://localhost:8080/asset/find/all)<br>
   3.1.3 View ID# Asset: http://localhost:8080/asset/find/#<br>
   3.1.4 Delete an Asset: http://localhost:8080/asset/delete/# (NOTE: this link will delete the asset without confirmation)<br>
+  3.1.5 Edit ID# Asset: http://localhost:8080/asset/editAsset/#<br>
  <br>
  3.2. Types<br>
   3.2.1 Adding a Type: [http://localhost:8080/type/createType](http://localhost:8080/type/createType)<br>
   3.2.2 View all Types: [http://localhost:8080/type/find/all](http://localhost:8080/type/find/all)<br>
   3.2.3 View ID# Type: http://localhost:8080/type/find/#<br>
   3.2.4 Delete a Type: http://localhost:8080/type/delete/# (NOTE: this link will delete the type without confirmation)<br>
+  3.1.5 Edit ID# Type: http://localhost:8080/type/editType/#<br>
  <br>
  3.3. Action Log<br>
   3.3.1 View all Action Logs: [http://localhost:8080/log/find/all](http://localhost:8080/log/find/all)<br>
