@@ -284,6 +284,24 @@ public class MainController {
   public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
     return userRepository.findById(id);
   }
+  
+  @GetMapping(path = "/user/find/{name}")
+  public @ResponseBody Optional<User> getUserByName(@PathVariable("name") String name) {
+	return userRepository.findOneByName(name);
+  }
+  
+  @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createAsset
+  public String userForm(Model model) {
+    model.addAttribute("createUser", new User()); // Gives the form an asset object to add
+                                                    // attributes to
+    return "createUser"; // renders createAsset.html
+  }
+
+  @PostMapping("/user/createUser") // POST request : When you submit the form
+  public String userSubmit(@ModelAttribute User user, Model model) {
+    userRepository.save(user); // Add the asset object to the database
+    return "resultCreateUser"; // renders result.html
+  }
 
 }
 
