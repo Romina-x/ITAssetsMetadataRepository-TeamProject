@@ -1,6 +1,8 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -317,23 +319,23 @@ public class MainController {
   }
 
   /**
-   * This method is a query function to request the details of an asset by its title in the url
+   * This method is a query function to request the details of assets by their title in the url
    * localhost:8080/asset/findTitle/{title}.
    *
    * @param title of asset user wants
-   * @return asset that has the same title as the searched title
+   * @return asset list that has assets of the same title as the searched title
    */
   @GetMapping(path = "/asset/findTitle/{title}")
-  public @ResponseBody Asset getAssetByTitle(@PathVariable("title") String title) {
+  public @ResponseBody List<Asset> getAssetByTitle(@PathVariable("title") String title) {
+    List<Asset> assetsWithTitle = new ArrayList<>();
     // find collection of assets which can be iterated over
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) { // look through collection of assets
-      System.out.println(asset.getTitle());
       if (asset.getTitle().equals(title)) {
-        return asset;
+        assetsWithTitle.add(asset);
       }
     }
-    return null;
+    return assetsWithTitle;
   }
 
   /**
@@ -378,7 +380,7 @@ public class MainController {
    * This method is a query function to request the details of an asset by its programming 
    * language in the url localhost:8080/asset/findProgLang/{progLang}.
    *
-   * @param programming language of asset that user wants
+   * @param progLang of asset that user wants
    * @return asset that has same programming language as the searched link
    */
   @GetMapping(path = "/asset/findProgLang/{progLang}")

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -147,10 +148,66 @@ class MainControllerTest {
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
-    Asset actualAsset = mc.getAssetByTitle(titleToFind);
+    List<Asset> actualAssets = mc.getAssetByTitle(titleToFind);
 
-    assertEquals(expectedAsset.getTitle(), actualAsset.getTitle(),
-        "Should return the asset with the specified title");
+    assertEquals(expectedAsset.getTitle(), actualAssets.get(0).getTitle(),
+        "Should return an asset with the specified title");
+
+  }
+
+  /**
+   * Test to validate that upon searching for a specific title, all assets with the same title are
+   * retrieved as a list.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetListByTitle() throws Exception {
+
+    // Add actual assets to database
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    mc.addNewAsset("document", "Beans", "randomLink", 123, "Java");
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German");
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English");
+
+    List<Asset> expectedAssets = new ArrayList<>();
+    when(assetRepository.findAll()).thenReturn(expectedAssets);
+
+    String titleToFind = "Beans";
+
+    // make mock assets and add to list containing expected result
+    Asset expectedAsset1 = new Asset();
+    expectedAsset1.setTitle(titleToFind);
+    expectedAsset1.setType("document");
+    expectedAssets.add(expectedAsset1);
+
+    Asset expectedAsset2 = new Asset();
+    expectedAsset2.setTitle(titleToFind);
+    expectedAsset2.setType("video");
+    expectedAssets.add(expectedAsset2);
+
+    Asset expectedAsset3 = new Asset();
+    expectedAsset3.setTitle(titleToFind);
+    expectedAsset3.setType("mp3");
+    expectedAssets.add(expectedAsset3);
+
+    // get assets with title "Beans" and add to list
+    List<Asset> actualAssets = mc.getAssetByTitle(titleToFind);
+
+    for (int i = 0; i < expectedAssets.size(); i++) {
+      System.out.println("Expected asset title: " + expectedAssets.get(i).getTitle() + "\n"
+          + " Type: " + expectedAssets.get(i).getType());
+      System.out.println("Result asset title: " + actualAssets.get(i).getTitle() + "\n" + " Type: "
+          + actualAssets.get(i).getType() + "\n");
+
+    }
+
+
+    // check that all assets in database with title "Beans" are returned
+    for (int i = 0; i < expectedAssets.size(); i++) {
+      assertEquals(expectedAssets.get(i).getTitle(), actualAssets.get(i).getTitle(),
+          "Should return a list of assets with the searched title Beans.");
+    }
 
   }
 
