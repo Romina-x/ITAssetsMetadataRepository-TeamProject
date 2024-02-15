@@ -338,7 +338,7 @@ public class MainController {
 
   /**
    * This method is a query function to request the details of an asset by its type in the url
-   * localhost:8080/asset/findTitle/{title}.
+   * localhost:8080/asset/findType/{type}.
    *
    * @param type of asset user wants
    * @return asset that has same type as the searched type
@@ -348,7 +348,7 @@ public class MainController {
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
       System.out.println(asset.getType());
-      if (asset.getTitle().equals(type)) {
+      if (asset.getType().equals(type)) {
         return asset;
       }
     }
@@ -367,7 +367,7 @@ public class MainController {
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
       System.out.println(asset.getLink());
-      if (asset.getTitle().equals(link)) {
+      if (asset.getLink().equals(link)) {
         return asset;
       }
     }

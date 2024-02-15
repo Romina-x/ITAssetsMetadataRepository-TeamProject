@@ -166,7 +166,7 @@ class MainControllerTest {
     mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
     String typeToFind = "video";
     Asset expectedAsset = new Asset();
-    expectedAsset.setTitle(typeToFind);
+    expectedAsset.setType(typeToFind);
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
@@ -189,7 +189,7 @@ class MainControllerTest {
     mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
     String linkToFind = "www.youtube.com";
     Asset expectedAsset = new Asset();
-    expectedAsset.setTitle(linkToFind);
+    expectedAsset.setLink(linkToFind);
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
@@ -212,11 +212,11 @@ class MainControllerTest {
     mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
     String langToFind = "English";
     Asset expectedAsset = new Asset();
-    expectedAsset.setTitle(langToFind);
+    expectedAsset.setProgLang(langToFind);
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
-    Asset actualAsset = mc.getAssetByLink(langToFind);
+    Asset actualAsset = mc.getAssetByLang(langToFind);
 
     assertEquals(expectedAsset.getProgLang(), actualAsset.getProgLang(),
         "Should return the asset with the specified programming language");
