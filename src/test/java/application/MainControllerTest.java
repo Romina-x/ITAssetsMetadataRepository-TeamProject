@@ -306,10 +306,66 @@ class MainControllerTest {
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
-    Asset actualAsset = mc.getAssetByLink(linkToFind);
+    List<Asset> actualAssets = mc.getAssetByLink(linkToFind);
 
-    assertEquals(expectedAsset.getLink(), actualAsset.getLink(),
-        "Should return the asset with the specified link");
+    assertEquals(expectedAsset.getLink(), actualAssets.get(0).getLink(),
+        "Should return an asset with the specified link");
+
+  }
+
+  /**
+   * Test to validate that upon searching for a specific link, all assets with the same link are
+   * retrieved as a list.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetListByLink() throws Exception {
+
+    // Add actual assets to database
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English");
+    mc.addNewAsset("document", "Beans", "www.youtube.com", 123, "Java");
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German");
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English");
+
+    List<Asset> expectedAssets = new ArrayList<>();
+    when(assetRepository.findAll()).thenReturn(expectedAssets);
+
+    String linkToFind = "www.youtube.com";
+
+    // make mock assets and add to list containing expected result
+    Asset expectedAsset1 = new Asset();
+    expectedAsset1.setTitle("fish");
+    expectedAsset1.setLink(linkToFind);
+    expectedAssets.add(expectedAsset1);
+
+    Asset expectedAsset2 = new Asset();
+    expectedAsset2.setTitle("cat");
+    expectedAsset2.setLink(linkToFind);
+    expectedAssets.add(expectedAsset2);
+
+    Asset expectedAsset3 = new Asset();
+    expectedAsset3.setTitle("sheep");
+    expectedAsset3.setLink(linkToFind);
+    expectedAssets.add(expectedAsset3);
+
+    // get assets with link "www.youtube.com" and add to list
+    List<Asset> actualAssets = mc.getAssetByLink(linkToFind);
+
+    for (int i = 0; i < expectedAssets.size(); i++) {
+      System.out.println("Asset title: " + expectedAssets.get(i).getTitle() + "\n"
+          + " Expected result link: " + expectedAssets.get(i).getLink());
+      System.out.println("Asset title: " + actualAssets.get(i).getTitle() + "\n"
+          + " Expected result link: " + actualAssets.get(i).getLink() + "\n");
+
+    }
+
+
+    // check that all assets in database with link "www.youtube.com" are returned
+    for (int i = 0; i < expectedAssets.size(); i++) {
+      assertEquals(expectedAssets.get(i).getType(), actualAssets.get(i).getType(),
+          "Should return a list of assets with the searched link 'www.youtube.com'.");
+    }
 
   }
 

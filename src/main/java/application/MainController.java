@@ -366,14 +366,16 @@ public class MainController {
    * @return asset that has same link as the searched link
    */
   @GetMapping(path = "/asset/findLink/{link}")
-  public @ResponseBody Asset getAssetByLink(@PathVariable("link") String link) {
+  public @ResponseBody List<Asset> getAssetByLink(@PathVariable("link") String link) {
+    List<Asset> assetsWithLink = new ArrayList<>();
+
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
       if (asset.getLink().equals(link)) {
-        return asset;
+        assetsWithLink.add(asset);
       }
     }
-    return null;
+    return assetsWithLink;
   }
 
   /**
