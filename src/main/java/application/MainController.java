@@ -1,6 +1,7 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -409,9 +410,9 @@ public class MainController {
    * @param name the name of the user being searched for.
    * @return the User matching the provided name.
    */
-  @GetMapping(path = "/user/find/{name}")
-  public @ResponseBody Optional<User> getUserByName(@PathVariable("name") String name) {
-	return userRepository.findOneByName(name);
+  @GetMapping(path = "/user/findName/{name}")
+  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
+	return userRepository.findByName(name);
   }
   
   /**

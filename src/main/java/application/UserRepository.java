@@ -1,5 +1,6 @@
 package application;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-	Optional<User> findOneByName(String name);
+	List<User> findByName(String name);
 
 }
