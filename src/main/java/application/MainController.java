@@ -312,19 +312,23 @@ public class MainController {
   public @ResponseBody String addNewUser(@RequestParam String name,
 	      @RequestParam String password, @RequestParam String role) {
 	  
-	Permissions userRole = null;
+	//Permissions userRole = null;
 	
-    for(Permissions perm: Permissions.values()) {
-    	if(perm.toString().equalsIgnoreCase(role)) {
-    		userRole = perm;
-    	}
-    }
+    //for(Permissions perm: Permissions.values()) {
+    	//if(perm.toString().equalsIgnoreCase(role)) {
+    		//userRole = perm;
+    	//}
+    //}
 
     User newUser = new User();
     newUser.setName(name);
     newUser.setPassword(password);
-    newUser.setRole(userRole);
+    newUser.setRole(role);
     userRepository.save(newUser);
+    
+    return "Saved";
+  }
+  
 ////End of Type functions. Start of Log functions.
   
   
@@ -350,6 +354,7 @@ public class MainController {
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     return userRepository.findAll();
+  }
   /**
    * This method fetches all the action logs stored in the database and returns a JSON file of the
    * content to the web page.
@@ -365,6 +370,7 @@ public class MainController {
   @GetMapping(path = "/user/find/{id}")
   public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
     return userRepository.findById(id);
+  }
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
    * localhost:8080/asset/find/{id}.
@@ -392,9 +398,15 @@ public class MainController {
 
   @PostMapping("/user/createUser") // POST request : When you submit the form
   public String userSubmit(@ModelAttribute User user, Model model) {
-    userRepository.save(user); // Add the asset object to the database
-    return "resultCreateUser"; // renders result.html
+  //for(Permissions perm: Permissions.values()) {
+    	//if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
+  userRepository.save(user);
+    	
+  
+  return "resultCreateUser"; // renders result.html
   }
+  
+  
 
 }
 

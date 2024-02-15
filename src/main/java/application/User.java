@@ -23,7 +23,9 @@ public class User {
   
   private String password;
   
-  private Permissions role;
+  //private Permissions role;
+  
+  private String role;
   
   public User() {
 	  
@@ -41,7 +43,7 @@ public class User {
 	  this.password = password;
   }
   
-  public void setRole(Permissions role) {
+  public void setRole(String role) {
 	  this.role = role;
   }
   
@@ -58,7 +60,7 @@ public class User {
 	  return this.password;
   }
   
-  public Permissions getRole() {
+  public String getRole() {
 	  return this.role;
   }
 }
