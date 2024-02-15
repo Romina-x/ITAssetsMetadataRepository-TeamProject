@@ -2,6 +2,7 @@ package application;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,9 @@ public class MainController {
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
 
+  @Autowired
+  private UserRepository userRepository;
+
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
 
@@ -67,11 +71,11 @@ public class MainController {
   @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
   public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
     try {
-        assetRepository.save(asset);    
-        return ResponseEntity.ok("Asset saved successfully");
+      assetRepository.save(asset);
+      return ResponseEntity.ok("Asset saved successfully");
     } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
     }
   }
 
@@ -194,6 +198,42 @@ public class MainController {
     t.setCustomAttribute4(customAttribute4);
     typeRepository.save(t);
     return "Saved";
+  }
+
+  /**
+   * This method renders the edit asset page depending on a given asset id.
+   * 
+   * @param id
+   * @param model
+   * @return edit asset page or error page
+   */
+  @GetMapping("/asset/editAsset/{id}")
+  public String editAssetForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Asset> assetOptional = assetRepository.findById(id);
+    if (assetOptional.isPresent()) { // check if asset to edit is present
+      Asset asset = assetOptional.get();
+      model.addAttribute("asset", asset);
+      model.addAttribute("id", id);
+      return "editAsset";
+    } else {
+      // Handle asset not found
+      return "assetNotFound"; // Render error.html
+    }
+  }
+
+  /**
+   * This method handles the submitted edit form and updates the asset within the
+   * database.
+   * 
+   * @param id
+   * @param updatedAsset
+   * @return asset added page
+   */
+  @PostMapping("/asset/editAsset/{id}")
+  public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
+    updatedAsset.setId(id);
+    assetRepository.save(updatedAsset);
+    return "result";
   }
 
   /**
@@ -329,6 +369,139 @@ public class MainController {
   public @ResponseBody Optional<ActionLog> getLogById(@PathVariable("id") Integer id) {
     // This returns a JSON or XML with the assets
     return actionLogRepository.findById(id);
+  }
+
+  //// End of log functions, start of user functions.
+
+  /**
+   * This method renders the edit type page depending on a given type id.
+   * 
+   * @param id
+   * @param model
+   * @return edit type page or error page
+   *         This method creates a new user, for use on command line.
+   * @param name     - name of the user to be created
+   * @param password - password of the user to be created
+   * @param role     - permission level of user to be created (e.g.: user/ admin)
+   * @return a string indicating the created user has been successfully saved to
+   *         the database
+   */
+  @GetMapping("/type/editType/{id}")
+  public String editTypeForm(@PathVariable("id") Integer id, Model model) {
+    Optional<Type> typeOptional = typeRepository.findById(id);
+    if (typeOptional.isPresent()) { // check if asset to edit is present
+      Type type = typeOptional.get();
+      model.addAttribute("type", type);
+      model.addAttribute("id", id);
+      return "editType";
+    } else {
+      // Handle type not found
+      return "typeNotFound"; // Render error.html
+    }
+  }
+
+  @PostMapping(path = "/user/add") // Map ONLY POST Requests
+  public @ResponseBody String addNewUser(@RequestParam String name,
+      @RequestParam String password, @RequestParam String role) {
+
+    // Permissions userRole = null;
+
+    // for(Permissions perm: Permissions.values()) {
+    // if(perm.toString().equalsIgnoreCase(role)) {
+    // userRole = perm;
+    // }
+    // }
+
+    User newUser = new User();
+    newUser.setName(name);
+    newUser.setPassword(password);
+    newUser.setRole(role);
+    userRepository.save(newUser);
+
+    return "Saved";
+  }
+
+  /**
+   * This method handles the submitted edit form and updates the type within the
+   * database.
+   * 
+   * @param id
+   * @param updatedType
+   * @return type added page
+   *         This method displays all users currently stored in the database.
+   * @return a list of every user currently stored in the database and all their
+   *         attributes.
+   */
+  @PostMapping("/type/editType/{id}")
+  public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
+    updatedType.setId(id);
+    typeRepository.save(updatedType);
+    return "resultCreateType";
+  }
+
+  @GetMapping(path = "/user/find/all")
+  public @ResponseBody Iterable<User> getAllUsers() {
+    return userRepository.findAll();
+  }
+
+  /**
+   * This method returns a user with an id matching the provided path variable
+   * value.
+   * 
+   * @param id the id value to be searched for in the database
+   * @return the User matching the provided id
+   */
+  @GetMapping(path = "/user/find/{id}")
+  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
+    return userRepository.findById(id);
+  }
+
+  /**
+   * This method returns a user with a name matching the provided path variable
+   * value.
+   * 
+   * @param name the name of the user being searched for.
+   * @return the User matching the provided name.
+   */
+  @GetMapping(path = "/user/findName/{name}")
+  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
+    return userRepository.findByName(name);
+  }
+
+  /**
+   * This method renders createUser.html with input forms for each attribute.
+   * 
+   * @param model an interface for holding attribute values for the user to be
+   *              created.
+   * @return the createUser webpage
+   */
+  @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createUser
+  public String userForm(Model model) {
+    model.addAttribute("createUser", new User()); // Gives the form a user object to add
+                                                  // attributes to
+    return "createUser"; // renders createUser.html
+  }
+
+  /**
+   * This method occurs once the submit button on the createUser html page is
+   * pressed.
+   * Saves the created user to the database and renders the result page.
+   * 
+   * @param user  the User created by assigning input form values in the userForm
+   *              method.
+   * @param model an interface for holding attribute values for the user created.
+   * @return the resultCreateUser page which informs the user that the save was
+   *         successful and prompts them to create another.
+   */
+  @PostMapping("/user/createUser") // POST request : When you submit the form
+  public String userSubmit(@ModelAttribute User user, Model model) {
+    // for(Permissions perm: Permissions.values()) {
+    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
+    // Commented out as role was changed to String to meet sprint 2 demo deadline
+    // Will be re-implemented next sprint
+    userRepository.save(user);
+
+    return "resultCreateUser"; // renders resultCreateUser.html
   }
 
 }
