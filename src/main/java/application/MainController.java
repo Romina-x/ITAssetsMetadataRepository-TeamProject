@@ -1,6 +1,7 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,9 @@ public class MainController {
 
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
+  
+  @Autowired
+  private UserRepository userRepository;
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
@@ -376,6 +380,8 @@ public class MainController {
         // Handle type not found
         return "typeNotFound"; // Render error.html 
     }
+  }
+  
   @PostMapping(path = "/user/add") // Map ONLY POST Requests
   public @ResponseBody String addNewUser(@RequestParam String name,
 	      @RequestParam String password, @RequestParam String role) {
@@ -411,6 +417,8 @@ public class MainController {
     updatedType.setId(id);
     typeRepository.save(updatedType);
     return "resultCreateType";
+  }
+  
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     return userRepository.findAll();
