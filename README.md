@@ -46,3 +46,16 @@ Pre-requisties:
  
  NOTE: Do not use powershell to run the commands.<br>
  It is also possible to query the stored information in the database with the MySQL command line client with the standard commands.
+
+ ---
+
+# Running the Front End:
+Pre-requisties:
+    - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))
+
+4. Set up Node: <br>
+ 4.1. Open a cmd at the location of the UI folder of the repo <br>
+ 4.1.1. run the command 'npm i' (This may take a *significant* amount of time to run)<br>
+ 4.1.1.1. If on Windows and install freezes (>10 mins) run 'npm cache clean --force' and use the command 'npm i --omit=optional' <br>
+5. Run the Code: <br>
+ 5.1.2. Start the web app with the command 'npm start' (This will open a new browser window at http://localhost:3000 )
