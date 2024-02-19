@@ -105,9 +105,9 @@ class AssetTest {
    * Test to verify the function of the Asset get/set suceededBy
    */
   @Test
-  public void assetGetSetSuceededBy() {
+  public void assetGetSetSucceededBy() {
     Asset a = new Asset();
-    a.setSuceededBy(5);
-    assertEquals(a.getSuceededBy(), 5, "Test that the suceededBy can be set and retrieved");
+    a.setSucceededBy(5);
+    assertEquals(a.getSucceededBy(), 5, "Test that the suceededBy can be set and retrieved");
   }
 }

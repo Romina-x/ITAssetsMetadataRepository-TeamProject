@@ -80,7 +80,7 @@ public class MainController {
   public @ResponseBody String addNewAsset(@RequestParam String type, @RequestParam String title,
       @RequestParam String link, @RequestParam Integer lineNum, @RequestParam String progLang,
       @RequestParam Integer isDocumentedIn, @RequestParam Integer dependsOn,
-      @RequestParam Integer precededBy, @RequestParam Integer suceededBy) {
+      @RequestParam Integer precededBy, @RequestParam Integer succeededBy) {
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
 
@@ -93,7 +93,7 @@ public class MainController {
     n.setIsDocumentedIn(isDocumentedIn);
     n.setDependsOn(dependsOn);
     n.setPrecededBy(precededBy);
-    n.setSuceededBy(suceededBy);
+    n.setSucceededBy(succeededBy);
     assetRepository.save(n);
     return "Saved";
   }

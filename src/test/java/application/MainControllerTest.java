@@ -62,7 +62,7 @@ class MainControllerTest {
             .param("title", "This is a test document")
             .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf")
             .param("lineNum", "120").param("progLang", "Java").param("isDocumentedIn", "1")
-            .param("dependsOn", "2").param("precededBy", "3").param("suceededBy", "4"))
+            .param("dependsOn", "2").param("precededBy", "3").param("succeededBy", "4"))
         .andReturn();
     assertEquals("Saved", result.getResponse().getContentAsString());
   }
