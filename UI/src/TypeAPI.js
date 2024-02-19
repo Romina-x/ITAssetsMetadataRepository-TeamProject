@@ -17,7 +17,7 @@ export const getAll = () =>
     .then((res) => res.json())
 
 export const update = (type, shelf) =>
-fetch(`${api}/books/${type.id}`, {
+fetch(`${api}/type/${type.id}`, {
       method: "PUT",
       headers: {
         ...headers,
