@@ -62,7 +62,7 @@ class MainControllerTest {
             .param("title", "This is a test document")
             .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf")
             .param("lineNum", "120").param("progLang", "Java").param("isDocumentedIn", "1")
-            .param("dependsOn", "2").param("precededBy", "3").param("succeededBy", "4"))
+            .param("dependsOn", "2").param("succeededBy", "4"))
         .andReturn();
     assertEquals("Saved", result.getResponse().getContentAsString());
   }
@@ -145,7 +145,7 @@ class MainControllerTest {
   @Test
   void testGetAssetByTitle() throws Exception {
 
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
     String titleToFind = "Beans";
     Asset expectedAsset = new Asset();
     expectedAsset.setTitle(titleToFind);
@@ -169,10 +169,10 @@ class MainControllerTest {
   void testGetAssetListByTitle() throws Exception {
 
     // Add actual assets to database
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
-    mc.addNewAsset("document", "Beans", "randomLink", 123, "Java", 1, 2, 3, 4);
-    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3, 4);
-    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
+    mc.addNewAsset("document", "Beans", "randomLink", 123, "Java", 1, 2, 3);
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3);
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3);
 
     List<Asset> expectedAssets = new ArrayList<>();
     when(assetRepository.findAll()).thenReturn(expectedAssets);
@@ -224,7 +224,7 @@ class MainControllerTest {
   @Test
   void testGetAssetByType() throws Exception {
 
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
     String typeToFind = "video";
     Asset expectedAsset = new Asset();
     expectedAsset.setType(typeToFind);
@@ -248,10 +248,10 @@ class MainControllerTest {
   void testGetAssetListByType() throws Exception {
 
     // Add actual assets to database
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
-    mc.addNewAsset("document", "Beans", "randomLink", 123, "Java", 1, 2, 3, 4);
-    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3, 4);
-    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
+    mc.addNewAsset("document", "Beans", "randomLink", 123, "Java", 1, 2, 3);
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3);
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3);
 
     List<Asset> expectedAssets = new ArrayList<>();
     when(assetRepository.findAll()).thenReturn(expectedAssets);
@@ -303,7 +303,7 @@ class MainControllerTest {
   @Test
   void testGetAssetByLink() throws Exception {
 
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
     String linkToFind = "www.youtube.com";
     Asset expectedAsset = new Asset();
     expectedAsset.setLink(linkToFind);
@@ -327,10 +327,10 @@ class MainControllerTest {
   void testGetAssetListByLink() throws Exception {
 
     // Add actual assets to database
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
-    mc.addNewAsset("document", "Beans", "www.youtube.com", 123, "Java", 1, 2, 3, 4);
-    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3, 4);
-    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
+    mc.addNewAsset("document", "Beans", "www.youtube.com", 123, "Java", 1, 2, 3);
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3);
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3);
 
     List<Asset> expectedAssets = new ArrayList<>();
     when(assetRepository.findAll()).thenReturn(expectedAssets);
@@ -382,7 +382,7 @@ class MainControllerTest {
   @Test
   void testGetAssetByLang() throws Exception {
 
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
     String langToFind = "English";
     Asset expectedAsset = new Asset();
     expectedAsset.setProgLang(langToFind);
@@ -406,10 +406,10 @@ class MainControllerTest {
   void testGetAssetListByLang() throws Exception {
 
     // Add actual assets to database
-    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
-    mc.addNewAsset("document", "Beans", "www.youtube.com", 123, "Java", 1, 2, 3, 4);
-    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3, 4);
-    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3, 4);
+    mc.addNewAsset("video", "Beans", "www.youtube.com", 156, "English", 1, 2, 3);
+    mc.addNewAsset("document", "Beans", "www.youtube.com", 123, "Java", 1, 2, 3);
+    mc.addNewAsset("mp3", "Beans", "randomLink2", 167, "German", 1, 2, 3);
+    mc.addNewAsset("video", "notBeans", "www.youtube.com", 156, "English", 1, 2, 3);
 
     List<Asset> expectedAssets = new ArrayList<>();
     when(assetRepository.findAll()).thenReturn(expectedAssets);

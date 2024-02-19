@@ -38,7 +38,6 @@ export default function FormPropsTextFields() {
   const [author, setAuthor] = useState("");
   const [isDocumentedIn, setIsDocumentedIn] = useState("");
   const [dependsOn, setDependsOn] = useState("");
-  const [precededBy, setPrecededBy] = useState("");
   const [succeededBy, setSucceededBy] = useState("");
 
   //useEffect hook to handle changes after save button is clicked
@@ -84,7 +83,6 @@ export default function FormPropsTextFields() {
           progLang,
           isDocumentedIn,
           dependsOn,
-          precededBy,
           succeededBy
         })
       });
@@ -109,7 +107,6 @@ export default function FormPropsTextFields() {
     setAuthor("");
     setIsDocumentedIn("");
     setDependsOn("");
-    setPrecededBy("");
     setSucceededBy("");
   }
 
@@ -232,16 +229,6 @@ export default function FormPropsTextFields() {
             multiline
             value={dependsOn}
             onChange={(e) => setDependsOn(e.target.value)}
-          />
-        </Grid>  
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Preceded By"
-            placeholder="4"
-            multiline
-            value={precededBy}
-            onChange={(e) => setPrecededBy(e.target.value)}
           />
         </Grid>     
         <Grid item xs={6}>

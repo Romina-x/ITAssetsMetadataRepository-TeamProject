@@ -28,12 +28,11 @@ export default function ViewAssets() {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Type</TableCell>
-            <TableCell>link</TableCell>
+            <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
             <TableCell>Programming language</TableCell>
             <TableCell>Is Documented In</TableCell>
             <TableCell>Depends On</TableCell>
-            <TableCell>Preceded By</TableCell>
             <TableCell align="right">Succeeded By</TableCell>
 
           </TableRow>
@@ -48,7 +47,6 @@ export default function ViewAssets() {
               <TableCell>{a.progLang}</TableCell>
               <TableCell>{a.isDocumentedIn}</TableCell>
               <TableCell>{a.dependsOn}</TableCell>
-              <TableCell>{a.precededBy}</TableCell>
               <TableCell align="right">{a.succeededBy}</TableCell>
             </TableRow>
           ))}

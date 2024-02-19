@@ -93,15 +93,6 @@ class AssetTest {
   }
   
   /**
-   * Test to verify the function of the Asset get/set precededBy
-   */
-  @Test
-  public void assetGetSetPrecededBy() {
-    Asset a = new Asset();
-    a.setPrecededBy(1);
-    assertEquals(a.getPrecededBy(), 1, "Test that the precededBy can be set and retrieved");
-  }
-  /**
    * Test to verify the function of the Asset get/set suceededBy
    */
   @Test
