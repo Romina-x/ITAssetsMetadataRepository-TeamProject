@@ -27,17 +27,30 @@ public class Asset {
   private Integer lineNum;
 
   private String progLang;
+  
+  private Integer isDocumentedIn;
+  
+  private Integer dependsOn;
+  
+  private Integer precededBy;
+  
+  private Integer suceededBy;
+
 
   public Asset() {}
 
   public Asset(Integer id, String type, String title, String link, Integer lineNum,
-      String progLang) {
+      String progLang, Integer isDocumentedIn, Integer dependsOn, Integer precededBy, Integer suceededBy) {
     this.id = id;
     this.type = type;
     this.title = title;
     this.link = link;
     this.lineNum = lineNum;
     this.progLang = progLang;
+    this.isDocumentedIn = isDocumentedIn;
+    this.dependsOn = dependsOn;
+    this.precededBy = precededBy;
+    this.suceededBy = suceededBy;
   }
 
   public Integer getId() {
@@ -87,4 +100,37 @@ public class Asset {
   public void setProgLang(String progLang) {
     this.progLang = progLang;
   }
+  
+  public Integer getIsDocumentedIn() {
+    return isDocumentedIn;
+  }
+
+  public void setIsDocumentedIn(Integer isDocumentedIn) {
+    this.isDocumentedIn = isDocumentedIn;
+  }  
+  
+  public Integer getDependsOn() {
+    return dependsOn;
+  }
+
+  public void setDependsOn(Integer dependsOn) {
+    this.dependsOn = dependsOn;
+  }  
+  
+  public Integer getPrecededBy() {
+    return precededBy;
+  }
+
+  public void setPrecededBy(Integer precededBy) {
+    this.precededBy = precededBy;
+  }  
+  
+  public Integer getSuceededBy() {
+    return suceededBy;
+  }
+
+  public void setSuceededBy(Integer suceededBy) {
+    this.suceededBy = suceededBy;
+  }  
+  
 }
