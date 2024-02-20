@@ -23,11 +23,9 @@ public class User {
   
   private String password;
   
-  //private Permissions role;
+  private Permissions role;
   //Commented out and replaced with string for the sake of making the html createUser work in time
   //will be re-implemented early next sprint
-  
-  private String role;
   
   public User() {
 	  
@@ -46,7 +44,11 @@ public class User {
   }
   
   public void setRole(String role) {
-	  this.role = role;
+	  for(Permissions perm: Permissions.values()) {
+	  	if(perm.toString().equalsIgnoreCase(role)) {
+		  this.role = perm;
+	  	}
+	  }
   }
   
   public Integer getId() {
@@ -62,7 +64,7 @@ public class User {
 	  return this.password;
   }
   
-  public String getRole() {
+  public Permissions getRole() {
 	  return this.role;
   }
 }
