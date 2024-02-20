@@ -26,6 +26,9 @@ import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
 import OpenAsset from './OpenAsset';
+import FrontPage from './FrontPage';
+import Login from './Login';
+
 
 
 function Copyright(props) {
@@ -194,6 +197,10 @@ export default function Dashboard(props) {
                 {props.page === "asset/delete" && <AssetDelete />}
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
+                {props.page === "frontPage" && <FrontPage />}
+                {props.page === "login" && <Login />}
+
+
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
