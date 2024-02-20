@@ -69,9 +69,12 @@ export default function ViewAssets() {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Type</TableCell>
-            <TableCell>link</TableCell>
+            <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell align="right">Programming language</TableCell>
+            <TableCell>Programming language</TableCell>
+            <TableCell>Is Documented In</TableCell>
+            <TableCell>Depends On</TableCell>
+            <TableCell align="right">Succeeded By</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -85,7 +88,10 @@ export default function ViewAssets() {
               <TableCell>{a.type}</TableCell>
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
-              <TableCell align="right">{a.progLang}</TableCell>
+              <TableCell>{a.progLang}</TableCell>
+              <TableCell>{a.isDocumentedIn}</TableCell>
+              <TableCell>{a.dependsOn}</TableCell>
+              <TableCell align="right">{a.succeededBy}</TableCell>
               <TableCell align="right">
                 <IconButton className={styles.link}>
                   <Link to="/asset/edit" className={styles.link}>

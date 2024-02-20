@@ -36,6 +36,9 @@ export default function FormPropsTextFields() {
   const [lineNum, setlineNum] = useState("");
   const [progLang, setprogLang] = useState("");
   const [author, setAuthor] = useState("");
+  const [isDocumentedIn, setIsDocumentedIn] = useState("");
+  const [dependsOn, setDependsOn] = useState("");
+  const [succeededBy, setSucceededBy] = useState("");
 
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
@@ -77,7 +80,10 @@ export default function FormPropsTextFields() {
           title,
           link,
           lineNum,
-          progLang
+          progLang,
+          isDocumentedIn,
+          dependsOn,
+          succeededBy
         })
       });
       
@@ -99,6 +105,9 @@ export default function FormPropsTextFields() {
     setlineNum("");
     setprogLang("");
     setAuthor("");
+    setIsDocumentedIn("");
+    setDependsOn("");
+    setSucceededBy("");
   }
 
   //function to handle changes when cancel button is clicked
@@ -202,6 +211,36 @@ export default function FormPropsTextFields() {
             onChange={(e) => setAuthor(e.target.value)}
           />
         </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Is Documented In"
+            placeholder="8"
+            multiline
+            value={isDocumentedIn}
+            onChange={(e) => setIsDocumentedIn(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Depends On"
+            placeholder="4"
+            multiline
+            value={dependsOn}
+            onChange={(e) => setDependsOn(e.target.value)}
+          />
+        </Grid>     
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Succeeded By"
+            placeholder="4"
+            multiline
+            value={succeededBy}
+            onChange={(e) => setSucceededBy(e.target.value)}
+          />
+        </Grid>  
       </Grid>
 
       <Stack direction="row" spacing={2}>

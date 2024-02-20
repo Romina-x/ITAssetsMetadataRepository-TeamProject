@@ -25,6 +25,7 @@ import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
+import OpenAsset from './OpenAsset';
 
 
 function Copyright(props) {
@@ -193,6 +194,7 @@ export default function Dashboard(props) {
                 {props.page === "log/view" && <ViewLogs />}
                 {props.page === "asset/delete" && <AssetDelete />}
                 {props.page === "type/delete" && <TypeDelete />}
+                {props.page === "asset/open" && <OpenAsset />}
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
