@@ -15,11 +15,14 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
+import DeleteConfirmationDialog from './DeletionComfirm';
 
 export default function ViewAssets() {
   const [assets, setAssets] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const [deletingAssetId, setDeletingAssetId] = React.useState(null);
 
   React.useEffect(() => {
     const getAssets = async () => {
@@ -30,6 +33,25 @@ export default function ViewAssets() {
     getAssets();
   }, []);
 
+  const handleDelete = (id) => {
+    setDeletingAssetId(id);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteAsset = async (id) => {
+    try {
+      console.log(id);
+      const response = await AssetAPI.deleteById(id);
+      setAssets((assets) => assets.filter((a) => a.id !== id));
+      if (response.status === 200) {
+        console.log("Deleted");
+      } else {
+        console.error("Failed to delete");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -70,7 +92,10 @@ export default function ViewAssets() {
                     <EditIcon />
                   </Link>
                 </IconButton>
-                <IconButton className={styles.link}>
+                <IconButton
+                  className={styles.link}
+                  onClick={() => handleDelete(a.id)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
@@ -89,7 +114,7 @@ export default function ViewAssets() {
       />
 
       <Stack direction="row" spacing={2}>
-        <Link to='/asset/add'>
+        <Link to="/asset/add">
           <Button
             variant="contained"
             endIcon={<PostAddIcon />}
@@ -108,6 +133,16 @@ export default function ViewAssets() {
           Back To Dashboard
         </Button>
       </Stack>
+      <DeleteConfirmationDialog
+        open={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
+        handleConfirm={() => {
+          setOpenDeleteDialog(false);
+          // Call handleDeleteAsset function to delete the asset
+          handleDeleteAsset(deletingAssetId);
+        }}
+        assetId={deletingAssetId}
+      />
     </React.Fragment>
   );
 }
