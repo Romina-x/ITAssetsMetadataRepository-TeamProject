@@ -1,5 +1,6 @@
 package application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,8 @@ public class Asset {
   private Integer lineNum;
 
   private String progLang;
+
+  private String request;
 
   public Asset() {}
 
@@ -86,5 +89,10 @@ public class Asset {
 
   public void setProgLang(String progLang) {
     this.progLang = progLang;
+  }
+
+  public void setRequest(String request) {
+    this.request = request;
+    
   }
 }

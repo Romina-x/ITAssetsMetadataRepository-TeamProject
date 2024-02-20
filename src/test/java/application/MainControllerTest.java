@@ -15,11 +15,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Test suite to validate the functions held within the Main Controller Class.
@@ -50,18 +53,63 @@ class MainControllerTest {
 
 
   /**
-   * Test string response of method which runs the map for the post request of create new asset.
+   * Test successful string response of method which runs the map for the post request of create new
+   * asset.
    *
    * @throws Exception , could be any checked exception.
    */
   @Test
-  // test 1
   void testAddNewAsset() throws Exception {
-    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/asset/add")
-        .param("type", "document").param("title", "This is a test document")
-        .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf").param("lineNum", "120")
-        .param("progLang", "Java")).andReturn();
-    assertEquals("Saved", result.getResponse().getContentAsString());
+
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setLineNum(78);
+    asset1.setLink("www.youtube.com");
+    asset1.setProgLang("Java");
+    asset1.setTitle("This is a title");
+    asset1.setType("Video");
+
+    // Mock the behavior of assetRepository.save() to return the asset
+    when(assetRepository.save(asset1)).thenReturn(asset1);
+
+    // Call addNewAsset method
+    ResponseEntity<String> response = mc.addNewAsset(asset1);
+
+    // Verify that the response is as expected
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals("Asset saved successfully", response.getBody());
+
+  }
+
+  /**
+   * Test error string response of method which runs the map for the post request of create new
+   * asset.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewAsset_Exception() throws Exception {
+
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setLineNum(78);
+    asset1.setLink("www.youtube.com");
+    asset1.setProgLang("Java");
+    asset1.setTitle("This is a title");
+    asset1.setType("Video");
+
+    // Mock the behavior of assetRepository.save() to throw an exception
+    when(assetRepository.save(asset1))
+        .thenThrow(new RuntimeException("This is a made up exception"));
+
+    // Call the addNewAsset method
+    ResponseEntity<String> response = mc.addNewAsset(asset1);
+
+    // Verify that the response is as expected
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    assertEquals("Error: This is a made up exception", response.getBody());
   }
 
   /**
