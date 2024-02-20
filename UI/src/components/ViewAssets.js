@@ -11,6 +11,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "../style/listItems.module.css";
 import { IconButton, TablePagination } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import UndoIcon from "@mui/icons-material/Undo";
 
 export default function ViewAssets() {
   const [assets, setAssets] = React.useState([]);
@@ -26,7 +30,7 @@ export default function ViewAssets() {
     getAssets();
   }, []);
 
-  const handleChangePage = (newPage) => {
+  const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
@@ -51,9 +55,9 @@ export default function ViewAssets() {
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-              ? assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : assets
-            ).map((a) => (
+            ? assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : assets
+          ).map((a) => (
             <TableRow key={a.id}>
               <TableCell>{a.id}</TableCell>
               <TableCell>{a.type}</TableCell>
@@ -75,7 +79,7 @@ export default function ViewAssets() {
         </TableBody>
       </Table>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+        rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
         component="div"
         count={assets.length}
         rowsPerPage={rowsPerPage}
@@ -83,6 +87,27 @@ export default function ViewAssets() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      <Stack direction="row" spacing={2}>
+        <Link to='/asset/add'>
+          <Button
+            variant="contained"
+            endIcon={<PostAddIcon />}
+            style={{ background: "black" }}
+          >
+            Add Asset
+          </Button>
+        </Link>
+
+        <Button
+          id="cancel-button"
+          variant="outlined"
+          endIcon={<UndoIcon />}
+          onClick={{}}
+        >
+          Back To Dashboard
+        </Button>
+      </Stack>
     </React.Fragment>
   );
 }
