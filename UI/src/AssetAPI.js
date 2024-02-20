@@ -9,7 +9,7 @@ const headers = {
 };
 
 export const get = (assetId) =>
-  fetch(`${api}/asset/${assetId}`, { headers })
+  fetch(`${api}/asset/find/${assetId}`, { headers })
     .then((res) => res.json())
 
 export const getAll = () =>

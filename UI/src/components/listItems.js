@@ -94,6 +94,14 @@ export const adminListItems = (
         <ListItemText primary="View Log" />
       </ListItemButton>
     </Link>
+    <Link to="/asset/open" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SourceIcon />
+        </ListItemIcon>
+        <ListItemText primary="Open Asset" />
+      </ListItemButton>
+    </Link>
     <Link to="/login" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>

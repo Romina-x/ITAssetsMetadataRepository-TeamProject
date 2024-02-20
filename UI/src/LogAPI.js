@@ -9,20 +9,20 @@ const headers = {
 };
 
 export const get = (logId) =>
-  fetch(`${api}/log/${logId}`, { headers })
+  fetch(`${api}/log/find/${logId}`, { headers })
     .then((res) => res.json())
 
 export const getAll = () =>
   fetch(`${api}/log/find/all`, {headers})
     .then((res) => res.json())
 
-export const update = (log, shelf) =>
-fetch(`${api}/books/${log.id}`, {
+export const update = (log) =>
+fetch(`${api}/log/${log.id}`, {
       method: "PUT",
       headers: {
         ...headers,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ shelf }),
+      body: JSON.stringify({ log }),
     })
     .then((res) => res.json());
