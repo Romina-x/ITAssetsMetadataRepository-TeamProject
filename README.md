@@ -16,18 +16,18 @@ You may edit it as you like, but please do not remove the default topics or the 
 ---
 
 # Running with a Script:
-Pre-requisties:
-    - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))
-    - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))
-    - Windows OS
+Pre-requisties:<br>
+    - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))<br>
+    - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))<br>
+    - ReactFlow (npm install reactflow)<br>
+    - Windows OS<br>
+    
+1. Navigate to the local location of the project clone (/TeamProject04) and double click on the file "start.bat".
 
-1. Navigate to the local location of 
-
-
-
+---
 
 # Running the SQL db:
-Pre-requisties:
+Pre-requisties:<br>
     - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))
 
 1. Set up Local Database: <br>
@@ -62,8 +62,10 @@ Pre-requisties:
  ---
 
 # Running the Front End:
-Pre-requisties:
-    - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))
+Pre-requisties:<br>
+    - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))<br>
+    - ReactFlow (npm install reactflow)<br>
+    
 
 4. Set up Node: <br>
  4.1. Open a cmd at the location of the UI folder of the repo <br>
