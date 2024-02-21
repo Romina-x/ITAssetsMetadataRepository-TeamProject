@@ -8,12 +8,16 @@ import Title from './Title';
 import * as AssetAPI from '../AssetAPI';
 import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
+import * as LogAPI from '../LogAPI';
+import { useParams } from "react-router-dom";
 
 
 export default function OpenAsset() {
+  let { openAssetId } = useParams();
+
   React.useEffect(() => {
     const getAssets = async () => {
-      const res = await AssetAPI.get(1);
+      const res = await AssetAPI.get(openAssetId);
       console.log(res)
       setAssets(res)
     };
@@ -21,8 +25,18 @@ export default function OpenAsset() {
     getAssets();
   }, []);
 
+  React.useEffect(() => {
+    const getLogs = async () => {
+      const res = await LogAPI.get(openAssetId);
+      console.log(res)
+      setLogs(res)
+    };
+    getLogs();
+  }, []);
 
   const [a, setAssets] = React.useState([])
+  const [l, setLogs] = React.useState([])
+
 
   const edges = [{ id: '1-2', source: '1', target: '2', label: 'Is Documented In', type: 'straightedge' },
                   { id: '1-3', source: '1', target: '3', label: 'Depends On', type: 'straightedge' },
@@ -54,10 +68,10 @@ export default function OpenAsset() {
   return (
     <React.Fragment>
       <Title>Viewing Asset ID {a.id}:</Title>
+      <h3>Details:</h3>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
@@ -66,7 +80,6 @@ export default function OpenAsset() {
         </TableHead>
         <TableBody>
             <TableRow key={a.id}>
-              <TableCell>{a.id}</TableCell>
               <TableCell>{a.type}</TableCell>
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
@@ -74,8 +87,27 @@ export default function OpenAsset() {
             </TableRow>
         </TableBody>
       </Table>
+    
+      <h3>Action Log:</h3>
+      <Table size="small">
+        <TableHead>
+        <TableRow>
+            <TableCell>Action ID</TableCell>
+            <TableCell>Action</TableCell>
+            <TableCell>Timestamp</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow key={l.id}>
+              <TableCell>{l.id}</TableCell>
+              <TableCell>{l.action}</TableCell>
+              <TableCell>{l.timestamp}</TableCell>
+            </TableRow>
+        </TableBody>
+      </Table>
 
-    <div style={{ height: '200%' }}>
+    <h3>Associations:</h3>
+    <div style={{ height: '80%' }}>
       <ReactFlow nodes={nodes} edges={edges}>
         <Background />
         <Controls />
