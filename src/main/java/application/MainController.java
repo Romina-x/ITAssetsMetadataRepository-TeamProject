@@ -280,6 +280,12 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return typeRepository.findById(id);
   }
+  
+  @GetMapping(path = "/type/findName/{id}")
+  public @ResponseBody Optional<Type> getTypeByName(@PathVariable("name") String name) {
+    // This returns a JSON or XML with the assets
+    return typeRepository.findByName(name);
+  }
 
   /**
    * This method manages the GET request and renders the delete type page 
