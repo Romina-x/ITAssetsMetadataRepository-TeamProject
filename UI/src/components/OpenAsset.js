@@ -67,11 +67,11 @@ export default function OpenAsset() {
 
   return (
     <React.Fragment>
-      <Title>Viewing Details of Asset ID {a.id}:</Title>
+      <Title>Viewing Asset ID {a.id}:</Title>
+      <h3>Details:</h3>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
@@ -80,7 +80,6 @@ export default function OpenAsset() {
         </TableHead>
         <TableBody>
             <TableRow key={a.id}>
-              <TableCell>{a.id}</TableCell>
               <TableCell>{a.type}</TableCell>
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
@@ -89,12 +88,11 @@ export default function OpenAsset() {
         </TableBody>
       </Table>
     
-      <Title>Viewing Action Log of Asset ID {a.id}:</Title>
+      <h3>Action Log:</h3>
       <Table size="small">
         <TableHead>
         <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Item ID</TableCell>
+            <TableCell>Action ID</TableCell>
             <TableCell>Action</TableCell>
             <TableCell>Timestamp</TableCell>
           </TableRow>
@@ -102,13 +100,13 @@ export default function OpenAsset() {
         <TableBody>
             <TableRow key={l.id}>
               <TableCell>{l.id}</TableCell>
-              <TableCell>{l.itemId}</TableCell>
               <TableCell>{l.action}</TableCell>
               <TableCell>{l.timestamp}</TableCell>
             </TableRow>
         </TableBody>
       </Table>
 
+    <h3>Associations:</h3>
     <div style={{ height: '200%' }}>
       <ReactFlow nodes={nodes} edges={edges}>
         <Background />
