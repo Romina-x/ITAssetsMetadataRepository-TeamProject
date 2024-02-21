@@ -247,6 +247,7 @@ public class MainController {
   public String editAssetSubmit(@PathVariable("id") Integer id,
       @ModelAttribute Asset updatedAsset) {
     updatedAsset.setId(id);
+    addActionLog(updatedAsset.getId(), "Edited asset"); // Adds an action record to the log
     assetRepository.save(updatedAsset);
     return "result";
   }
@@ -437,6 +438,7 @@ public class MainController {
   @PostMapping("/type/editType/{id}")
   public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
     updatedType.setId(id);
+    addActionLog(updatedType.getId(), "Edited type"); // Adds an action record to the log
     typeRepository.save(updatedType);
     return "resultCreateType";
   }
