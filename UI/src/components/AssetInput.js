@@ -8,27 +8,14 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-
-const types = [
-  {
-    value: "Word",
-    label: "Word Document",
-  },
-  {
-    value: "Code",
-    label: "Source code",
-  },
-  {
-    value: "Slides",
-    label: "Powerpoint",
-  },
-];
+import { getAll } from "../TypeAPI";
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
-
+  const [types, setTypes] = useState([]);
+    
   //state variables for form fields
   const [type, setType] = useState("Code");
   const [title, setTitle] = useState("");
@@ -37,6 +24,20 @@ export default function FormPropsTextFields() {
   const [progLang, setprogLang] = useState("");
   const [author, setAuthor] = useState("");
 
+  //useEffect hook to fetch type names to populate the dropdown with
+  useEffect(() => {
+    getAll()
+      .then((data) => {
+        // Extract only the typeName from each type object
+        const typeNames = data.map((type) => type.typeName);
+        setTypes(typeNames); // Set the types state with an array of type names
+        setType(typeNames[0]); //Set initial selected type to the first
+      })
+      .catch((error) => {
+        console.error("Error fetching types:", error);
+      });
+  }, []); 
+  
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
     if (save === "Saved") {
@@ -145,9 +146,9 @@ export default function FormPropsTextFields() {
             value={type}
             onChange={(e) => setType(e.target.value)}
           >
-            {types.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {types.map((typeName) => (
+              <MenuItem key={typeName} value={typeName}>
+                {typeName}
               </MenuItem>
             ))}
           </TextField>
