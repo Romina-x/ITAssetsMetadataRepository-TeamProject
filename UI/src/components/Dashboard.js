@@ -25,6 +25,7 @@ import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
+import OpenAsset from './OpenAsset';
 
 
 function Copyright(props) {
@@ -137,7 +138,8 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1, fontFamily: "Calibri" }}
             >
-              Dashboard
+              {props.page.toLowerCase().includes("asset") && <p>Asset</p>}
+              {props.page.toLowerCase().includes("type") && <p>Type</p>}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -192,6 +194,7 @@ export default function Dashboard(props) {
                 {props.page === "log/view" && <ViewLogs />}
                 {props.page === "asset/delete" && <AssetDelete />}
                 {props.page === "type/delete" && <TypeDelete />}
+                {props.page === "asset/open" && <OpenAsset />}
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />

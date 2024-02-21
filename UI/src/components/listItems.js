@@ -22,30 +22,6 @@ export const adminListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/add" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <AddIcon />
-        </ListItemIcon>
-        <ListItemText primary="Add Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/asset/edit" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary="Edit Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/asset/delete" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <DeleteIcon />
-        </ListItemIcon>
-        <ListItemText primary="Delete Asset" />
-      </ListItemButton>
-    </Link>
     <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
@@ -94,6 +70,14 @@ export const adminListItems = (
         <ListItemText primary="View Log" />
       </ListItemButton>
     </Link>
+    <Link to="/asset/open" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SourceIcon />
+        </ListItemIcon>
+        <ListItemText primary="Open Asset" />
+      </ListItemButton>
+    </Link>
     <Link to="/login" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
@@ -113,22 +97,6 @@ export const userListItems = (
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
-      </ListItemButton>
-    </Link>
-    <Link to="/asset/edit" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary="Edit Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/asset/add" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <AddIcon />
-        </ListItemIcon>
-        <ListItemText primary="Add Asset" />
       </ListItemButton>
     </Link>
     <Link to="/asset/view" className={styles.link}>
