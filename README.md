@@ -8,11 +8,23 @@ You may edit it as you like, but please do not remove the default topics or the 
 
 #Contents:
 
+- [Running with a Script](#running-with-a-script)
 - [Running the SQL db](#running-the-sql-db)
 - [Running the Front End](#running-the-front-end)
 
 
 ---
+
+# Running with a Script:
+Pre-requisties:
+    - MySQL v5.6+ ([https://dev.mysql.com/downloads/installer/](https://dev.mysql.com/downloads/installer/))
+    - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))
+    - Windows OS
+
+1. Navigate to the local location of 
+
+
+
 
 # Running the SQL db:
 Pre-requisties:
