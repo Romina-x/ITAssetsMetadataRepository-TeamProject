@@ -26,3 +26,18 @@ fetch(`${api}/asset/${asset.id}`, {
       body: JSON.stringify({ asset }),
     })
     .then((res) => res.json());
+
+    export const deleteById = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:8080/asset/delete/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        return response;
+      } catch (error) {
+        throw new Error(`Failed to delete asset with ID ${id}: ${error.message}`);
+      }
+    };

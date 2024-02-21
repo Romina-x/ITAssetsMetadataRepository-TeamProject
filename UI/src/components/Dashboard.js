@@ -141,7 +141,8 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1, fontFamily: "Calibri" }}
             >
-              Dashboard
+              {props.page.toLowerCase().includes("asset") && <p>Asset</p>}
+              {props.page.toLowerCase().includes("type") && <p>Type</p>}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
