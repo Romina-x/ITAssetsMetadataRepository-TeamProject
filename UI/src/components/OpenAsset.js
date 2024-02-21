@@ -107,7 +107,7 @@ export default function OpenAsset() {
       </Table>
 
     <h3>Associations:</h3>
-    <div style={{ height: '200%' }}>
+    <div style={{ height: '80%' }}>
       <ReactFlow nodes={nodes} edges={edges}>
         <Background />
         <Controls />
