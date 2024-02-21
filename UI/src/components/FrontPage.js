@@ -2,6 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom'
+import Title from './Title';
+
 
 const FrontPage = (props) => {
   const navigate = useNavigate()
@@ -9,9 +11,9 @@ const FrontPage = (props) => {
 return (
   <div className="mainContainer">
     <div className={'titleContainer'}>
-      <div>Welcome!</div>
+      <Title>Welcome!</Title>
     </div>
-    <div>This is the home page.</div>
+    <Title>This is the home page.</Title>
   </div>
 )
 }

@@ -22,6 +22,14 @@ export const adminListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
+    <Link to="/asset/add" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <AddIcon />
+        </ListItemIcon>
+        <ListItemText primary="Add Asset" />
+      </ListItemButton>
+    </Link>
     <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
@@ -70,12 +78,49 @@ export const adminListItems = (
         <ListItemText primary="View Log" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/open" className={styles.link}>
+    <Link to="/login" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText primary="Log out" />
+      </ListItemButton>
+    </Link>
+  </React.Fragment>
+);
+
+export const userListItems = (
+  <React.Fragment>
+    <Link to="/" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/add" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <AddIcon />
+        </ListItemIcon>
+        <ListItemText primary="Add Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <SourceIcon />
         </ListItemIcon>
-        <ListItemText primary="Open Asset" />
+        <ListItemText primary="View Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/type/view" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SourceIcon />
+        </ListItemIcon>
+        <ListItemText primary="View Type" />
       </ListItemButton>
     </Link>
     <Link to="/login" className={styles.link}>
@@ -89,7 +134,7 @@ export const adminListItems = (
   </React.Fragment>
 );
 
-export const userListItems = (
+export const readerListItems = (
   <React.Fragment>
     <Link to="/" className={styles.link}>
       <ListItemButton>
