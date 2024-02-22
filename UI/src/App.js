@@ -15,6 +15,8 @@ function App() {
         <Route exact path="/type/delete" element={<Dashboard page="type/delete" />} />
         <Route exact path="/asset/open/:openAssetId" element={<Dashboard page="asset/open" />} />
         <Route exact path="/asset/edit/:editAssetId" element={<Dashboard page="asset/edit" />} />
+        <Route exact path="/type/open/:openTypeId" element={<Dashboard page="type/open" />} />
+        <Route exact path="/type/edit/:editTypeId" element={<Dashboard page="type/edit" />} />
         <Route exact path="/login" element={<Dashboard page="login" />} />
 
 

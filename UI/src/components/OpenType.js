@@ -6,12 +6,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import * as TypeAPI from '../TypeAPI';
+import * as LogAPI from '../LogAPI';
+import { useParams } from "react-router-dom";
 
 
-export default function ViewTypes() {
+export default function OpenType() {
+  let { openTypeId } = useParams();
+
   React.useEffect(() => {
     const getTypes = async () => {
-      const res = await TypeAPI.getAll();
+      const res = await TypeAPI.get(openTypeId);
       console.log(res)
       setTypes(res)
     };
@@ -19,11 +23,23 @@ export default function ViewTypes() {
     getTypes();
   }, []);
 
-  const [types, setTypes] = React.useState([])
+  React.useEffect(() => {
+    const getLogs = async () => {
+      const res = await LogAPI.get(openTypeId);
+      console.log(res)
+      setLogs(res)
+    };
+    getLogs();
+  }, []);
+
+  const [t, setTypes] = React.useState([])
+  const [l, setLogs] = React.useState([])
+
 
   return (
     <React.Fragment>
-      <Title>Types</Title>
+      <Title>Viewing Type ID {t.id}:</Title>
+      <h3>Details:</h3>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -36,7 +52,6 @@ export default function ViewTypes() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {types.map((t) => (
             <TableRow key={t.id}>
               <TableCell>{t.id}</TableCell>
               <TableCell>{t.typeName}</TableCell>
@@ -45,9 +60,27 @@ export default function ViewTypes() {
               <TableCell>{t.customAttribute3}</TableCell>
               <TableCell>{t.customAttribute4}</TableCell>
             </TableRow>
-          ))}
         </TableBody>
       </Table>
+    
+      <h3>Action Log:</h3>
+      <Table size="small">
+        <TableHead>
+        <TableRow>
+            <TableCell>Action ID</TableCell>
+            <TableCell>Action</TableCell>
+            <TableCell>Timestamp</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow key={l.id}>
+              <TableCell>{l.id}</TableCell>
+              <TableCell>{l.action}</TableCell>
+              <TableCell>{l.timestamp}</TableCell>
+            </TableRow>
+        </TableBody>
+      </Table>
+
     </React.Fragment>
   );
 }
