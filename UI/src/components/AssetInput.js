@@ -15,14 +15,16 @@ export default function FormPropsTextFields() {
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
   const [types, setTypes] = useState([]);
+  const [selectedType, setSelectedType] = useState(null);
+  const [responseData, setResponseData] = useState([]);
     
   //state variables for form fields
-  const [type, setType] = useState("Code");
+  const [type, setType] = useState("");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [lineNum, setlineNum] = useState("");
   const [progLang, setprogLang] = useState("");
-  const [author, setAuthor] = useState("");
+/*  const [author, setAuthor] = useState("");*/
   const [isDocumentedIn, setIsDocumentedIn] = useState("");
   const [dependsOn, setDependsOn] = useState("");
   const [succeededBy, setSucceededBy] = useState("");
@@ -31,10 +33,12 @@ export default function FormPropsTextFields() {
   useEffect(() => {
     getAll()
       .then((data) => {
+        setResponseData(data);
         // Extract only the typeName from each type object
         const typeNames = data.map((type) => type.typeName);
         setTypes(typeNames); // Set the types state with an array of type names
         setType(typeNames[0]); //Set initial selected type to the first
+        setSelectedType(data[0]);
       })
       .catch((error) => {
         console.error("Error fetching types:", error);
@@ -63,6 +67,15 @@ export default function FormPropsTextFields() {
     }
 
   }, [cancel]);
+  
+  useEffect(() => {
+    if (selectedType) {
+      setTitle(""); // Reset the title when a new type is selected
+      setLink(""); // Reset the link when a new type is selected
+      setlineNum(""); // Reset the lineNum when a new type is selected
+      setprogLang(""); // Reset the progLang when a new type is selected
+    }
+  }, [selectedType]);
 
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
@@ -77,7 +90,7 @@ export default function FormPropsTextFields() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          type,
+          type: selectedType.typeName,
           title,
           link,
           lineNum,
@@ -100,17 +113,24 @@ export default function FormPropsTextFields() {
   };
 
   const resetValue = () => {
-    setType("Code");
+/*    setType("");*/
     setTitle("");
     setLink("");
     setlineNum("");
     setprogLang("");
-    setAuthor("");
+/*    setAuthor("");*/
     setIsDocumentedIn("");
     setDependsOn("");
     setSucceededBy("");
   }
-
+  
+  // Function to handle type selection from dropdown
+  const handleTypeChange = (event) => {
+    const typeName = event.target.value;
+    const selectedType = responseData.find((type) => type.typeName === typeName);
+    setSelectedType(selectedType);
+    setType(typeName); // Update the type state variable
+  };
   //function to handle changes when cancel button is clicked
   const handleCancelButtonClick = () => {
     const cancelButtonStyle = document.getElementById("cancel-button").style;
@@ -152,8 +172,10 @@ export default function FormPropsTextFields() {
             id="outlined-select-currency"
             select
             label="Type"
+            /*value={type}*/
             value={type}
-            onChange={(e) => setType(e.target.value)}
+            /*onChange={(e) => setType(e.target.value)}*/
+            onChange={handleTypeChange}
           >
             {types.map((typeName) => (
               <MenuItem key={typeName} value={typeName}>
@@ -165,8 +187,8 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Title"
-            placeholder="Module A"
+            label={selectedType ? selectedType.customAttribute1 : "Custom Attribute 1"}
+            placeholder=""
             multiline
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -175,8 +197,8 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Link"
-            placeholder="Paste URL here"
+            label={selectedType ? selectedType.customAttribute2 : "Custom Attribute 1"}
+            placeholder=""
             multiline
             value={link}
             onChange={(e) => setLink(e.target.value)}
@@ -185,7 +207,7 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Line Number"
+            label={selectedType ? selectedType.customAttribute3 : "Custom Attribute 1"}
             placeholder=""
             multiline
             value={lineNum}
@@ -195,23 +217,14 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Programming language"
-            placeholder="Java,Python,etc"
+            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 1"}
+            placeholder=""
             multiline
             value={progLang}
             onChange={(e) => setprogLang(e.target.value)}
           />
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Author"
-            placeholder="William"
-            multiline
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-        </Grid>
+
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
