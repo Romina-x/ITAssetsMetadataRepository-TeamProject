@@ -12,14 +12,14 @@ export default function DeleteConfirmationDialog({ open, handleClose, handleConf
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete asset with ID: {assetId}? <br/>
-            You can undo your action!!!
+            This cannot be undone!
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleConfirm} autoFocus>
             Delete
           </Button>
+          <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
     );

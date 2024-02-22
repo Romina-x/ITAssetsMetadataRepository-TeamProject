@@ -9,13 +9,14 @@ import { Link } from "react-router-dom";
 import * as AssetAPI from "../AssetAPI";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import styles from "../style/listItems.module.css";
 import { IconButton, TablePagination } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './DeletionComfirm';
+import DeleteConfirmationDialog from './DeletionConfirm';
 
 export default function ViewAssets() {
   const [assets, setAssets] = React.useState([]);
@@ -23,13 +24,15 @@ export default function ViewAssets() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [deletingAssetId, setDeletingAssetId] = React.useState(null);
+  const [openAssetId, setOpenAssetId] = React.useState(null);
+
+
 
   React.useEffect(() => {
     const getAssets = async () => {
       const res = await AssetAPI.getAll();
       setAssets(res);
     };
-
     getAssets();
   }, []);
 
@@ -52,6 +55,12 @@ export default function ViewAssets() {
       console.log(error);
     }
   };
+
+  const handleOpen = (id) => {
+    setOpenAssetId(id);
+  };
+   
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -72,9 +81,6 @@ export default function ViewAssets() {
             <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
             <TableCell>Programming language</TableCell>
-            <TableCell>Is Documented In</TableCell>
-            <TableCell>Depends On</TableCell>
-            <TableCell align="right">Succeeded By</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -89,12 +95,14 @@ export default function ViewAssets() {
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
               <TableCell>{a.progLang}</TableCell>
-              <TableCell>{a.isDocumentedIn}</TableCell>
-              <TableCell>{a.dependsOn}</TableCell>
-              <TableCell align="right">{a.succeededBy}</TableCell>
               <TableCell align="right">
+              <IconButton className={styles.link}>
+              <Link to={`/asset/open/${a.id}`} className={styles.link}>
+                  <VisibilityIcon />
+              </Link>
+              </IconButton>
                 <IconButton className={styles.link}>
-                  <Link to="/asset/edit" className={styles.link}>
+                  <Link to={`/asset/edit/${a.id}`} className={styles.link}>
                     <EditIcon />
                   </Link>
                 </IconButton>
