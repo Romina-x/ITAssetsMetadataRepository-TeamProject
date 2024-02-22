@@ -28,6 +28,10 @@ export default function FormPropsTextFields() {
   const [isDocumentedIn, setIsDocumentedIn] = useState("");
   const [dependsOn, setDependsOn] = useState("");
   const [succeededBy, setSucceededBy] = useState("");
+  const [customAttribute1, setCustomAttribute1] = useState("");
+  const [customAttribute2, setCustomAttribute2] = useState("");
+  const [customAttribute3, setCustomAttribute3] = useState("");
+  const [customAttribute4, setCustomAttribute4] = useState("");
 
   //useEffect hook to fetch type names to populate the dropdown with
   useEffect(() => {
@@ -70,10 +74,10 @@ export default function FormPropsTextFields() {
   
   useEffect(() => {
     if (selectedType) {
-      setTitle(""); // Reset the title when a new type is selected
-      setLink(""); // Reset the link when a new type is selected
-      setlineNum(""); // Reset the lineNum when a new type is selected
-      setprogLang(""); // Reset the progLang when a new type is selected
+      setCustomAttribute1(""); 
+      setCustomAttribute2(""); 
+      setCustomAttribute3(""); 
+      setCustomAttribute4("");
     }
   }, [selectedType]);
 
@@ -97,7 +101,11 @@ export default function FormPropsTextFields() {
           progLang,
           isDocumentedIn,
           dependsOn,
-          succeededBy
+          succeededBy,
+          customAttribute1,
+          customAttribute2,
+          customAttribute3,
+          customAttribute4
         })
       });
       
@@ -122,6 +130,10 @@ export default function FormPropsTextFields() {
     setIsDocumentedIn("");
     setDependsOn("");
     setSucceededBy("");
+    setCustomAttribute1("");
+    setCustomAttribute2("");
+    setCustomAttribute3("");
+    setCustomAttribute4("");
   }
   
   // Function to handle type selection from dropdown
@@ -187,8 +199,8 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute1 : "Custom Attribute 1"}
-            placeholder=""
+            label= "Title"
+            placeholder= "Project1"
             multiline
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -197,8 +209,8 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute2 : "Custom Attribute 1"}
-            placeholder=""
+            label="Link"
+            placeholder="google.com"
             multiline
             value={link}
             onChange={(e) => setLink(e.target.value)}
@@ -207,8 +219,8 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute3 : "Custom Attribute 1"}
-            placeholder=""
+            label="Line Number"
+            placeholder="50"
             multiline
             value={lineNum}
             onChange={(e) => setlineNum(e.target.value)}
@@ -217,11 +229,51 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 1"}
-            placeholder=""
+            label="Programming Language"
+            placeholder="Python"
             multiline
             value={progLang}
             onChange={(e) => setprogLang(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label={selectedType ? selectedType.customAttribute1 : "Custom Attribute 1"}
+            placeholder=""
+            multiline
+            value={customAttribute1}
+            onChange={(e) => setCustomAttribute1(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label={selectedType ? selectedType.customAttribute2 : "Custom Attribute 2"}
+            placeholder=""
+            multiline
+            value={customAttribute2}
+            onChange={(e) => setCustomAttribute2(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label={selectedType ? selectedType.customAttribute3 : "Custom Attribute 3"}
+            placeholder=""
+            multiline
+            value={customAttribute3}
+            onChange={(e) => setCustomAttribute3(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
+            placeholder=""
+            multiline
+            value={customAttribute4}
+            onChange={(e) => setCustomAttribute4(e.target.value)}
           />
         </Grid>
 
