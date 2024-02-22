@@ -1,6 +1,7 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -285,6 +286,28 @@ public class MainController {
   public @ResponseBody Optional<Type> getTypeByName(@PathVariable("typeName") String typeName) {
     // This returns a JSON or XML with the assets
     return typeRepository.findByTypeName(typeName);
+  }
+  
+  @GetMapping(path = "type/returnAttributes/{typeName}")
+  public @ResponseBody List<String> getTypeAttributes(@PathVariable("typeName") String typeName) {
+	Optional<Type> optType = getTypeByName(typeName);
+	Type type = new Type();
+	List<String> attributeList = new ArrayList<String>();
+	if (optType.isPresent()) {
+		type = optType.get();
+	}
+		if (type.getCustomAttribute1() != null) {
+			attributeList.add(type.getCustomAttribute1());
+		} if (type.getCustomAttribute2() != null) {
+			attributeList.add(type.getCustomAttribute2());
+		} if (type.getCustomAttribute3() != null) {
+			attributeList.add(type.getCustomAttribute3());
+		} if (type.getCustomAttribute4() != null) {
+			attributeList.add(type.getCustomAttribute4());
+		}
+		
+	return attributeList;
+		
   }
 
   /**
