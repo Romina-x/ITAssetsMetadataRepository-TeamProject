@@ -15,11 +15,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Test suite to validate the functions held within the Main Controller Class.
@@ -50,12 +53,12 @@ class MainControllerTest {
 
 
   /**
-   * Test string response of method which runs the map for the post request of create new asset.
+   * Test successful string response of method which runs the map for the post request of create new
+   * asset.
    *
    * @throws Exception , could be any checked exception.
    */
   @Test
-  // test 1
   void testAddNewAsset() throws Exception {
     MvcResult result = mvc
         .perform(MockMvcRequestBuilders.post("/asset/add").param("type", "document")
