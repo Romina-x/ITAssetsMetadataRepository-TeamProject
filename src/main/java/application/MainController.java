@@ -296,13 +296,13 @@ public class MainController {
 	if (optType.isPresent()) {
 		type = optType.get();
 	}
-		if (type.getCustomAttribute1() != null) {
+		if (!(type.getCustomAttribute1().equals(""))) {
 			attributeList.add(type.getCustomAttribute1());
-		} if (type.getCustomAttribute2() != null) {
+		} if (!(type.getCustomAttribute2().equals(""))) {
 			attributeList.add(type.getCustomAttribute2());
-		} if (type.getCustomAttribute3() != null) {
+		} if (!(type.getCustomAttribute3().equals(""))) {
 			attributeList.add(type.getCustomAttribute3());
-		} if (type.getCustomAttribute4() != null) {
+		} if (!(type.getCustomAttribute4().equals(""))) {
 			attributeList.add(type.getCustomAttribute4());
 		}
 		
