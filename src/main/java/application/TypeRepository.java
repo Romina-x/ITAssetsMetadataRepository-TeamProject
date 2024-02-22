@@ -16,6 +16,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TypeRepository extends CrudRepository<Type, Integer> {
 
-	Optional<Type> findByName(String name);
+	Optional<Type> findByTypeName(String typeName);
 
 }
