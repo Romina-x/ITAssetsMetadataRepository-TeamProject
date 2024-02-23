@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -58,16 +59,14 @@ class MainControllerTest {
    *
    * @throws Exception , could be any checked exception.
    */
-  @Test
   void testAddNewAsset() throws Exception {
-    MvcResult result = mvc
-        .perform(MockMvcRequestBuilders.post("/asset/add").param("type", "document")
-            .param("title", "This is a test document")
-            .param("link", "file:///Users/yusur/Downloads/wk1a-combined.pdf")
-            .param("lineNum", "120").param("progLang", "Java").param("isDocumentedIn", "1")
-            .param("dependsOn", "2").param("succeededBy", "4"))
-        .andReturn();
-    assertEquals("Saved", result.getResponse().getContentAsString());
+    String requestBody =
+        "{\"type\":\"document\", \"title\":\"This is a test document\", \"link\":\"file:///Users/yusur/Downloads/wk1a-combined.pdf\", \"lineNum\":120, \"progLang\":\"Java\", \"isDocumentedIn\":1, \"dependsOn\":2, \"succeededBy\":4, \"customAttribute1\":\"Project1\", \"customAttribute2\":\"Author\", \"customAttribute3\":\"Language\", \"customAttribute4\":\"Subject\"}";
+
+    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/asset/add")
+        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
+
+    assertEquals("Asset saved successfully", result.getResponse().getContentAsString());
   }
 
   /**
@@ -77,14 +76,15 @@ class MainControllerTest {
    */
   @Test
   void testAddNewType() throws Exception {
-    MvcResult result =
-        mvc.perform(MockMvcRequestBuilders.post("/type/add").param("type", "document")
-            .param("customAttribute1", "Size").param("customAttribute2", "Security Level")
-            .param("customAttribute3", "Revision").param("customAttribute4", "Author")).andReturn();
+    String requestBody =
+        "{\"typeName\":\"document\", \"customAttribute1\":\"Size\", \"customAttribute2\":\"Security Level\", \"customAttribute3\":\"Revision\", \"customAttribute4\":\"Author\"}";
 
-    assertEquals("Saved", result.getResponse().getContentAsString());
+    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/type/add")
+        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
 
+    assertEquals("Type saved successfully", result.getResponse().getContentAsString());
   }
+  
 
   /**
    * Test to validate the string response of the method which allows for population of the attribute
@@ -179,7 +179,7 @@ class MainControllerTest {
    */
   @Test
   void testGetAssetListByTitle() throws Exception {
-    
+
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
@@ -190,7 +190,7 @@ class MainControllerTest {
     asset1.setType("Video");
 
     mc.addNewAsset(asset1);
-    
+
     // asset to be added
     Asset asset2 = new Asset();
     asset1.setId(12332);
@@ -201,7 +201,7 @@ class MainControllerTest {
     asset1.setType("document");
 
     mc.addNewAsset(asset2);
-    
+
     // asset to be added
     Asset asset3 = new Asset();
     asset1.setId(1254);
@@ -212,7 +212,7 @@ class MainControllerTest {
     asset1.setType("mp3");
 
     mc.addNewAsset(asset3);
-    
+
     // asset to be added
     Asset asset4 = new Asset();
     asset1.setId(1344);
@@ -316,7 +316,7 @@ class MainControllerTest {
     asset1.setType("Video");
 
     mc.addNewAsset(asset1);
-    
+
     // asset to be added
     Asset asset2 = new Asset();
     asset1.setId(12332);
@@ -327,7 +327,7 @@ class MainControllerTest {
     asset1.setType("document");
 
     mc.addNewAsset(asset2);
-    
+
     // asset to be added
     Asset asset3 = new Asset();
     asset1.setId(1254);
@@ -338,7 +338,7 @@ class MainControllerTest {
     asset1.setType("mp3");
 
     mc.addNewAsset(asset3);
-    
+
     // asset to be added
     Asset asset4 = new Asset();
     asset1.setId(1344);
@@ -399,7 +399,7 @@ class MainControllerTest {
    */
   @Test
   void testGetAssetByLink() throws Exception {
-    
+
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
@@ -432,7 +432,7 @@ class MainControllerTest {
   @Test
   void testGetAssetListByLink() throws Exception {
 
- // asset to be added
+    // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
     asset1.setLineNum(156);
@@ -442,7 +442,7 @@ class MainControllerTest {
     asset1.setType("Video");
 
     mc.addNewAsset(asset1);
-    
+
     // asset to be added
     Asset asset2 = new Asset();
     asset1.setId(12332);
@@ -453,7 +453,7 @@ class MainControllerTest {
     asset1.setType("document");
 
     mc.addNewAsset(asset2);
-    
+
     // asset to be added
     Asset asset3 = new Asset();
     asset1.setId(1254);
@@ -464,7 +464,7 @@ class MainControllerTest {
     asset1.setType("mp3");
 
     mc.addNewAsset(asset3);
-    
+
     // asset to be added
     Asset asset4 = new Asset();
     asset1.setId(1344);
@@ -558,7 +558,7 @@ class MainControllerTest {
   @Test
   void testGetAssetListByLang() throws Exception {
 
- // asset to be added
+    // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
     asset1.setLineNum(156);
@@ -568,7 +568,7 @@ class MainControllerTest {
     asset1.setType("Video");
 
     mc.addNewAsset(asset1);
-    
+
     // asset to be added
     Asset asset2 = new Asset();
     asset1.setId(12332);
@@ -579,7 +579,7 @@ class MainControllerTest {
     asset1.setType("document");
 
     mc.addNewAsset(asset2);
-    
+
     // asset to be added
     Asset asset3 = new Asset();
     asset1.setId(1254);
@@ -590,7 +590,7 @@ class MainControllerTest {
     asset1.setType("mp3");
 
     mc.addNewAsset(asset3);
-    
+
     // asset to be added
     Asset asset4 = new Asset();
     asset1.setId(1344);
