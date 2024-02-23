@@ -26,7 +26,6 @@ export default function ViewAssets() {
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [deletingAssetId, setDeletingAssetId] = React.useState(null);
 
-  const [openAssetId, setOpenAssetId] = React.useState(null);
   const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
   const [editingAssetId, setEditingAssetId] = React.useState(null);
   
@@ -58,20 +57,14 @@ export default function ViewAssets() {
     }
   };
 
-  const handleOpen = (id) => {
-    setOpenAssetId(id);
-  };
-
-  const handleEditConfirmation = (id) => {
+  const handleEdit = (id) => {
     setEditingAssetId(id);
     setOpenEditConfirmation(true);
   };
 
-  const handleEditAsset = () => {
+  const handleEditAsset = (id) => {
+    setEditingAssetId(id);
     setOpenEditConfirmation(false);
-    // Navigate to the oter page
-
-
   };
 
   const handleChangePage = (event, newPage) => {
@@ -115,8 +108,7 @@ export default function ViewAssets() {
                   </Link>
                 </IconButton>
                 <IconButton className={styles.link}>
-                  {/* Use handleEditConfirmation function for edit confirmation */}
-                  <EditIcon onClick={() => handleEditConfirmation(a.id)} />
+                    <EditIcon onClick={() => handleEdit(a.id)} />
                 </IconButton>
                 <IconButton
                   className={styles.link}
@@ -163,11 +155,11 @@ export default function ViewAssets() {
       <EditConfirmationDialog
         open={openEditConfirmation}
         handleClose={() => setOpenEditConfirmation(false)}
-        handleConfirm={handleEditAsset}
-
-
-        title="Edit Asset"
-        message={`Are you sure you want to edit asset with ID: ${editingAssetId}?`} 
+        handleConfirm={() => {
+          setOpenEditConfirmation(false);
+          handleEditAsset(editingAssetId);
+        }}
+        assetId={editingAssetId}
       />
 
       <DeleteConfirmationDialog
