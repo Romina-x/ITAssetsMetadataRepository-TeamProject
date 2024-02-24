@@ -1,141 +1,98 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
+import React, { useState } from 'react'
+import SearchIcon from '@mui/icons-material/Search';
+import * as AssetAPI from "../AssetAPI";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { Link } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import styles from "../style/listItems.module.css";
+import { IconButton, TablePagination } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import UndoIcon from "@mui/icons-material/Undo";
+import DeleteConfirmationDialog from './DeletionConfirm';
+import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
-import CancelIcon from "@mui/icons-material/Cancel";
-import SaveIcon from "@mui/icons-material/Save";
-import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
-import { getAll } from "../AssetAPI";
 
 
-export default function FormPropsTextFields() {
-  //state variables for save and cancel buttons
-  const [save, setSave] = useState("Save");
-  const [cancel, setCancel] = useState("Cancel");
-  const [selectedType, setSelectedType] = useState(null);
-  const [responseData, setResponseData] = useState([]);
-  const [assetAttributes, setTypes] = useState([]);
-  const [assetAttribute, setType] = useState("");
-  const [searchExpression, setSearchExpression] = useState("contains");
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const searchExpressions = [
-    {
-      value: "contains",
-      label: "contains",
-    },
-    {
-      value: "containsExact",
-      label: "contains exact phrase",
-    },
-    {
-      value: "starts",
-      label: "starts with",
-    },
-    {
-      value: "equalsExact",
-      label: "equals exact phrase",
-    },
-  ];
-  
-  
-  //useEffect hook to fetch type names to populate the dropdown with
-  useEffect(() => {
-    getAll()
-      .then((data) => {
-        setResponseData(data);
-        // Extract only the typeName from each type object
-        const assetAttributes = Object.keys(data[0]);//data.map((type) => type.typeName);
-        setTypes(assetAttributes); // Set the types state with an array of type names
-        setType(assetAttributes[0]); //Set initial selected type to the first
-        setSelectedType(data[0]);
-      })
-      .catch((error) => {
-        console.error("Error fetching assets:", error);
-      });
-  }, []); 
+function App() {
+
+  React.useEffect(() => {
+    const getAssets = async () => {
+      const res = await AssetAPI.getAll();
+      setAssets(res);
+      setOriginalAssets(res);
+      const assetAttributes = Object.keys(res[0]);
+      setAssetAttributes(assetAttributes);
+      setSelectedAssetAttribute(assetAttributes[0]);
+    };
+    getAssets();
+  }, []);
+
+  const [assets, setAssets] = React.useState([])
+  const [originalAssets, setOriginalAssets] = useState([]);
+	const [searchVal, setSearchVal] = useState("");
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const [deletingAssetId, setDeletingAssetId] = React.useState(null);
+  const [assetAttributes, setAssetAttributes] = useState([]);
+  const [selectedAssetAttribute, setSelectedAssetAttribute] = useState("");
 
 
-  //useEffect hook to handle changes after save button is clicked
-  useEffect(() => {
-    if (save === "Saved") {
-      const timer = setTimeout(() => {
-        setSave("Save");
-      }, 2000); // Changes back to "Saved" after 2 seconds
-      return () => clearTimeout(timer);
+
+  function handleSearchClick() {
+    // Display all if no search term is present
+    if (searchVal === "") {
+      setAssets(originalAssets);
+      return;
     }
-  }, [save]);
-
-  //useEffect hook to handle changes after cancel button is clicked
-  useEffect(() => {
-    if (cancel === "Cancelled") {
-      const timer = setTimeout(() => {
-        document.getElementById("cancel-button").style.backgroundColor = "white";
-        document.getElementById("cancel-button").style.color = "blue";
-        setCancel("Cancel");
-      }, 1500); // Changes back to "Cancel" after 1.5 seconds
-      return () => clearTimeout(timer);
-    }
-
-  }, [cancel]);
-
-  //function to handle changes when save button is clicked
-  const handleSaveButtonClick = async (event) => {
-    setSave("Saved");
-    // logic for what happens when the asset is saved goes here
-    event.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:8080/asset/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          type: searchExpression,
-          title: searchTerm,
-        })
-      });
-      
-      
-      if (!response.ok) {
-        throw new Error('Failed to add asset');
-      }
-      resetValue()
-      console.log('Asset added successfully');
-    } catch (error) {
-      console.error('Error adding asset:', error);
-    }
-  };
-
-  const resetValue = () => {
-    setSearchExpression("Code");
-    setSearchTerm("");
+    const filterBySearch = originalAssets.filter((a) => {
+      const stringTitle = String(a.title);
+      return stringTitle.toLowerCase().includes(searchVal.toLowerCase());
+    });
+    setAssets(filterBySearch);
   }
 
-  // Function to handle type selection from dropdown
-  const handleAssetAttributeChange = (event) => {
-    const typeName = event.target.value;
-    const selectedType = responseData.find((type) => type.typeName === typeName);
-    setSelectedType(selectedType);
-    setType(typeName); // Update the type state variable
+  const handleDelete = (id) => {
+    setDeletingAssetId(id);
+    setOpenDeleteDialog(true);
   };
 
-  //function to handle changes when cancel button is clicked
-  const handleCancelButtonClick = () => {
-    const cancelButtonStyle = document.getElementById("cancel-button").style;
-    cancelButtonStyle.backgroundColor = "blue";
-    cancelButtonStyle.color = "red";
-    setCancel("Cancelled");
-    
-    resetValue()
+  const handleDeleteAsset = async (id) => {
+    try {
+      console.log(id);
+      const response = await AssetAPI.deleteById(id);
+      setAssets((assets) => assets.filter((a) => a.id !== id));
+      if (response.status === 200) {
+        console.log("Deleted");
+      } else {
+        console.error("Failed to delete");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  return (
-    <Box
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+	return (
+    <React.Fragment>
+      <Box
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "40ch" },
@@ -162,64 +119,96 @@ export default function FormPropsTextFields() {
       alignItems="center"
       >
         <TextField
-          id="outlined-select-currency"
-          select
-          label="Asset Attribute"
-          value={assetAttribute}
-          onChange={handleAssetAttributeChange}
-        >
-          {assetAttributes.map((attributeName) => (
-            <MenuItem key={attributeName} value={attributeName}>
-              {attributeName}
-            </MenuItem>
-          ))}
-        </TextField>
+          id="outlined-textarea"
+          placeholder="Enter a search term"
+          multiline
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+        />
+      <SearchIcon onClick={handleSearchClick} />
       </Grid>
-        <Grid item xs={6}
-        alignItems="center"
-        >
-          <TextField
-            id="outlined-textarea"
-            select
-            value={searchExpression}
-            onChange={(e) => setSearchExpression(e.target.value)}
-          >
-            {searchExpressions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            placeholder="Enter a search term"
-            multiline
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </Grid>
       </Grid>
 
-      <Stack direction="row" spacing={2}>
-        <Button
-          variant="contained"
-          endIcon={<SaveIcon />}
-          style={{ background: "black" }}
-          onClick={handleSaveButtonClick}
-        >
-          {save}
-        </Button>
-        <Button
-          id="cancel-button"
-          variant="outlined"
-          startIcon={<CancelIcon />}
-          onClick={handleCancelButtonClick}
-        >
-          {cancel}
-        </Button>
-      </Stack>
-    </Box>
-  );
+      </Box>
+
+    
+    <Table size="small">
+      <TableHead>
+        <TableRow>
+          <TableCell>ID</TableCell>
+          <TableCell>Type</TableCell>
+          <TableCell>Link</TableCell>
+          <TableCell>Title</TableCell>
+          <TableCell>Programming language</TableCell>
+          <TableCell align="right">Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {(rowsPerPage > 0
+          ? assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          : assets
+        ).map((a) => (
+          <TableRow key={a.id}>
+            <TableCell>{a.id}</TableCell>
+            <TableCell>{a.type}</TableCell>
+            <TableCell>{a.link}</TableCell>
+            <TableCell>{a.title}</TableCell>
+            <TableCell>{a.progLang}</TableCell>
+            <TableCell align="right">
+            <IconButton className={styles.link}>
+            <Link to={`/asset/open/${a.id}`} className={styles.link}>
+                <VisibilityIcon />
+            </Link>
+            </IconButton>
+              <IconButton className={styles.link}>
+                <Link to={`/asset/edit/${a.id}`} className={styles.link}>
+                  <EditIcon />
+                </Link>
+              </IconButton>
+              <IconButton
+                className={styles.link}
+                onClick={() => handleDelete(a.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+    <TablePagination
+      rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+      component="div"
+      count={assets.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+
+    <Stack direction="row" spacing={2}>
+      <Button
+        id="cancel-button"
+        variant="outlined"
+        endIcon={<UndoIcon />}
+        onClick={{}}
+      >
+        Back To Dashboard
+      </Button>
+    </Stack>
+    <DeleteConfirmationDialog
+      open={openDeleteDialog}
+      handleClose={() => setOpenDeleteDialog(false)}
+      handleConfirm={() => {
+        setOpenDeleteDialog(false);
+        // Call handleDeleteAsset function to delete the asset
+        handleDeleteAsset(deletingAssetId);
+      }}
+      assetId={deletingAssetId}
+    />
+    </React.Fragment>
+
+	);
 }
+
+export default App;
