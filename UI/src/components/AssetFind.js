@@ -44,7 +44,7 @@ export default function FormPropsTextFields() {
   
   //useEffect hook to fetch type names to populate the dropdown with
   useEffect(() => {
-    getAllAssets()
+    getAll()
       .then((data) => {
         setResponseData(data);
         // Extract only the typeName from each type object
