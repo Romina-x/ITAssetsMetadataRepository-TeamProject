@@ -10,6 +10,7 @@ import SourceIcon from "@mui/icons-material/Source";
 import { Link } from "react-router-dom";
 import styles from "../style/listItems.module.css";
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 export const adminListItems = (
@@ -84,6 +85,14 @@ export const adminListItems = (
           <SourceIcon />
         </ListItemIcon>
         <ListItemText primary="Open Type" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/find" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
     <Link to="/login" className={styles.link}>
