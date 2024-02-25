@@ -72,4 +72,33 @@ class AssetTest {
     assertEquals(a.getProgLang(), "Java", "Test that the ProgLang can be set and retrieved");
   }
   
+  /**
+   * Test to verify the function of the Asset get/set isDocumentedIn
+   */
+  @Test
+  public void assetGetSetIsDocumentedIn() {
+    Asset a = new Asset();
+    a.setIsDocumentedIn(3);
+    assertEquals(a.getIsDocumentedIn(), 3 , "Test that the isDocumentedIn can be set and retrieved");
+  }
+  
+  /**
+   * Test to verify the function of the Asset get/set dependsOn
+   */
+  @Test
+  public void assetGetSetDependsOn() {
+    Asset a = new Asset();
+    a.setDependsOn(8);
+    assertEquals(a.getDependsOn(), 8, "Test that the dependsOn can be set and retrieved");
+  }
+  
+  /**
+   * Test to verify the function of the Asset get/set suceededBy
+   */
+  @Test
+  public void assetGetSetSucceededBy() {
+    Asset a = new Asset();
+    a.setSucceededBy(5);
+    assertEquals(a.getSucceededBy(), 5, "Test that the suceededBy can be set and retrieved");
+  }
 }

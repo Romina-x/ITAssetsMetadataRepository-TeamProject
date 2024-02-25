@@ -1,5 +1,6 @@
 package application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,41 @@ public class Asset {
 
   private String progLang;
 
+  private Integer isDocumentedIn;
+
+  private Integer dependsOn;
+
+  private Integer succeededBy;
+
+  private String customAttribute1;
+
+  private String customAttribute2;
+
+  private String customAttribute3;
+
+  private String customAttribute4;
+
+
+
+  public Asset() {}
+
+  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang,
+      Integer isDocumentedIn, Integer dependsOn, Integer succeededBy, String customAttribute1,
+      String customAttribute2, String customAttribute3, String customAttribute4) {
+    this.id = id;
+    this.type = type;
+    this.title = title;
+    this.link = link;
+    this.lineNum = lineNum;
+    this.progLang = progLang;
+    this.isDocumentedIn = isDocumentedIn;
+    this.dependsOn = dependsOn;
+    this.succeededBy = succeededBy;
+    this.customAttribute1 = customAttribute1;
+    this.customAttribute1 = customAttribute2;
+    this.customAttribute1 = customAttribute3;
+    this.customAttribute1 = customAttribute4;
+  }
 
   public Integer getId() {
     return id;
@@ -76,4 +112,59 @@ public class Asset {
   public void setProgLang(String progLang) {
     this.progLang = progLang;
   }
+
+  public Integer getIsDocumentedIn() {
+    return isDocumentedIn;
+  }
+
+  public void setIsDocumentedIn(Integer isDocumentedIn) {
+    this.isDocumentedIn = isDocumentedIn;
+  }
+
+  public Integer getDependsOn() {
+    return dependsOn;
+  }
+
+  public void setDependsOn(Integer dependsOn) {
+    this.dependsOn = dependsOn;
+  }
+
+  public Integer getSucceededBy() {
+    return succeededBy;
+  }
+
+  public void setSucceededBy(Integer succeededBy) {
+    this.succeededBy = succeededBy;
+  }
+  
+  public String getCustomAttribute1() {
+    return customAttribute1;
+  }
+  
+  public void setCustomAttribute1(String customAttribute1) {
+    this.customAttribute1 = customAttribute1;
+  }
+
+  public String getCustomAttribute2() {
+    return customAttribute2;
+  }
+  
+  public void setCustomAttribute2(String customAttribute2) {
+    this.customAttribute2 = customAttribute2;
+  }
+  public String getCustomAttribute3() {
+    return customAttribute3;
+  }
+  
+  public void setCustomAttribute3(String customAttribute3) {
+    this.customAttribute3 = customAttribute3;
+  }
+  public String getCustomAttribute4() {
+    return customAttribute4;
+  }
+  
+  public void setCustomAttribute4(String customAttribute4) {
+    this.customAttribute4 = customAttribute4;
+  }
+
 }

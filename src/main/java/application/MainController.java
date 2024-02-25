@@ -1,10 +1,12 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,29 +37,37 @@ public class MainController {
 
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
-  
+
   @Autowired
   private UserRepository userRepository;
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
 
-  
+  @Autowired
+  public MainController(AssetRepository assetRepository) {
+    this.assetRepository = assetRepository;
+  }
+
+  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
+    this.assetRepository = assetRepository;
+    this.actionLogRepository = actionLogRepository;
+  }
+
   /**
    * This method allows for the application of CORS cross origin compatibility with the API
    *
-   * @return 
+   * @return
    */
   @RequestMapping(value = "/products")
   @CrossOrigin(origins = "http://localhost:8080")
   public ResponseEntity<Object> getProduct() {
-     return null;
+    return null;
   }
-  
-  
+
   /**
-   * This method is a map only for POST requests. It takes the parameters supplied by the user for the asset and
-   * inputs it into the database.
+   * This method is a map only for POST requests. It takes the parameters supplied by the user for
+   * the asset and inputs it into the database.
    *
    * @param type the type format that the asset aligns to
    * @param title what the asset should be called
@@ -65,21 +76,17 @@ public class MainController {
    * @param progLang what language is the asset written in (English/Java/etc)
    * @return confirmation string
    */
-  @PostMapping(path = "/asset/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewAsset(@RequestParam String type, @RequestParam String title,
-      @RequestParam String link, @RequestParam Integer lineNum, @RequestParam String progLang) {
-    // @ResponseBody means the returned String is the response, not a view name
-    // @RequestParam means it is a parameter from the GET or POST request
-
-    Asset n = new Asset();
-    n.setType(type);
-    n.setTitle(title);
-    n.setLink(link);
-    n.setLineNum(lineNum);
-    n.setProgLang(progLang);
-    assetRepository.save(n);    
-    return "Saved";
+  @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
+    try {
+        assetRepository.save(asset);    
+        return ResponseEntity.ok("Asset saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
   }
+
 
   /**
    * This method intitalises the model to allow for population of the attribute data for a specific
@@ -90,13 +97,13 @@ public class MainController {
    */
   @GetMapping("/asset/createAsset") // GET request : When you go to localhost:8080/createAsset
   public String assetForm(Model model) {
-    model.addAttribute("createAsset", new Asset()); // Gives the form an asset object to add
-                                                    // attributes to
+    // Gives the form an asset object to add attributes to
+    model.addAttribute("createAsset", new Asset());
     return "createAsset"; // renders createAsset.html
   }
 
   /**
-   * This method is the POST request to send the content of the asset form for submission to the database.
+   * This method is the POST request to send the content of the form for submission to the database.
    * It onward routes to the result.html page.
    *
    * @param asset
@@ -107,6 +114,7 @@ public class MainController {
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     Asset savedAsset = assetRepository.save(asset); // Add the asset object to the database
     addActionLog(savedAsset.getId(), "Added asset"); // Adds an action record to the log
+    model.addAttribute("savedAsset", savedAsset); // Add savedAsset to the model
     return "result"; // renders result.html
   }
 
@@ -121,11 +129,11 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return assetRepository.findAll();
   }
-  
+
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
    * localhost:8080/asset/find/{id}.
-   * 
+   *
    * @param id of the asset to be queried
    * @return JSON of the asset returned by the id number search
    */
@@ -136,18 +144,20 @@ public class MainController {
   }
 
   /**
-   * This method manages the GET request and renders the delete asset page 
+   * This method manages the GET request and renders the delete asset page
    * 
    * @param model
    * @return routing for the /deleteAsset page
    */
   @GetMapping("/asset/deleteAsset") // GET request : When you go to localhost:8080/type/deleteAsset
   public String deleteAsset(Model model) {
-    model.addAttribute("deleteAsset", new Asset()); // Gives the form a Asset object to add attributes
-                                                  // to
+    model.addAttribute("deleteAsset", new Asset()); // Gives the form a Asset object to add
+                                                    // attributes
+    // to
     return "deleteAsset"; // renders deleteAsset.html
   }
-  
+
+
   /**
    * This method allows for the deletion of individual assets by referencing their id numbers in the
    * url localhost:8080/asset/delete/{id}.
@@ -162,8 +172,10 @@ public class MainController {
     return "resultDeleteAsset"; // renders resultDeleteAsset.html
   }
 
-////  End of Asset functions. Start of Type functions.
-  
+  //// End of Asset functions. Start of Type functions.
+
+
+
   /**
    * This method is a map only for POST requests. It takes the parameters supplied by the user for the type and
    * inputs it into the database.
@@ -175,6 +187,15 @@ public class MainController {
    * @param customAttribute4 the title of the four custom attribute held only within this type of asset
    * @return confirmation string 
    */
+  @PostMapping(path = "/type/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewType(@RequestBody Type type) {
+    try {
+        typeRepository.save(type);    
+        return ResponseEntity.ok("Type saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
   @PostMapping(path = "/type/add") // Map ONLY POST Requests
   public @ResponseBody String addNewType(@RequestParam String type,
       @RequestParam String customAttribute1, @RequestParam String customAttribute2,
@@ -203,17 +224,17 @@ public class MainController {
   @GetMapping("/asset/editAsset/{id}")
   public String editAssetForm(@PathVariable("id") Integer id, Model model) {
     Optional<Asset> assetOptional = assetRepository.findById(id);
-    if (assetOptional.isPresent()) { //check if asset to edit is present
-        Asset asset = assetOptional.get();
-        model.addAttribute("asset", asset);
-        model.addAttribute("id", id);
-        return "editAsset";
+    if (assetOptional.isPresent()) { // check if asset to edit is present
+      Asset asset = assetOptional.get();
+      model.addAttribute("asset", asset);
+      model.addAttribute("id", id);
+      return "editAsset";
     } else {
-        // Handle asset not found
-        return "assetNotFound"; // Render error.html 
+      // Handle asset not found
+      return "assetNotFound"; // Render error.html
     }
   }
-  
+
   /**
    * This method handles the submitted edit form and updates the asset within the database.
    * 
@@ -222,15 +243,17 @@ public class MainController {
    * @return asset added page
    */
   @PostMapping("/asset/editAsset/{id}")
-  public String editAssetSubmit(@PathVariable("id") Integer id, @ModelAttribute Asset updatedAsset) {
+  public String editAssetSubmit(@PathVariable("id") Integer id,
+      @ModelAttribute Asset updatedAsset) {
     updatedAsset.setId(id);
+    addActionLog(updatedAsset.getId(), "Edited asset"); // Adds an action record to the log
     assetRepository.save(updatedAsset);
     return "result";
   }
 
   /**
-   * This method fetches all the types stored in the database and returns a JSON file of the
-   * content to the web page.
+   * This method fetches all the types stored in the database and returns a JSON file of the content
+   * to the web page.
    *
    * @return all types and their custom attributes
    */
@@ -249,16 +272,16 @@ public class MainController {
    */
   @GetMapping("/type/createType") // GET request : When you go to localhost:8080/type/createType
   public String typeForm(Model model) {
-    model.addAttribute("createType", new Type()); // Gives the form a Type object to add attributes
-                                                  // to
+    // Gives the form a Type object to add attributes to
+    model.addAttribute("createType", new Type());
     return "createType"; // renders createType.html
   }
 
   /**
-   * This method is the POST request to send the content of the type form for submission to the database.
-   * It onward routes to the resultCreateType.html page.
+   * This method is the POST request to send the content of the type form for submission to the
+   * database. It onward routes to the resultCreateType.html page.
    *
-   * @param type  
+   * @param type
    * @param model
    * @return onward path routing for the resultCreateType.html page
    */
@@ -272,7 +295,7 @@ public class MainController {
   /**
    * This method is a query function to request the details of a type by its Id number in the url
    * localhost:8080/type/find/{id}.
-   * 
+   *
    * @param id of the type to be queried
    * @return JSON of the type returned by the id number search
    */
@@ -311,15 +334,15 @@ public class MainController {
   }
 
   /**
-   * This method manages the GET request and renders the delete type page 
+   * This method manages the GET request and renders the delete type page
    * 
    * @param model
    * @return routing for the /deleteType page
    */
   @GetMapping("/type/deleteType") // GET request : When you go to localhost:8080/type/deleteType
   public String deleteType(Model model) {
-    model.addAttribute("deleteType", new Type()); // Gives the form a Type object to add attributes
-                                                  // to
+    // Gives the form a Type object to add attributes to
+    model.addAttribute("deleteType", new Type());
     return "deleteType"; // renders deleteType.html
   }
 
@@ -336,12 +359,12 @@ public class MainController {
     addActionLog(id, "Deleted type"); // Adds an action record to the log
     return "resultDeleteType";
   }
-  
-////End of Type functions. Start of Log functions.
-  
-  
+
+  //// End of Type functions. Start of Log functions.
+
   /**
-   * This method is a map only for POST requests, It thakes the parameters supplied by the user for the action log and inputs it in to the database.
+   * This method is a map only for POST requests, It thakes the parameters supplied by the user for
+   * the action log and inputs it in to the database.
    * 
    * @param itemId reference id for the item being recorded in the log
    * @param action what task was being undertaken on that item id (such as: deleted)
@@ -349,7 +372,7 @@ public class MainController {
    */
   public @ResponseBody String addActionLog(@RequestParam Integer itemId,
       @RequestParam String action) {
-    
+
     ActionLog al = new ActionLog();
     al.setItemId(itemId);
     al.setAction(action);
@@ -357,7 +380,7 @@ public class MainController {
     actionLogRepository.save(al);
     return "Saved";
   }
-  
+
   /**
    * This method fetches all the action logs stored in the database and returns a JSON file of the
    * content to the web page.
@@ -369,11 +392,11 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return actionLogRepository.findAll();
   }
-  
+
   /**
    * This method is a query function to request the details of an asset by its Id number in the url
    * localhost:8080/asset/find/{id}.
-   * 
+   *
    * @param id of the log entry to be queried
    * @return JSON of the action log to be returned by the id number search
    */
@@ -382,16 +405,15 @@ public class MainController {
     // This returns a JSON or XML with the assets
     return actionLogRepository.findById(id);
   }
-  
+
   //// End of log functions, start of user functions.
-  
+
   /**
    * This method renders the edit type page depending on a given type id.
    * 
    * @param id
    * @param model
-   * @return edit type page or error page
-   * This method creates a new user, for use on command line.
+   * @return edit type page or error page This method creates a new user, for use on command line.
    * @param name - name of the user to be created
    * @param password - password of the user to be created
    * @param role - permission level of user to be created (e.g.: user/ admin)
@@ -400,61 +422,62 @@ public class MainController {
   @GetMapping("/type/editType/{id}")
   public String editTypeForm(@PathVariable("id") Integer id, Model model) {
     Optional<Type> typeOptional = typeRepository.findById(id);
-    if (typeOptional.isPresent()) { //check if asset to edit is present
-        Type type = typeOptional.get();
-        model.addAttribute("type", type);
-        model.addAttribute("id", id);
-        return "editType";
+    if (typeOptional.isPresent()) { // check if asset to edit is present
+      Type type = typeOptional.get();
+      model.addAttribute("type", type);
+      model.addAttribute("id", id);
+      return "editType";
     } else {
-        // Handle type not found
-        return "typeNotFound"; // Render error.html 
+      // Handle type not found
+      return "typeNotFound"; // Render error.html
     }
   }
-  
+
   @PostMapping(path = "/user/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser(@RequestParam String name,
-	      @RequestParam String password, @RequestParam String role) {
-	  
-	//Permissions userRole = null;
-	
-    //for(Permissions perm: Permissions.values()) {
-    	//if(perm.toString().equalsIgnoreCase(role)) {
-    		//userRole = perm;
-    	//}
-    //}
+  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
+      @RequestParam String role) {
+
+    // Permissions userRole = null;
+
+    // for(Permissions perm: Permissions.values()) {
+    // if(perm.toString().equalsIgnoreCase(role)) {
+    // userRole = perm;
+    // }
+    // }
 
     User newUser = new User();
     newUser.setName(name);
     newUser.setPassword(password);
     newUser.setRole(role);
     userRepository.save(newUser);
-    
+
     return "Saved";
   }
-  
+
   /**
    * This method handles the submitted edit form and updates the type within the database.
    * 
    * @param id
    * @param updatedType
-   * @return type added page
-   * This method displays all users currently stored in the database.
+   * @return type added page This method displays all users currently stored in the database.
    * @return a list of every user currently stored in the database and all their attributes.
    */
   @PostMapping("/type/editType/{id}")
   public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
     updatedType.setId(id);
+    addActionLog(updatedType.getId(), "Edited type"); // Adds an action record to the log
     typeRepository.save(updatedType);
     return "resultCreateType";
   }
-  
+
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     return userRepository.findAll();
   }
-  
+
   /**
    * This method returns a user with an id matching the provided path variable value.
+   * 
    * @param id the id value to be searched for in the database
    * @return the User matching the provided id
    */
@@ -462,19 +485,21 @@ public class MainController {
   public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
     return userRepository.findById(id);
   }
-  
+
   /**
    * This method returns a user with a name matching the provided path variable value.
+   * 
    * @param name the name of the user being searched for.
    * @return the User matching the provided name.
    */
   @GetMapping(path = "/user/findName/{name}")
   public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
-	return userRepository.findByName(name);
+    return userRepository.findByName(name);
   }
-  
+
   /**
    * This method renders createUser.html with input forms for each attribute.
+   * 
    * @param model an interface for holding attribute values for the user to be created.
    * @return the createUser webpage
    */
@@ -484,27 +509,106 @@ public class MainController {
                                                   // attributes to
     return "createUser"; // renders createUser.html
   }
-  
+
   /**
-   * This method occurs once the submit button on the createUser html page is pressed.
-   * Saves the created user to the database and renders the result page.
+   * This method occurs once the submit button on the createUser html page is pressed. Saves the
+   * created user to the database and renders the result page.
+   * 
    * @param user the User created by assigning input form values in the userForm method.
    * @param model an interface for holding attribute values for the user created.
-   * @return the resultCreateUser page which informs the user that the save was successful and prompts them to create another.
+   * @return the resultCreateUser page which informs the user that the save was successful and
+   *         prompts them to create another.
    */
   @PostMapping("/user/createUser") // POST request : When you submit the form
   public String userSubmit(@ModelAttribute User user, Model model) {
-  //for(Permissions perm: Permissions.values()) {
-    	//if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
-  //Commented out as role was changed to String to meet sprint 2 demo deadline
-  //Will be re-implemented next sprint 
-  userRepository.save(user);
-    	
-  
-  return "resultCreateUser"; // renders resultCreateUser.html
+    // for(Permissions perm: Permissions.values()) {
+    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
+    // Commented out as role was changed to String to meet sprint 2 demo deadline
+    // Will be re-implemented next sprint
+    userRepository.save(user);
+
+    return "resultCreateUser"; // renders resultCreateUser.html
   }
-  
-  
+
+  /**
+   * This method is a query function to request the details of assets by their title in the url
+   * localhost:8080/asset/findTitle/{title}.
+   *
+   * @param title of asset user wants
+   * @return asset list that has assets of the same title as the searched title
+   */
+  @GetMapping(path = "/asset/findTitle/{title}")
+  public @ResponseBody List<Asset> getAssetByTitle(@PathVariable("title") String title) {
+    List<Asset> assetsWithTitle = new ArrayList<>();
+    // find collection of assets which can be iterated over
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) { // look through collection of assets
+      if (asset.getTitle().equals(title)) {
+        assetsWithTitle.add(asset);
+      }
+    }
+    return assetsWithTitle;
+  }
+
+  /**
+   * This method is a query function to request the details of assets by their type in the url
+   * localhost:8080/asset/findType/{type}.
+   *
+   * @param type of asset user wants
+   * @return asset list that has assets of the same type as the searched type
+   */
+  @GetMapping(path = "/asset/findType/{type}")
+  public @ResponseBody List<Asset> getAssetByType(@PathVariable("type") String type) {
+    List<Asset> assetsWithType = new ArrayList<>();
+
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      if (asset.getType().equals(type)) {
+        assetsWithType.add(asset);
+      }
+    }
+    return assetsWithType;
+  }
+
+  /**
+   * This method is a query function to request the details of assets by their link in the url
+   * localhost:8080/asset/findLink/{link}.
+   *
+   * @param link of asset that user wants
+   * @return asset that has same link as the searched link
+   */
+  @GetMapping(path = "/asset/findLink/{link}")
+  public @ResponseBody List<Asset> getAssetByLink(@PathVariable("link") String link) {
+    List<Asset> assetsWithLink = new ArrayList<>();
+
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      if (asset.getLink().equals(link)) {
+        assetsWithLink.add(asset);
+      }
+    }
+    return assetsWithLink;
+  }
+
+  /**
+   * This method is a query function to request the details of assets by their programming language
+   * in the url localhost:8080/asset/findProgLang/{progLang}.
+   *
+   * @param progLang of asset that user wants
+   * @return asset that has same programming language as the searched link
+   */
+  @GetMapping(path = "/asset/findProgLang/{progLang}")
+  public @ResponseBody List<Asset> getAssetByLang(@PathVariable("progLang") String progLang) {
+    List<Asset> assetsWithLang = new ArrayList<>();
+
+    Iterable<Asset> allAssets = assetRepository.findAll();
+    for (Asset asset : allAssets) {
+      if (asset.getProgLang().equals(progLang)) {
+        assetsWithLang.add(asset);
+      }
+    }
+    return assetsWithLang;
+  }
 
 }
 
