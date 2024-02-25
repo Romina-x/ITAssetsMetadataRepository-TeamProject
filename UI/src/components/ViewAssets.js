@@ -16,7 +16,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './DeletionConfirm';
+import DeleteConfirmationDialog from './AssetDelConfirm';
 
 export default function ViewAssets() {
   const [assets, setAssets] = React.useState([]);
