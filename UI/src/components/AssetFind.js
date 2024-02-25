@@ -19,6 +19,8 @@ import DeleteConfirmationDialog from './DeletionConfirm';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+
 
 
 
@@ -31,7 +33,7 @@ function App() {
       setOriginalAssets(res);
       const assetAttributes = Object.keys(res[0]);
       setAssetAttributes(assetAttributes);
-      setSelectedAssetAttribute(assetAttributes[0]);
+      setSelectedAssetAttribute("title");
     };
     getAssets();
   }, []);
@@ -46,7 +48,11 @@ function App() {
   const [assetAttributes, setAssetAttributes] = useState([]);
   const [selectedAssetAttribute, setSelectedAssetAttribute] = useState("");
 
-
+  // Function to handle type selection from dropdown
+  const handleAssetAttributeChange = (event) => {
+    const attributeName = event.target.value;
+    setSelectedAssetAttribute(attributeName);
+  };
 
   function handleSearchClick() {
     // Display all if no search term is present
@@ -54,12 +60,14 @@ function App() {
       setAssets(originalAssets);
       return;
     }
+
     const filterBySearch = originalAssets.filter((a) => {
-      const stringTitle = String(a.title);
-      return stringTitle.toLowerCase().includes(searchVal.toLowerCase());
+      const stringQuery = String(a[selectedAssetAttribute]);
+      return stringQuery.toLowerCase().includes(searchVal.toLowerCase());
     });
+
     setAssets(filterBySearch);
-  }
+}
 
   const handleDelete = (id) => {
     setDeletingAssetId(id);
@@ -115,6 +123,23 @@ function App() {
 
         }}
       >
+      <Grid item xs={6}
+      alignItems="center"
+      >
+        <TextField
+          id="outlined-select-currency"
+          select
+          label="Asset Attribute"
+          value={selectedAssetAttribute}
+          onChange={handleAssetAttributeChange}
+        >
+          {assetAttributes.map((attributeName) => (
+            <MenuItem key={attributeName} value={attributeName}>
+              {attributeName}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>  
       <Grid item xs={6}
       alignItems="center"
       >
