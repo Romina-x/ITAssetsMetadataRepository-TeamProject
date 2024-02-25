@@ -7,6 +7,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
+import * as TypeAPI from "../utility/TypeAPI"
 
 
 export default function FormPropsTextFields() {
@@ -51,18 +52,12 @@ export default function FormPropsTextFields() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/type/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      const response = await TypeAPI.addType({
           typeName,
           customAttribute1,
           customAttribute2,
           customAttribute3,
           customAttribute4
-        })
       });
       
       
