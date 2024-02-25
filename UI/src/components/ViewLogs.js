@@ -5,7 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-import * as LogAPI from '../LogAPI';
+import * as LogAPI from '../ultility/LogAPI';
 
 export default function ViewLogs() {
   React.useEffect(() => {

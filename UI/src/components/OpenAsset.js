@@ -5,10 +5,10 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-import * as AssetAPI from '../AssetAPI';
+import * as AssetAPI from '../ultility/AssetAPI';
 import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
-import * as LogAPI from '../LogAPI';
+import * as LogAPI from '../ultility/LogAPI';
 import { useParams } from "react-router-dom";
 
 
