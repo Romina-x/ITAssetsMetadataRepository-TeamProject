@@ -44,22 +44,6 @@ export const adminListItems = (
         <ListItemText primary="View Logs" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/open" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <SourceIcon />
-        </ListItemIcon>
-        <ListItemText primary="Open Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/type/open" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <SourceIcon />
-        </ListItemIcon>
-        <ListItemText primary="Open Type" />
-      </ListItemButton>
-    </Link>
     <Link to="/asset/find" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
@@ -95,6 +79,14 @@ export const userListItems = (
           <SourceIcon />
         </ListItemIcon>
         <ListItemText primary="View Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/find" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
     <Link to="/login" className={styles.link}>
