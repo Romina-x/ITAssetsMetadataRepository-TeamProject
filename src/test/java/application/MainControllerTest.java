@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 /**
  * Test suite to validate the functions held within the Main Controller Class.
@@ -70,6 +72,36 @@ class MainControllerTest {
   }
 
   /**
+   * Test error string response of method which runs the map for the post request of create new
+   * asset.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewAsset_Exception() throws Exception {
+
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setLineNum(78);
+    asset1.setLink("www.youtube.com");
+    asset1.setProgLang("Java");
+    asset1.setTitle("This is a title");
+    asset1.setType("Video");
+
+    // Mock the behavior of assetRepository.save() to throw an exception
+    when(assetRepository.save(asset1))
+        .thenThrow(new RuntimeException("This is a made up exception"));
+
+    // Call the addNewAsset method
+    ResponseEntity<String> response = mc.addNewAsset(asset1);
+
+    // Verify that the response is as expected
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    assertEquals("Error: This is a made up exception", response.getBody());
+  }
+
+  /**
    * Test string response of the method which runs the map for the post request of create new type.
    *
    * @throws Exception , could be any checked exception.
@@ -84,7 +116,7 @@ class MainControllerTest {
 
     assertEquals("Type saved successfully", result.getResponse().getContentAsString());
   }
-  
+
 
   /**
    * Test to validate the string response of the method which allows for population of the attribute
@@ -193,34 +225,34 @@ class MainControllerTest {
 
     // asset to be added
     Asset asset2 = new Asset();
-    asset1.setId(12332);
-    asset1.setLineNum(123);
-    asset1.setLink("randomLink");
-    asset1.setProgLang("Java");
-    asset1.setTitle("Beans");
-    asset1.setType("document");
+    asset2.setId(12332);
+    asset2.setLineNum(123);
+    asset2.setLink("randomLink");
+    asset2.setProgLang("Java");
+    asset2.setTitle("Beans");
+    asset2.setType("document");
 
     mc.addNewAsset(asset2);
 
     // asset to be added
     Asset asset3 = new Asset();
-    asset1.setId(1254);
-    asset1.setLineNum(167);
-    asset1.setLink("randomLink2");
-    asset1.setProgLang("German");
-    asset1.setTitle("Beans");
-    asset1.setType("mp3");
+    asset3.setId(1254);
+    asset3.setLineNum(167);
+    asset3.setLink("randomLink2");
+    asset3.setProgLang("German");
+    asset3.setTitle("Beans");
+    asset3.setType("mp3");
 
     mc.addNewAsset(asset3);
 
     // asset to be added
     Asset asset4 = new Asset();
-    asset1.setId(1344);
-    asset1.setLineNum(156);
-    asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
-    asset1.setTitle("notBeans");
-    asset1.setType("Video");
+    asset4.setId(1344);
+    asset4.setLineNum(156);
+    asset4.setLink("www.youtube.com");
+    asset4.setProgLang("English");
+    asset4.setTitle("notBeans");
+    asset4.setType("Video");
 
     mc.addNewAsset(asset4);
 
@@ -319,34 +351,34 @@ class MainControllerTest {
 
     // asset to be added
     Asset asset2 = new Asset();
-    asset1.setId(12332);
-    asset1.setLineNum(123);
-    asset1.setLink("randomLink");
-    asset1.setProgLang("Java");
-    asset1.setTitle("Beans");
-    asset1.setType("document");
+    asset2.setId(12332);
+    asset2.setLineNum(123);
+    asset2.setLink("randomLink");
+    asset2.setProgLang("Java");
+    asset2.setTitle("Beans");
+    asset2.setType("document");
 
     mc.addNewAsset(asset2);
 
     // asset to be added
     Asset asset3 = new Asset();
-    asset1.setId(1254);
-    asset1.setLineNum(167);
-    asset1.setLink("randomLink2");
-    asset1.setProgLang("German");
-    asset1.setTitle("Beans");
-    asset1.setType("mp3");
+    asset3.setId(1254);
+    asset3.setLineNum(167);
+    asset3.setLink("randomLink2");
+    asset3.setProgLang("German");
+    asset3.setTitle("Beans");
+    asset3.setType("mp3");
 
     mc.addNewAsset(asset3);
 
     // asset to be added
     Asset asset4 = new Asset();
-    asset1.setId(1344);
-    asset1.setLineNum(156);
-    asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
-    asset1.setTitle("notBeans");
-    asset1.setType("Video");
+    asset4.setId(1344);
+    asset4.setLineNum(156);
+    asset4.setLink("www.youtube.com");
+    asset4.setProgLang("English");
+    asset4.setTitle("notBeans");
+    asset4.setType("Video");
 
     mc.addNewAsset(asset4);
 
@@ -445,34 +477,34 @@ class MainControllerTest {
 
     // asset to be added
     Asset asset2 = new Asset();
-    asset1.setId(12332);
-    asset1.setLineNum(123);
-    asset1.setLink("randomLink");
-    asset1.setProgLang("Java");
-    asset1.setTitle("Beans");
-    asset1.setType("document");
+    asset2.setId(12332);
+    asset2.setLineNum(123);
+    asset2.setLink("randomLink");
+    asset2.setProgLang("Java");
+    asset2.setTitle("Beans");
+    asset2.setType("document");
 
     mc.addNewAsset(asset2);
 
     // asset to be added
     Asset asset3 = new Asset();
-    asset1.setId(1254);
-    asset1.setLineNum(167);
-    asset1.setLink("randomLink2");
-    asset1.setProgLang("German");
-    asset1.setTitle("Beans");
-    asset1.setType("mp3");
+    asset3.setId(1254);
+    asset3.setLineNum(167);
+    asset3.setLink("randomLink2");
+    asset3.setProgLang("German");
+    asset3.setTitle("Beans");
+    asset3.setType("mp3");
 
     mc.addNewAsset(asset3);
 
     // asset to be added
     Asset asset4 = new Asset();
-    asset1.setId(1344);
-    asset1.setLineNum(156);
-    asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
-    asset1.setTitle("notBeans");
-    asset1.setType("Video");
+    asset4.setId(1344);
+    asset4.setLineNum(156);
+    asset4.setLink("www.youtube.com");
+    asset4.setProgLang("English");
+    asset4.setTitle("notBeans");
+    asset4.setType("Video");
 
     mc.addNewAsset(asset4);
 
@@ -571,34 +603,34 @@ class MainControllerTest {
 
     // asset to be added
     Asset asset2 = new Asset();
-    asset1.setId(12332);
-    asset1.setLineNum(123);
-    asset1.setLink("randomLink");
-    asset1.setProgLang("Java");
-    asset1.setTitle("Beans");
-    asset1.setType("document");
+    asset2.setId(12332);
+    asset2.setLineNum(123);
+    asset2.setLink("randomLink");
+    asset2.setProgLang("Java");
+    asset2.setTitle("Beans");
+    asset2.setType("document");
 
     mc.addNewAsset(asset2);
 
     // asset to be added
     Asset asset3 = new Asset();
-    asset1.setId(1254);
-    asset1.setLineNum(167);
-    asset1.setLink("randomLink2");
-    asset1.setProgLang("German");
-    asset1.setTitle("Beans");
-    asset1.setType("mp3");
+    asset3.setId(1254);
+    asset3.setLineNum(167);
+    asset3.setLink("randomLink2");
+    asset3.setProgLang("German");
+    asset3.setTitle("Beans");
+    asset3.setType("mp3");
 
     mc.addNewAsset(asset3);
 
     // asset to be added
     Asset asset4 = new Asset();
-    asset1.setId(1344);
-    asset1.setLineNum(156);
-    asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
-    asset1.setTitle("notBeans");
-    asset1.setType("Video");
+    asset4.setId(1344);
+    asset4.setLineNum(156);
+    asset4.setLink("www.youtube.com");
+    asset4.setProgLang("English");
+    asset4.setTitle("notBeans");
+    asset4.setType("Video");
 
     mc.addNewAsset(asset4);
 
@@ -641,6 +673,51 @@ class MainControllerTest {
           "Should return a list of assets with the searched language English.");
     }
 
+  }
+
+  /**
+   * Test to validate that upon accessing the /asset/find/all path, all data stored about assets in
+   * the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAllAssets() throws Exception {
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setLineNum(156);
+    asset1.setLink("www.youtube.com");
+    asset1.setProgLang("English");
+    asset1.setTitle("Beans");
+    asset1.setType("Video");
+
+    mc.addNewAsset(asset1);
+
+    // asset to be added
+    Asset asset2 = new Asset();
+    asset2.setId(12332);
+    asset2.setLineNum(123);
+    asset2.setLink("randomLink");
+    asset2.setProgLang("Java");
+    asset2.setTitle("Beans");
+    asset2.setType("document");
+
+    mc.addNewAsset(asset2);
+
+    // Mock the behavior of the findAll method to return the mock assets
+    when(assetRepository.findAll()).thenReturn(Arrays.asList(asset1, asset2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/asset/find/all"))
+        // Expects that the request was successful
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(4))
+        // Check the JSON properties of the first asset in the array
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(12345))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].type").value("Video"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Beans"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].link").value("www.youtube.com"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].lineNum").value(156))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].progLang").value("English"));
   }
 
 
