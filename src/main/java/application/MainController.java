@@ -76,24 +76,15 @@ public class MainController {
    * @param progLang what language is the asset written in (English/Java/etc)
    * @return confirmation string
    */
-  @PostMapping(path = "/asset/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewAsset(@RequestParam String type, @RequestParam String title,
-      @RequestParam String link, @RequestParam Integer lineNum, @RequestParam String progLang,
-      @RequestParam Integer isDocumentedIn, @RequestParam Integer dependsOn, @RequestParam Integer succeededBy) {
-    // @ResponseBody means the returned String is the response, not a view name
-    // @RequestParam means it is a parameter from the GET or POST request
-
-    Asset n = new Asset();
-    n.setType(type);
-    n.setTitle(title);
-    n.setLink(link);
-    n.setLineNum(lineNum);
-    n.setProgLang(progLang);
-    n.setIsDocumentedIn(isDocumentedIn);
-    n.setDependsOn(dependsOn);
-    n.setSucceededBy(succeededBy);
-    assetRepository.save(n);
-    return "Saved";
+  @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
+    try {
+        assetRepository.save(asset);    
+        return ResponseEntity.ok("Asset saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
   }
 
 
@@ -183,37 +174,41 @@ public class MainController {
 
   //// End of Asset functions. Start of Type functions.
 
-  /**
-   * This method is a map only for POST requests. It takes the parameters supplied by the user for
-   * the type and inputs it into the database.
-   *
-   * @param type the type format that the asset aligns to
-   * @param customAttribute1 the title of the first custom attribute held only within this type of
-   *        asset
-   * @param customAttribute2 the title of the second custom attribute held only within this type of
-   *        asset
-   * @param customAttribute3 the title of the third custom attribute held only within this type of
-   *        asset
-   * @param customAttribute4 the title of the four custom attribute held only within this type of
-   *        asset
-   * @return confirmation string
-   */
-  @PostMapping(path = "/type/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewType(@RequestParam String type,
-      @RequestParam String customAttribute1, @RequestParam String customAttribute2,
-      @RequestParam String customAttribute3, @RequestParam String customAttribute4) {
-    // @ResponseBody means the returned String is the response, not a view name
-    // @RequestParam means it is a parameter from the GET or POST request
 
-    Type t = new Type();
-    t.setTypeName(type);
-    t.setCustomAttribute1(customAttribute1);
-    t.setCustomAttribute2(customAttribute2);
-    t.setCustomAttribute3(customAttribute3);
-    t.setCustomAttribute4(customAttribute4);
-    typeRepository.save(t);
-    return "Saved";
+
+  /**
+   * Post request to fetch type data from UI form and add it to the database.
+   * 
+   * @param type
+   * @return response entity depending on outcome
+   */
+  @PostMapping(path = "/type/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewType(@RequestBody Type type) {
+    try {
+        typeRepository.save(type);    
+        return ResponseEntity.ok("Type saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
   }
+  
+//  @PostMapping(path = "/type/add") // Map ONLY POST Requests
+//  public @ResponseBody String addNewType(@RequestParam String type,
+//      @RequestParam String customAttribute1, @RequestParam String customAttribute2,
+//      @RequestParam String customAttribute3, @RequestParam String customAttribute4) {
+//    // @ResponseBody means the returned String is the response, not a view name
+//    // @RequestParam means it is a parameter from the GET or POST request
+//
+//    Type t = new Type();
+//    t.setTypeName(type);
+//    t.setCustomAttribute1(customAttribute1);
+//    t.setCustomAttribute2(customAttribute2);
+//    t.setCustomAttribute3(customAttribute3);
+//    t.setCustomAttribute4(customAttribute4);
+//    typeRepository.save(t);
+//    return "Saved";
+//  }
 
   /**
    * This method renders the edit asset page depending on a given asset id.
