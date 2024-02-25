@@ -27,6 +27,7 @@ import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
 import OpenAsset from './OpenAsset';
 import OpenType from './OpenType';
+import AssetFind from './AssetFind';
 
 
 
@@ -140,8 +141,9 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1, fontFamily: "Calibri" }}
             >
-              {props.page.toLowerCase().includes("asset") && <p>Asset</p>}
+              {props.page.toLowerCase().includes("asset")&& !props.page.toLowerCase().includes("find") && <p>Asset</p>}
               {props.page.toLowerCase().includes("type") && <p>Type</p>}
+              {props.page.toLowerCase().includes("find") && <p>Search Assets</p>}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -198,6 +200,7 @@ export default function Dashboard(props) {
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
+                {props.page === "asset/find" && <AssetFind />}
 
               </Grid>
             </Grid>
