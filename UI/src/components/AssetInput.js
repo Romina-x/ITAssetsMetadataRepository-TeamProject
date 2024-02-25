@@ -8,7 +8,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import { getAll } from "../ultility/TypeAPI";
+import { getAll } from "../utility/TypeAPI";
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
