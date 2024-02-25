@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
-import * as AssetAPI from "../AssetAPI";
+import * as AssetAPI from "../utility/AssetAPI";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,12 +15,11 @@ import { IconButton, TablePagination } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './DeletionConfirm';
+import DeleteConfirmationDialog from './AssetDelConfirm';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-
 
 
 
