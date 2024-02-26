@@ -237,7 +237,38 @@ export default function FormPropsTextFields() {
             onChange={(e) => setprogLang(e.target.value)}
           />
         </Grid>
+
         <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Is Documented In"
+            placeholder="8"
+            multiline
+            value={isDocumentedIn}
+            onChange={(e) => setIsDocumentedIn(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Depends On"
+            placeholder="4"
+            multiline
+            value={dependsOn}
+            onChange={(e) => setDependsOn(e.target.value)}
+          />
+        </Grid>     
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label="Succeeded By"
+            placeholder="4"
+            multiline
+            value={succeededBy}
+            onChange={(e) => setSucceededBy(e.target.value)}
+          />
+        </Grid> 
+         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
             label={selectedType ? selectedType.customAttribute1 : "Custom Attribute 1"}
@@ -280,38 +311,7 @@ export default function FormPropsTextFields() {
 	            onChange={(e) => setCustomAttribute4(e.target.value)}
 	            style={{ display: selectedType && selectedType.customAttribute4 === "" ? "none" : "grid" }}
 	          />
-	        </Grid>
-
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Is Documented In"
-            placeholder="8"
-            multiline
-            value={isDocumentedIn}
-            onChange={(e) => setIsDocumentedIn(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Depends On"
-            placeholder="4"
-            multiline
-            value={dependsOn}
-            onChange={(e) => setDependsOn(e.target.value)}
-          />
-        </Grid>     
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Succeeded By"
-            placeholder="4"
-            multiline
-            value={succeededBy}
-            onChange={(e) => setSucceededBy(e.target.value)}
-          />
-        </Grid>  
+	        </Grid> 
       </Grid>
 
       <Stack direction="row" spacing={2}>
