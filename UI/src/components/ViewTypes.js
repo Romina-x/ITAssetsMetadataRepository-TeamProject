@@ -1,51 +1,51 @@
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
-import { Link } from "react-router-dom";
-import * as AssetAPI from "../utility/AssetAPI";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Title from './Title';
+import * as TypeAPI from '../utility/TypeAPI';
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import styles from "../style/listItems.module.css";
 import { IconButton, TablePagination } from "@mui/material";
+import { Link } from "react-router-dom";
+import styles from "../style/listItems.module.css";
+import DeleteConfirmationDialog from './TypeDelConfirm';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './AssetDelConfirm';
 
-export default function ViewAssets() {
-  const [assets, setAssets] = React.useState([]);
+
+export default function ViewTypes() {
+  const [types, setTypes] = React.useState([])
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [deletingAssetId, setDeletingAssetId] = React.useState(null);
-  const [openAssetId, setOpenAssetId] = React.useState(null);
-
-
+  const [deletingTypeId, setDeletingTypeId] = React.useState(null);
 
   React.useEffect(() => {
-    const getAssets = async () => {
-      const res = await AssetAPI.getAll();
-      setAssets(res);
+    const getTypes = async () => {
+      const res = await TypeAPI.getAll();
+      console.log(res)
+      setTypes(res)
     };
-    getAssets();
+
+    getTypes();
   }, []);
 
   const handleDelete = (id) => {
-    setDeletingAssetId(id);
+    setDeletingTypeId(id);
     setOpenDeleteDialog(true);
   };
 
-  const handleDeleteAsset = async (id) => {
+  const handleDeleteType = async (id) => {
     try {
       console.log(id);
-      const response = await AssetAPI.deleteById(id);
-      setAssets((assets) => assets.filter((a) => a.id !== id));
+      const response = await TypeAPI.deleteById(id);
+      setTypes((Types) => types.filter((t) => t.id !== id));
       if (response.status === 200) {
         console.log("Deleted");
       } else {
@@ -54,12 +54,7 @@ export default function ViewAssets() {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleOpen = (id) => {
-    setOpenAssetId(id);
-  };
-   
+  };   
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -72,43 +67,44 @@ export default function ViewAssets() {
 
   return (
     <React.Fragment>
-      <Title>Assets</Title>
+      <Title>Types</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>Type</TableCell>
-            <TableCell>Link</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Programming language</TableCell>
-            <TableCell align="right">Actions</TableCell>
+            <TableCell>Custom Attribute Name 1</TableCell>
+            <TableCell>Custom Attribute Name 2</TableCell>
+            <TableCell>Custom Attribute Name 3</TableCell>
+            <TableCell>Custom Attribute Name 4</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : assets
-          ).map((a) => (
-            <TableRow key={a.id}>
-              <TableCell>{a.id}</TableCell>
-              <TableCell>{a.type}</TableCell>
-              <TableCell>{a.link}</TableCell>
-              <TableCell>{a.title}</TableCell>
-              <TableCell>{a.progLang}</TableCell>
+            ? types.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : types
+          ).map((t) => (
+            <TableRow key={t.id}>
+              <TableCell>{t.id}</TableCell>
+              <TableCell>{t.typeName}</TableCell>
+              <TableCell>{t.customAttribute1}</TableCell>
+              <TableCell>{t.customAttribute2}</TableCell>
+              <TableCell>{t.customAttribute3}</TableCell>
+              <TableCell>{t.customAttribute4}</TableCell>
               <TableCell align="right">
               <IconButton className={styles.link}>
-              <Link to={`/asset/open/${a.id}`} className={styles.link}>
+              <Link to={`/type/open/${t.id}`} className={styles.link}>
                   <VisibilityIcon />
               </Link>
               </IconButton>
                 <IconButton className={styles.link}>
-                  <Link to={`/asset/edit/${a.id}`} className={styles.link}>
+                  <Link to={`/type/edit/${t.id}`} className={styles.link}>
                     <EditIcon />
                   </Link>
                 </IconButton>
                 <IconButton
                   className={styles.link}
-                  onClick={() => handleDelete(a.id)}
+                  onClick={() => handleDelete(t.id)}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -120,21 +116,20 @@ export default function ViewAssets() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
         component="div"
-        count={assets.length}
+        count={types.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-
       <Stack direction="row" spacing={2}>
-        <Link to="/asset/add">
+        <Link to="/type/add">
           <Button
             variant="contained"
             endIcon={<PostAddIcon />}
             style={{ background: "black" }}
           >
-            Add Asset
+            Add Type
           </Button>
         </Link>
 
@@ -153,9 +148,9 @@ export default function ViewAssets() {
         handleConfirm={() => {
           setOpenDeleteDialog(false);
           // Call handleDeleteAsset function to delete the asset
-          handleDeleteAsset(deletingAssetId);
+          handleDeleteType(deletingTypeId);
         }}
-        assetId={deletingAssetId}
+        typeId={deletingTypeId}
       />
     </React.Fragment>
   );

@@ -1,5 +1,6 @@
 package application;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,11 @@ public class User {
   
   private String password;
   
-  private Permissions role;
+  //private Permissions role;
+  //Commented out and replaced with string for the sake of making the html createUser work in time
+  //will be re-implemented early next sprint
+  
+  private String role;
   
   public User() {
 	  
@@ -40,7 +45,7 @@ public class User {
 	  this.password = password;
   }
   
-  public void setRole(Permissions role) {
+  public void setRole(String role) {
 	  this.role = role;
   }
   
@@ -48,6 +53,7 @@ public class User {
 	  return this.id;
   }
   
+  @Column(name = "name")
   public String getName() {
 	  return this.name;
   }
@@ -56,7 +62,7 @@ public class User {
 	  return this.password;
   }
   
-  public Permissions getRole() {
+  public String getRole() {
 	  return this.role;
   }
 }

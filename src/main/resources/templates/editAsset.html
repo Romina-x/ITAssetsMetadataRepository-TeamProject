@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <head> 
-    <title>Create Asset</title>
+    <title>Edit Asset</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<h1>Create Asset</h1>
-    <form action="#" th:action="@{/asset/createAsset}" th:object="${createAsset}" method="post">
+	<h1>Edit Asset</h1>
+    <form action="#" th:action="@{/asset/editAsset/__${id}__}" th:object="${asset}" method="post">
 
         <p>Type: <input type="text" th:field="*{type}" /></p>
         <p>Title: <input type="text" th:field="*{title}" /></p>
