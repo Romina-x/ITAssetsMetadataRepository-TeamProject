@@ -1,11 +1,14 @@
 import Dashboard from "./components/Dashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Dashboard page="asset/add" />} />
+        <Route exact path="/" element={<Login />} />
+        <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/asset/add" element={<Dashboard page="asset/add" />} />
         <Route exact path="/asset/view" element={<Dashboard page="asset/view" />} />
         <Route exact path="/type/add" element={<Dashboard page="type/add" />} />
@@ -18,7 +21,6 @@ function App() {
         <Route exact path="/type/open/:openTypeId" element={<Dashboard page="type/open" />} />
         <Route exact path="/type/edit/:editTypeId" element={<Dashboard page="type/edit" />} />
         <Route exact path="/asset/find" element={<Dashboard page="asset/find" />} />
-
 
       </Routes>
     </BrowserRouter>

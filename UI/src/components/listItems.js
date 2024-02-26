@@ -52,7 +52,7 @@ export const adminListItems = (
         <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/login" className={styles.link}>
+    <Link to="/" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />
@@ -89,7 +89,7 @@ export const userListItems = (
         <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/login" className={styles.link}>
+    <Link to="/" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />
