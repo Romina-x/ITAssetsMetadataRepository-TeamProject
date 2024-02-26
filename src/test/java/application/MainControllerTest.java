@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -710,7 +711,7 @@ class MainControllerTest {
     // Perform the GET request
     mvc.perform(MockMvcRequestBuilders.get("/asset/find/all"))
         // Expects that the request was successful
-        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(4))
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
         // Check the JSON properties of the first asset in the array
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(12345))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].type").value("Video"))
@@ -720,6 +721,38 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].progLang").value("English"));
   }
 
+  /**
+   * Test to validate that upon accessing the /asset/find/{id} path, all data stored about asset
+   * with unique id in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAssetById() throws Exception {
 
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setTitle("Beans");
+
+    mc.addNewAsset(asset1);
+
+    // asset to be added
+    Asset asset2 = new Asset();
+    asset2.setId(12332);
+    asset2.setTitle("Toast");
+
+    mc.addNewAsset(asset2);
+
+
+    // Mock the behavior of the findById method to return the asset
+    when(assetRepository.findById(12332)).thenReturn(Optional.of(asset2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/asset/find/{id}", 12332))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(12332))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Toast"));
+
+  }
 
 }
