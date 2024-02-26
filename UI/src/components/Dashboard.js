@@ -21,13 +21,13 @@ import { userListItems, adminListItems } from "./listItems";
 import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
+import EditAsset from './EditAsset';
 import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
 import OpenAsset from './OpenAsset';
 import OpenType from './OpenType';
-
 
 
 function Copyright(props) {
@@ -49,6 +49,7 @@ function Copyright(props) {
 }
 
 const drawerWidth = 240;
+
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -191,6 +192,7 @@ export default function Dashboard(props) {
               <Grid item xs={12}>
                 {props.page === "asset/add" && <AssetInput />}
                 {props.page === "asset/view" && <ViewAssets />}
+                {props.page === "asset/edit" && <EditAsset />}
                 {props.page === "type/add" && <TypeInput />}
                 {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
