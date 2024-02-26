@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -762,7 +763,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
-  void testDeleteAsset() throws Exception {
+  void testDeleteAssetModel() throws Exception {
 
     // asset to be added
     Asset asset1 = new Asset();
@@ -778,6 +779,32 @@ class MainControllerTest {
         // Expect the model to contain an attribute named "deleteAsset"
         .andExpect(MockMvcResultMatchers.model().attributeExists("deleteAsset"));
 
+  }
+
+  /**
+   * Test to validate that upon accessing the /asset/deleteAsset path, all data stored about an
+   * asset in the database, is deleted using its id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteAssetById() throws Exception {
+
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setTitle("Beans");
+
+    mc.addNewAsset(asset1);
+
+    // mock repository behaviour
+    Mockito.when(assetRepository.existsById(12345)).thenReturn(true);
+
+    // Stimulate the HTTP delete request and check if it is successful
+    mvc.perform(MockMvcRequestBuilders.delete("/asset/delete/{id}", 12345))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        // Expect view name to be "resultDeleteAsset"
+        .andExpect(MockMvcResultMatchers.view().name("resultDeleteAsset"));
   }
 
 }
