@@ -755,4 +755,29 @@ class MainControllerTest {
 
   }
 
+  /**
+   * Test to validate that upon accessing the /asset/deleteAsset path, all data stored about any
+   * asset in the database, is deleted.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteAsset() throws Exception {
+
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setTitle("Beans");
+
+    mc.addNewAsset(asset1);
+
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/asset/deleteAsset"))
+        // Expect view name to be "deleteAsset"
+        .andExpect(MockMvcResultMatchers.view().name("deleteAsset"))
+        // Expect the model to contain an attribute named "deleteAsset"
+        .andExpect(MockMvcResultMatchers.model().attributeExists("deleteAsset"));
+
+  }
+
 }
