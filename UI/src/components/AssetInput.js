@@ -9,6 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { getAll } from "../TypeAPI";
+import { Hidden } from "@mui/material";
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
@@ -244,6 +245,7 @@ export default function FormPropsTextFields() {
             multiline
             value={customAttribute1}
             onChange={(e) => setCustomAttribute1(e.target.value)}
+            style={{ display: selectedType && selectedType.customAttribute1 === "" ? "none" : "grid" }}
           />
         </Grid>
         <Grid item xs={6}>
@@ -254,6 +256,7 @@ export default function FormPropsTextFields() {
             multiline
             value={customAttribute2}
             onChange={(e) => setCustomAttribute2(e.target.value)}
+            style={{ display: selectedType && selectedType.customAttribute2 === "" ? "none" : "grid" }}
           />
         </Grid>
         <Grid item xs={6}>
@@ -264,18 +267,20 @@ export default function FormPropsTextFields() {
             multiline
             value={customAttribute3}
             onChange={(e) => setCustomAttribute3(e.target.value)}
+            style={{ display: selectedType && selectedType.customAttribute3 === "" ? "none" : "grid" }}
           />
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
-            placeholder=""
-            multiline
-            value={customAttribute4}
-            onChange={(e) => setCustomAttribute4(e.target.value)}
-          />
-        </Grid>
+	        <Grid item xs={6}>
+	          <TextField
+	            id="outlined-textarea"
+	            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
+	            placeholder=""
+	            multiline
+	            value={customAttribute4}
+	            onChange={(e) => setCustomAttribute4(e.target.value)}
+	            style={{ display: selectedType && selectedType.customAttribute4 === "" ? "none" : "grid" }}
+	          />
+	        </Grid>
 
         <Grid item xs={6}>
           <TextField
