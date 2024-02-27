@@ -8,9 +8,11 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI"
+import { useParams } from "react-router-dom";
 
 
 export default function FormPropsTextFields() {
+  let { editTypeId } = useParams();
   //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
@@ -21,6 +23,23 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
+  
+  const [type, setType] = useState([]);
+  
+  React.useEffect(() => {
+    const getType = async () => {
+      const res = await TypeAPI.get(editTypeId);
+      setType(res)
+      
+      setTypeName(res.typeName || "");
+      setCustomAttribute1(res.customAttribute1 || "");
+      setCustomAttribute2(res.customAttribute2 || "");
+      setCustomAttribute3(res.customAttribute3 || "");
+      setCustomAttribute4(res.customAttribute4 || "");
+    };
+
+    getType();
+  }, []);
   
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
@@ -53,6 +72,7 @@ export default function FormPropsTextFields() {
 
     try {
       const response = await TypeAPI.addType({
+          id: editTypeId,
           typeName,
           customAttribute1,
           customAttribute2,
@@ -121,6 +141,7 @@ export default function FormPropsTextFields() {
             multiline
             value = {typeName}
             onChange={ (e) => setTypeName(e.target.value)}
+            disabled
           />
         </Grid>
         <Grid item xs={5}>
