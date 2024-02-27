@@ -13,12 +13,11 @@ import Title from './Title';
 import 'reactflow/dist/style.css';
 import { useParams } from "react-router-dom";
 import ReactFlow, { Background, Controls } from 'reactflow';
-import 'reactflow/dist/style.css';
 import * as AssetAPI from '../utility/AssetAPI';
 import * as CommentAPI from '../utility/CommentAPI';
 import * as LogAPI from '../utility/LogAPI';
 import Box from "@mui/material/Box";
-
+import * as TypeAPI from '../utility/TypeAPI';
 
 
 export default function OpenAsset() {
@@ -28,6 +27,7 @@ export default function OpenAsset() {
 
   const [a, setAssets] = React.useState([])
   const [logs, setLogs] = React.useState([])
+  const [t, setType] = React.useState([])
   const [comments, setComments] = React.useState([])
 
   const [comment, setAssetComment] = useState("");
@@ -37,32 +37,52 @@ export default function OpenAsset() {
   let { openAssetId } = useParams();
 
   React.useEffect(() => {
-    const getAssets = async () => {
-      const res = await AssetAPI.get(openAssetId);
-      console.log(res)
-      setAssets(res)
+    const fetchData = async () => {
+      const [assetData, logData, allTypeData, commentData] = await Promise.all([
+        AssetAPI.get(openAssetId),
+        LogAPI.getAll(),
+        TypeAPI.getAll(),
+        CommentAPI.getAll()
+
+      ]);
+      setAssets(assetData);
+      setLogs(logData);
+      // Fetch type information and set it to state
+      const typeData = allTypeData.find(type => type.typeName === assetData.type);
+      setType(typeData);
+      setComments(commentData);
     };
 
-    getAssets();
+    fetchData();
   }, []);
 
-  React.useEffect(() => {
-    const getLogs = async () => {
-      const res = await LogAPI.getAll();
-      console.log(res)
-      setLogs(res)
-    };
-    getLogs();
-  }, []);
+  // React.useEffect(() => {
+  //   const getAssets = async () => {
+  //     const res = await AssetAPI.get(openAssetId);
+  //     console.log(res)
+  //     setAssets(res)
+  //   };
 
-  React.useEffect(() => {
-    const getComments = async () => {
-      const res = await CommentAPI.getAll();
-      console.log(res)
-      setComments(res)
-    };
-    getComments();
-  }, []);
+  //   getAssets();
+  // }, []);
+
+  // React.useEffect(() => {
+  //   const getLogs = async () => {
+  //     const res = await LogAPI.getAll();
+  //     console.log(res)
+  //     setLogs(res)
+  //   };
+  //   getLogs();
+  // }, []);
+
+  // React.useEffect(() => {
+  //   const getComments = async () => {
+  //     const res = await CommentAPI.getAll();
+  //     console.log(res)
+  //     setComments(res)
+  //   };
+  //   getComments();
+  // }, []);
 
 //useEffect hook to handle changes after save button is clicked
 useEffect(() => {
@@ -134,8 +154,6 @@ const resetValue = () => {
     resetValue()
   };
 
-
-
   const edges = [{ id: '1-2', source: '1', target: '2', label: 'Is Documented In', type: 'straightedge' },
                   { id: '1-3', source: '1', target: '3', label: 'Depends On', type: 'straightedge' },
                   { id: '1-4', source: '1', target: '4', label: 'Succeeded By', type: 'straightedge' }];
@@ -173,7 +191,15 @@ const resetValue = () => {
             <TableCell>Type</TableCell>
             <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell align="right">Programming language</TableCell>
+            <TableCell>Programming language</TableCell>
+            {t && (
+              <>
+                <TableCell>{t.customAttribute1}</TableCell>
+                <TableCell>{t.customAttribute2}</TableCell>
+                <TableCell>{t.customAttribute3}</TableCell>
+                <TableCell>{t.customAttribute4}</TableCell>
+              </>
+             )}       
           </TableRow>
         </TableHead>
         <TableBody>
@@ -181,7 +207,11 @@ const resetValue = () => {
               <TableCell>{a.type}</TableCell>
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
-              <TableCell align="right">{a.progLang}</TableCell>
+              <TableCell>{a.progLang}</TableCell>
+              <TableCell>{a.customAttribute1}</TableCell>
+              <TableCell>{a.customAttribute2}</TableCell>
+              <TableCell>{a.customAttribute3}</TableCell>
+              <TableCell>{a.customAttribute4}</TableCell>
             </TableRow>
         </TableBody>
       </Table>
