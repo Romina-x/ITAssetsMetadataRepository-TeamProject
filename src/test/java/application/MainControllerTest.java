@@ -131,7 +131,8 @@ class MainControllerTest {
     Type type = new Type();
 
     // Mock the behavior of assetRepository.save() to throw an exception
-    when(typeRepository.save(type)).thenThrow(new RuntimeException("This is a made up exception 2"));
+    when(typeRepository.save(type))
+        .thenThrow(new RuntimeException("This is a made up exception 2"));
 
     // Call the addNewAsset method
     ResponseEntity<String> response = mc.addNewType(type);
@@ -827,6 +828,51 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk())
         // Expect view name to be "resultDeleteAsset"
         .andExpect(MockMvcResultMatchers.view().name("resultDeleteAsset"));
+  }
+
+  /**
+   * Test to validate that upon accessing the /asset/editAsset/{id}, the edit asset page is rendered
+   * depending on a given asset id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditAssetForm() throws Exception {
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+
+    mc.addNewAsset(asset1);
+
+    // Mock the behavior of the findById method to return the asset
+    when(assetRepository.findById(12345)).thenReturn(Optional.of(asset1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 12345))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("editAsset"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("asset"))
+        .andExpect(MockMvcResultMatchers.model().attribute("asset", asset1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
+        .andExpect(MockMvcResultMatchers.model().attribute("id", 12345));
+
+
+  }
+
+  /**
+   * Test to validate the exception string response upon accessing the /asset/editAsset/{id} with no
+   * asset, the edit asset page is not rendered.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditAssetForm_Exception() throws Exception {
+
+    Mockito.when(assetRepository.findById(123)).thenReturn(Optional.empty());
+
+    mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 123))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("assetNotFound"));
   }
 
 }
