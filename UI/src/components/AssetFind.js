@@ -53,21 +53,6 @@ function App() {
     setSelectedAssetAttribute(attributeName);
   };
 
-  function handleSearchClick() {
-    // Display all if no search term is present
-    if (searchVal === "") {
-      setAssets(originalAssets);
-      return;
-    }
-
-    const filterBySearch = originalAssets.filter((a) => {
-      const stringQuery = String(a[selectedAssetAttribute]);
-      return stringQuery.toLowerCase().includes(searchVal.toLowerCase());
-    });
-
-    setAssets(filterBySearch);
-}
-
   const handleDelete = (id) => {
     setDeletingAssetId(id);
     setOpenDeleteDialog(true);
@@ -97,6 +82,19 @@ function App() {
     setPage(0);
   };
 
+  // Function to handle live search as the user types
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchVal(value);
+    // Filter the original assets based on the search value
+    const filteredAssets = originalAssets.filter((asset) => {
+      const stringQuery = String(asset[selectedAssetAttribute]);
+      return stringQuery.toLowerCase().includes(value.toLowerCase());
+    });
+    // Update the displayed assets with the filtered results
+    setAssets(filteredAssets);
+  };
+
 	return (
     <React.Fragment>
       <Box
@@ -119,7 +117,6 @@ function App() {
         alignItems="center"
         sx={{
           paddingBottom: 5,
-
         }}
       >
       <Grid item xs={6}
@@ -147,9 +144,8 @@ function App() {
           placeholder="Enter a search term"
           multiline
           value={searchVal}
-          onChange={(e) => setSearchVal(e.target.value)}
+          onChange={handleSearchChange}
         />
-      <SearchIcon onClick={handleSearchClick} />
       </Grid>
       </Grid>
 
