@@ -23,7 +23,7 @@ export default function ViewLogs() {
 
   return (
     <React.Fragment>
-      <Title>Types</Title>
+      <Title>Action Log</Title>
       <Table size="small">
         <TableHead>
           <TableRow>

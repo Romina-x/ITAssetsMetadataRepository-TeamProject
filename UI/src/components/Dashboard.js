@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { userListItems, adminListItems } from "./listItems";
+import { readerListItems, userListItems, adminListItems } from "./listItems";
 import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
@@ -110,8 +110,17 @@ export default function Dashboard(props) {
   };
 
   const userChange = () => {
-    setUser((user) => (user === 'user' ? 'admin' : 'user'));
+    setUser((user) => {
+      if (user === 'user') {
+        return 'admin';
+      } else if (user === 'admin') {
+        return 'reader';
+      } else {
+        return 'user';
+      }
+    });
   }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -174,7 +183,8 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{user === 'user' ? userListItems : adminListItems}</List>
+          <List component="nav">{user === 'user' ? userListItems : user === 'admin' ? adminListItems : readerListItems}
+          </List>
         </Drawer>
         <Box
           component="main"
