@@ -89,9 +89,9 @@ useEffect(() => {
 
 //function to handle changes when save button is clicked
 const handleSaveButtonClick = async (event) => {
-  setSave("Saved");
   // logic for what happens when the asset is saved goes here
   event.preventDefault();
+  const currentTime = new Date().toISOString();
 
   try {
     const response = await fetch('http://localhost:8080/comment/add', {
@@ -102,7 +102,7 @@ const handleSaveButtonClick = async (event) => {
       body: JSON.stringify({
         itemId: a.id,
         comment: comment,
-        timestamp: time
+        timestamp: currentTime
       })
     });
     
@@ -112,6 +112,8 @@ const handleSaveButtonClick = async (event) => {
     }
     resetValue()
     console.log('Comment added successfully');
+    setComments(await CommentAPI.getAll());
+    setSave("Saved");
   } catch (error) {
     console.error('Error adding comment:', error);
   }

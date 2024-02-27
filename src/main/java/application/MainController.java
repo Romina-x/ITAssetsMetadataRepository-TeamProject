@@ -597,7 +597,6 @@ public class MainController {
   public ResponseEntity<String> addNewComment(@RequestBody AssetComment comment) {
     try {
         assetCommentRepository.save(comment);    
-        addActionLog(savedAssetComment.getId(), "Added comment"); // Adds an action record to the log
         return ResponseEntity.ok("Comment saved successfully");
     } catch (Exception e) {
         e.printStackTrace();
@@ -615,7 +614,6 @@ public class MainController {
   @PostMapping("/comment/createComment") // POST request : When you submit the form
   public String commentSubmit(@ModelAttribute AssetComment assetComment, Model model) {
     AssetComment savedAssetComment = assetCommentRepository.save(assetComment); 
-    addActionLog(savedAssetComment.getId(), "Added comment"); // Adds an action record to the log
     model.addAttribute("savedAssetComment", savedAssetComment); 
     return "result"; // renders result.html
   }
