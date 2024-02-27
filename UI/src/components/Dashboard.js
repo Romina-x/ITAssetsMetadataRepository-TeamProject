@@ -28,6 +28,7 @@ import TypeDelete from './TypeDelete';
 import OpenAsset from './OpenAsset';
 import OpenType from './OpenType';
 import AssetFind from './AssetFind';
+import TypeEdit from './TypeEdit';
 
 
 
@@ -201,6 +202,7 @@ export default function Dashboard(props) {
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
                 {props.page === "asset/find" && <AssetFind />}
+                {props.page === "type/edit" && <TypeEdit />}
 
               </Grid>
             </Grid>
