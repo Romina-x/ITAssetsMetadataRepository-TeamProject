@@ -65,6 +65,8 @@ Pre-requisties:<br>
 Pre-requisties:<br>
     - Nodejs v20.11 ([https://nodejs.org/en/download](https://nodejs.org/en/download))<br>
     - ReactFlow (npm install reactflow)<br>
+    - React DOM (npm i react-router-dom)<br>
+
     
 
 4. Set up Node: <br>
