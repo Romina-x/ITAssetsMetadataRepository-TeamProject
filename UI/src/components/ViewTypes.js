@@ -129,7 +129,7 @@ export default function ViewTypes() {
             endIcon={<PostAddIcon />}
             style={{ background: "black" }}
           >
-            Add Asset
+            Add Type
           </Button>
         </Link>
 

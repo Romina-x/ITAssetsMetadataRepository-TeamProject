@@ -9,6 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { getAll } from "../utility/TypeAPI";
+import * as AssetAPI from "../utility/AssetAPI"
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
@@ -88,25 +89,19 @@ export default function FormPropsTextFields() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/asset/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          type: selectedType.typeName,
-          title,
-          link,
-          lineNum,
-          progLang,
-          isDocumentedIn,
-          dependsOn,
-          succeededBy,
-          customAttribute1,
-          customAttribute2,
-          customAttribute3,
-          customAttribute4
-        })
+      const response = await AssetAPI.addAsset({
+        type: selectedType.typeName,
+        title,
+        link,
+        lineNum,
+        progLang,
+        isDocumentedIn,
+        dependsOn,
+        succeededBy,
+        customAttribute1,
+        customAttribute2,
+        customAttribute3,
+        customAttribute4,
       });
       
       

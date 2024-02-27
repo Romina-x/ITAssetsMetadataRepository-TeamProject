@@ -26,7 +26,7 @@ export const update = (type) =>
 
 export const deleteById = async (id) => {
   try {
-    const response = await fetch(`http://localhost:8080/type/delete/${id}`, {
+    const response = await fetch(`${api}/type/delete/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -36,5 +36,21 @@ export const deleteById = async (id) => {
     return response;
   } catch (error) {
     throw new Error(`Failed to delete asset with ID ${id}: ${error.message}`);
+  }
+};
+
+export const addType = async (typeData) => {
+  try {
+    const response = await fetch(`${api}/type/add`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(typeData),
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error('Failed to add Type:', error);
   }
 };

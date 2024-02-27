@@ -7,6 +7,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SourceIcon from "@mui/icons-material/Source";
 import { Link } from "react-router-dom";
 import styles from "../style/listItems.module.css";
+import SearchIcon from '@mui/icons-material/Search';
+
 
 export const adminListItems = (
   <React.Fragment>
@@ -42,15 +44,15 @@ export const adminListItems = (
         <ListItemText primary="View Logs" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/open" className={styles.link}>
+    <Link to="/asset/find" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <SourceIcon />
+          <SearchIcon />
         </ListItemIcon>
-        <ListItemText primary="Open Asset" />
+        <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/login" className={styles.link}>
+    <Link to="/" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />
@@ -79,7 +81,15 @@ export const userListItems = (
         <ListItemText primary="View Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/login" className={styles.link}>
+    <Link to="/asset/find" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Find Asset" />
+      </ListItemButton>
+    </Link>
+    <Link to="/" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />
