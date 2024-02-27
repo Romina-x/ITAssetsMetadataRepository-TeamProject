@@ -21,6 +21,8 @@ function App() {
         <Route exact path="/type/open/:openTypeId" element={<Dashboard page="type/open" />} />
         <Route exact path="/type/edit/:editTypeId" element={<Dashboard page="type/edit" />} />
         <Route exact path="/asset/find" element={<Dashboard page="asset/find" />} />
+        <Route exact path="/type/find" element={<Dashboard page="type/find" />} />
+
 
       </Routes>
     </BrowserRouter>

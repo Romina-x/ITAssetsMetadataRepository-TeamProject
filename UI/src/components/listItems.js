@@ -52,6 +52,14 @@ export const adminListItems = (
         <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
+    <Link to="/type/find" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Find Type" />
+      </ListItemButton>
+    </Link>
     <Link to="/" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
