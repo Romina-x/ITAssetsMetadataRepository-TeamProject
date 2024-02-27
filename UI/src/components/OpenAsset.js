@@ -1,18 +1,33 @@
-import * as React from 'react';
+import CancelIcon from "@mui/icons-material/Cancel";
+import SaveIcon from "@mui/icons-material/Save";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from './Title';
-import * as AssetAPI from '../ultility/AssetAPI';
-import ReactFlow, { Controls, Background } from 'reactflow';
-import 'reactflow/dist/style.css';
-import * as LogAPI from '../ultility/LogAPI';
+import TextField from "@mui/material/TextField";
+import * as React from 'react';
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactFlow, { Background, Controls } from 'reactflow';
+import 'reactflow/dist/style.css';
+import * as AssetAPI from '../utility/AssetAPI';
+import * as CommentAPI from '../utility/CommentAPI';
+import * as LogAPI from '../utility/LogAPI';
+import Title from './Title';
+
 
 
 export default function OpenAsset() {
+  const [save, setSave] = useState("Save");
+  const [cancel, setCancel] = useState("Cancel");
+  const currentDate = Date.now();
+
+
   let { openAssetId } = useParams();
 
   React.useEffect(() => {
@@ -34,9 +49,89 @@ export default function OpenAsset() {
     getLogs();
   }, []);
 
+  React.useEffect(() => {
+    const getComment = async () => {
+      const res = await CommentAPI.get(openAssetId);
+      console.log(res)
+      setComments(res)
+    };
+    getComment();
+  }, []);
+
+//useEffect hook to handle changes after save button is clicked
+useEffect(() => {
+  if (save === "Saved") {
+    const timer = setTimeout(() => {
+      setSave("Save");
+    }, 2000); // Changes back to "Saved" after 2 seconds
+    return () => clearTimeout(timer);
+  }
+}, [save]);
+
+//useEffect hook to handle changes after cancel button is clicked
+useEffect(() => {
+  if (cancel === "Cancelled") {
+    const timer = setTimeout(() => {
+      document.getElementById("cancel-button").style.backgroundColor = "white";
+      document.getElementById("cancel-button").style.color = "blue";
+      setCancel("Cancel");
+    }, 1500); // Changes back to "Cancel" after 1.5 seconds
+    return () => clearTimeout(timer);
+  }
+
+}, [cancel]);
+
+//function to handle changes when save button is clicked
+const handleSaveButtonClick = async (event) => {
+  setSave("Saved");
+  // logic for what happens when the asset is saved goes here
+  event.preventDefault();
+
+  try {
+    const response = await fetch('http://localhost:8080/comment/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        itemId: a.id,
+        comment
+      })
+    });
+    
+    
+    if (!response.ok) {
+      throw new Error('Failed to add comment');
+    }
+    resetValue()
+    console.log('Comment added successfully');
+  } catch (error) {
+    console.error('Error adding comment:', error);
+  }
+};
+
+const resetValue = () => {
+  setItemId("");
+  setAssetComment("");
+  setTime("");
+}
+  //function to handle changes when cancel button is clicked
+  const handleCancelButtonClick = () => {
+    const cancelButtonStyle = document.getElementById("cancel-button").style;
+    cancelButtonStyle.backgroundColor = "blue";
+    cancelButtonStyle.color = "red";
+    setCancel("Cancelled");
+    
+    resetValue()
+  };
+
   const [a, setAssets] = React.useState([])
   const [l, setLogs] = React.useState([])
+  const [c, setComments] = React.useState([])
 
+  const [comment, setAssetComment] = useState("");
+  const [time, setTime] = useState("");
+  const [itemId, setItemId] = useState("");
 
   const edges = [{ id: '1-2', source: '1', target: '2', label: 'Is Documented In', type: 'straightedge' },
                   { id: '1-3', source: '1', target: '3', label: 'Depends On', type: 'straightedge' },
@@ -98,11 +193,19 @@ export default function OpenAsset() {
           </TableRow>
         </TableHead>
         <TableBody>
-            <TableRow key={l.id}>
+            {/* <TableRow key={l.id}>
               <TableCell>{l.id}</TableCell>
               <TableCell>{l.action}</TableCell>
               <TableCell>{l.timestamp}</TableCell>
-            </TableRow>
+            </TableRow> */}
+    {Array.isArray(l) && l.filter(log => log.itemId === a.id).map(filteredLog => (
+    <TableRow key={filteredLog.id}>
+      <TableCell>{filteredLog.id}</TableCell>
+      <TableCell>{filteredLog.action}</TableCell>
+      <TableCell>{filteredLog.timestamp}</TableCell>
+    </TableRow>
+  ))}
+
         </TableBody>
       </Table>
 
@@ -114,6 +217,53 @@ export default function OpenAsset() {
       </ReactFlow>
     </div>
 
+    <h3>Asset Comments:</h3>
+      <Table size="small">
+        <TableHead>
+        <TableRow>
+            <TableCell>Comment ID</TableCell>
+            <TableCell>Comment</TableCell>
+            <TableCell>Timestamp</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow key={c.id}>
+              <TableCell>{c.id}</TableCell>
+              <TableCell>{c.action}</TableCell>
+              <TableCell>{c.timestamp}</TableCell>
+            </TableRow>
+        </TableBody>
+      </Table>
+
+      <Grid item xs={6}>
+          <TextField
+            id="outlined-textarea"
+            label= "Comment"
+            placeholder= "Enter a comment here"
+            multiline
+            value={comment}
+            onChange={(e) => setAssetComment(e.target.value)}
+          />
+        </Grid>
+
+        <Stack direction="row" spacing={2}>
+        <Button
+          variant="contained"
+          endIcon={<SaveIcon />}
+          style={{ background: "black" }}
+          onClick={handleSaveButtonClick}
+        >
+          {save}
+        </Button>
+        <Button
+          id="cancel-button"
+          variant="outlined"
+          startIcon={<CancelIcon />}
+          onClick={handleCancelButtonClick}
+        >
+          {cancel}
+        </Button>
+      </Stack>
     </React.Fragment>
   );
 }
