@@ -10,12 +10,13 @@ import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 import * as LogAPI from '../utility/LogAPI';
 import { useParams } from "react-router-dom";
+import * as TypeAPI from '../utility/TypeAPI';
 
 
 export default function OpenAsset() {
   let { openAssetId } = useParams();
 
-  React.useEffect(() => {
+/*  React.useEffect(() => {
     const getAssets = async () => {
       const res = await AssetAPI.get(openAssetId);
       console.log(res)
@@ -33,9 +34,27 @@ export default function OpenAsset() {
     };
     getLogs();
   }, []);
+*/
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const [assetData, logData, allTypeData] = await Promise.all([
+        AssetAPI.get(openAssetId),
+        LogAPI.get(openAssetId),
+        TypeAPI.getAll()
+      ]);
+      setAssets(assetData);
+      setLogs(logData);
+      // Fetch type information and set it to state
+      const typeData = allTypeData.find(type => type.typeName === assetData.type);
+      setType(typeData);
+    };
 
-  const [a, setAssets] = React.useState([])
-  const [l, setLogs] = React.useState([])
+    fetchData();
+  }, [openAssetId]);
+  
+  const [a, setAssets] = React.useState([]);
+  const [l, setLogs] = React.useState([]);
+  const [t, setType] = React.useState([]);
 
 
   const edges = [{ id: '1-2', source: '1', target: '2', label: 'Is Documented In', type: 'straightedge' },
@@ -75,7 +94,15 @@ export default function OpenAsset() {
             <TableCell>Type</TableCell>
             <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell align="right">Programming language</TableCell>
+            <TableCell>Programming language</TableCell>
+            {t && (
+              <>
+                <TableCell>{t.customAttribute1}</TableCell>
+                <TableCell>{t.customAttribute2}</TableCell>
+                <TableCell>{t.customAttribute3}</TableCell>
+                <TableCell>{t.customAttribute4}</TableCell>
+              </>
+             )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,7 +110,11 @@ export default function OpenAsset() {
               <TableCell>{a.type}</TableCell>
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
-              <TableCell align="right">{a.progLang}</TableCell>
+              <TableCell>{a.progLang}</TableCell>
+              <TableCell>{a.customAttribute1}</TableCell>
+              <TableCell>{a.customAttribute2}</TableCell>
+              <TableCell>{a.customAttribute3}</TableCell>
+              <TableCell>{a.customAttribute4}</TableCell>
             </TableRow>
         </TableBody>
       </Table>
