@@ -56,34 +56,6 @@ export default function OpenAsset() {
     fetchData();
   }, []);
 
-  // React.useEffect(() => {
-  //   const getAssets = async () => {
-  //     const res = await AssetAPI.get(openAssetId);
-  //     console.log(res)
-  //     setAssets(res)
-  //   };
-
-  //   getAssets();
-  // }, []);
-
-  // React.useEffect(() => {
-  //   const getLogs = async () => {
-  //     const res = await LogAPI.getAll();
-  //     console.log(res)
-  //     setLogs(res)
-  //   };
-  //   getLogs();
-  // }, []);
-
-  // React.useEffect(() => {
-  //   const getComments = async () => {
-  //     const res = await CommentAPI.getAll();
-  //     console.log(res)
-  //     setComments(res)
-  //   };
-  //   getComments();
-  // }, []);
-
 //useEffect hook to handle changes after save button is clicked
 useEffect(() => {
   if (save === "Saved") {
@@ -133,6 +105,7 @@ const handleSaveButtonClick = async (event) => {
     resetValue()
     console.log('Comment added successfully');
     setComments(await CommentAPI.getAll());
+    setLogs(await LogAPI.getAll());
     setSave("Saved");
   } catch (error) {
     console.error('Error adding comment:', error);
@@ -144,15 +117,6 @@ const resetValue = () => {
   setAssetComment("");
   setTime("");
 }
-  //function to handle changes when cancel button is clicked
-  const handleCancelButtonClick = () => {
-    const cancelButtonStyle = document.getElementById("cancel-button").style;
-    cancelButtonStyle.backgroundColor = "blue";
-    cancelButtonStyle.color = "red";
-    setCancel("Cancelled");
-    
-    resetValue()
-  };
 
   const edges = [{ id: '1-2', source: '1', target: '2', label: 'Is Documented In', type: 'straightedge' },
                   { id: '1-3', source: '1', target: '3', label: 'Depends On', type: 'straightedge' },
@@ -227,7 +191,7 @@ const resetValue = () => {
         </TableHead>
         <TableBody>
         {logs.map((l) => {
-          if (l.itemId === a.id) {
+          if (l.assetId === a.id) {
             return (
               <TableRow key={l.id}>
                 <TableCell>{l.id}</TableCell>

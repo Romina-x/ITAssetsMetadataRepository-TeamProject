@@ -1,7 +1,6 @@
 package application;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +76,8 @@ public class MainController {
   @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
   public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
     try {
-        assetRepository.save(asset);    
+        assetRepository.save(asset);
+        addActionLog(asset.getId(), null, "Added asset"); // Adds an action record to the log    
         return ResponseEntity.ok("Asset saved successfully");
     } catch (Exception e) {
         e.printStackTrace();
@@ -111,7 +111,7 @@ public class MainController {
   @PostMapping("/asset/createAsset") // POST request : When you submit the form
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     Asset savedAsset = assetRepository.save(asset); // Add the asset object to the database
-    addActionLog(savedAsset.getId(), "Added asset"); // Adds an action record to the log
+    addActionLog(savedAsset.getId(), null, "Added asset"); // Adds an action record to the log
     model.addAttribute("savedAsset", savedAsset); // Add savedAsset to the model
     return "result"; // renders result.html
   }
@@ -166,7 +166,7 @@ public class MainController {
   @RequestMapping(value = "/asset/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteAsset(@PathVariable("id") Integer id) {
     assetRepository.deleteById(id);
-    addActionLog(id, "Deleted asset"); // Adds an action record to the log
+    addActionLog(id, null, "Deleted asset"); // Adds an action record to the log
     return "resultDeleteAsset"; // renders resultDeleteAsset.html
   }
 
@@ -184,6 +184,7 @@ public class MainController {
   public ResponseEntity<String> addNewType(@RequestBody Type type) {
     try {
         typeRepository.save(type);    
+        addActionLog(null, type.getId(), "Added type"); // Adds an action record to the log
         return ResponseEntity.ok("Type saved successfully");
     } catch (Exception e) {
         e.printStackTrace();
@@ -223,7 +224,7 @@ public class MainController {
   public String editAssetSubmit(@PathVariable("id") Integer id,
       @ModelAttribute Asset updatedAsset) {
     updatedAsset.setId(id);
-    addActionLog(updatedAsset.getId(), "Edited asset"); // Adds an action record to the log
+    addActionLog(updatedAsset.getId(), null, "Edited asset"); // Adds an action record to the log
     assetRepository.save(updatedAsset);
     return "result";
   }
@@ -265,7 +266,7 @@ public class MainController {
   @PostMapping("/type/createType") // POST request : When you submit the form
   public String typeSubmit(@ModelAttribute Type type, Model model) {
     Type savedType = typeRepository.save(type); // Add the type object to the database
-    addActionLog(savedType.getId(), "Created type"); // Adds an action record to the log
+    addActionLog(null, savedType.getId(), "Created type"); // Adds an action record to the log
     return "resultCreateType"; // renders resultCreateType.html
   }
 
@@ -305,7 +306,7 @@ public class MainController {
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteType(@PathVariable("id") Integer id) {
     typeRepository.deleteById(id);
-    addActionLog(id, "Deleted type"); // Adds an action record to the log
+    addActionLog(null, id, "Deleted type"); // Adds an action record to the log
     return "resultDeleteType";
   }
 
@@ -319,11 +320,12 @@ public class MainController {
    * @param action what task was being undertaken on that item id (such as: deleted)
    * @return confirmation string
    */
-  public @ResponseBody String addActionLog(@RequestParam Integer itemId,
+  public @ResponseBody String addActionLog(@RequestParam Integer assetId, @RequestParam Integer typeId,
       @RequestParam String action) {
 
     ActionLog al = new ActionLog();
-    al.setItemId(itemId);
+    al.setAssetId(assetId);
+    al.setTypeId(typeId);
     al.setAction(action);
     al.setTimestamp(LocalDateTime.now());
     actionLogRepository.save(al);
@@ -414,7 +416,7 @@ public class MainController {
   @PostMapping("/type/editType/{id}")
   public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
     updatedType.setId(id);
-    addActionLog(updatedType.getId(), "Edited type"); // Adds an action record to the log
+    addActionLog(null, updatedType.getId(), "Edited type"); // Adds an action record to the log
     typeRepository.save(updatedType);
     return "resultCreateType";
   }
@@ -597,6 +599,7 @@ public class MainController {
   public ResponseEntity<String> addNewComment(@RequestBody AssetComment comment) {
     try {
         assetCommentRepository.save(comment);    
+        addActionLog(comment.getItemId(), null, "Added comment"); // Adds an action record to the log
         return ResponseEntity.ok("Comment saved successfully");
     } catch (Exception e) {
         e.printStackTrace();
