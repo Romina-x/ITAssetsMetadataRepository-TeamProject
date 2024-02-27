@@ -119,6 +119,28 @@ class MainControllerTest {
     assertEquals("Type saved successfully", result.getResponse().getContentAsString());
   }
 
+  /**
+   * Test exception string response of the method which runs the map for the post request of create
+   * new type.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewType_Exception() throws Exception {
+
+    Type type = new Type();
+
+    // Mock the behavior of assetRepository.save() to throw an exception
+    when(typeRepository.save(type)).thenThrow(new RuntimeException("This is a made up exception 2"));
+
+    // Call the addNewAsset method
+    ResponseEntity<String> response = mc.addNewType(type);
+
+    // Verify that the response is as expected
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    assertEquals("Error: This is a made up exception 2", response.getBody());
+  }
+
 
   /**
    * Test to validate the string response of the method which allows for population of the attribute
