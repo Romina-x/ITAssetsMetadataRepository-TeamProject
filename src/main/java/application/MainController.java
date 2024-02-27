@@ -597,6 +597,7 @@ public class MainController {
   public ResponseEntity<String> addNewComment(@RequestBody AssetComment comment) {
     try {
         assetCommentRepository.save(comment);    
+        addActionLog(savedAssetComment.getId(), "Added comment"); // Adds an action record to the log
         return ResponseEntity.ok("Comment saved successfully");
     } catch (Exception e) {
         e.printStackTrace();

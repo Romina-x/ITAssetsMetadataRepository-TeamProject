@@ -1,8 +1,6 @@
-import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,6 +17,7 @@ import 'reactflow/dist/style.css';
 import * as AssetAPI from '../utility/AssetAPI';
 import * as CommentAPI from '../utility/CommentAPI';
 import * as LogAPI from '../utility/LogAPI';
+import Box from "@mui/material/Box";
 
 
 
@@ -27,6 +26,13 @@ export default function OpenAsset() {
   const [cancel, setCancel] = useState("Cancel");
   const currentDate = Date.now();
 
+  const [a, setAssets] = React.useState([])
+  const [logs, setLogs] = React.useState([])
+  const [comments, setComments] = React.useState([])
+
+  const [comment, setAssetComment] = useState("");
+  const [time, setTime] = useState("");
+  const [itemId, setItemId] = useState("");
 
   let { openAssetId } = useParams();
 
@@ -42,7 +48,7 @@ export default function OpenAsset() {
 
   React.useEffect(() => {
     const getLogs = async () => {
-      const res = await LogAPI.get(openAssetId);
+      const res = await LogAPI.getAll();
       console.log(res)
       setLogs(res)
     };
@@ -50,12 +56,12 @@ export default function OpenAsset() {
   }, []);
 
   React.useEffect(() => {
-    const getComment = async () => {
-      const res = await CommentAPI.get(openAssetId);
+    const getComments = async () => {
+      const res = await CommentAPI.getAll();
       console.log(res)
       setComments(res)
     };
-    getComment();
+    getComments();
   }, []);
 
 //useEffect hook to handle changes after save button is clicked
@@ -95,7 +101,8 @@ const handleSaveButtonClick = async (event) => {
       },
       body: JSON.stringify({
         itemId: a.id,
-        comment
+        comment: comment,
+        timestamp: time
       })
     });
     
@@ -125,13 +132,7 @@ const resetValue = () => {
     resetValue()
   };
 
-  const [a, setAssets] = React.useState([])
-  const [l, setLogs] = React.useState([])
-  const [c, setComments] = React.useState([])
 
-  const [comment, setAssetComment] = useState("");
-  const [time, setTime] = useState("");
-  const [itemId, setItemId] = useState("");
 
   const edges = [{ id: '1-2', source: '1', target: '2', label: 'Is Documented In', type: 'straightedge' },
                   { id: '1-3', source: '1', target: '3', label: 'Depends On', type: 'straightedge' },
@@ -188,29 +189,29 @@ const resetValue = () => {
         <TableHead>
         <TableRow>
             <TableCell>Action ID</TableCell>
-            <TableCell>Action</TableCell>
-            <TableCell>Timestamp</TableCell>
+            <TableCell>Logged Action</TableCell>
+            <TableCell align="right">Timestamp</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-            {/* <TableRow key={l.id}>
-              <TableCell>{l.id}</TableCell>
-              <TableCell>{l.action}</TableCell>
-              <TableCell>{l.timestamp}</TableCell>
-            </TableRow> */}
-    {Array.isArray(l) && l.filter(log => log.itemId === a.id).map(filteredLog => (
-    <TableRow key={filteredLog.id}>
-      <TableCell>{filteredLog.id}</TableCell>
-      <TableCell>{filteredLog.action}</TableCell>
-      <TableCell>{filteredLog.timestamp}</TableCell>
-    </TableRow>
-  ))}
-
+        {logs.map((l) => {
+          if (l.itemId === a.id) {
+            return (
+              <TableRow key={l.id}>
+                <TableCell>{l.id}</TableCell>
+                <TableCell>{l.action}</TableCell>
+                <TableCell align="right">{l.timestamp}</TableCell>
+              </TableRow>
+            );
+          } else {
+            return null; 
+          }
+        })}
         </TableBody>
       </Table>
 
     <h3>Associations:</h3>
-    <div style={{ height: '80%' }}>
+    <div style={{ height: 300 }}>
       <ReactFlow nodes={nodes} edges={edges}>
         <Background />
         <Controls />
@@ -223,22 +224,40 @@ const resetValue = () => {
         <TableRow>
             <TableCell>Comment ID</TableCell>
             <TableCell>Comment</TableCell>
-            <TableCell>Timestamp</TableCell>
+            <TableCell align="right">Timestamp</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-            <TableRow key={c.id}>
+          {comments.map((c) => {
+          if (c.itemId === a.id) {
+            return (
+              <TableRow key={c.id}>
               <TableCell>{c.id}</TableCell>
-              <TableCell>{c.action}</TableCell>
-              <TableCell>{c.timestamp}</TableCell>
+              <TableCell>{c.comment}</TableCell>
+              <TableCell align="right">{c.timestamp}</TableCell>
             </TableRow>
+            );
+          } else {
+            return null; 
+          }
+        })}
         </TableBody>
       </Table>
-
+      <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "40ch" },
+        background: "white",
+        width: "100%",
+        maxWidth: "100%",
+        margin: 0,
+      }}
+      noValidate
+      autoComplete="off"
+    >
       <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label= "Comment"
             placeholder= "Enter a comment here"
             multiline
             value={comment}
@@ -246,7 +265,6 @@ const resetValue = () => {
           />
         </Grid>
 
-        <Stack direction="row" spacing={2}>
         <Button
           variant="contained"
           endIcon={<SaveIcon />}
@@ -255,15 +273,8 @@ const resetValue = () => {
         >
           {save}
         </Button>
-        <Button
-          id="cancel-button"
-          variant="outlined"
-          startIcon={<CancelIcon />}
-          onClick={handleCancelButtonClick}
-        >
-          {cancel}
-        </Button>
-      </Stack>
+        
+      </Box>
     </React.Fragment>
   );
 }
