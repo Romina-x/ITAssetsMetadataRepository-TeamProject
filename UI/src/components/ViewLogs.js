@@ -28,7 +28,8 @@ export default function ViewLogs() {
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell>Item ID</TableCell>
+            <TableCell>Asset ID</TableCell>
+            <TableCell>Type ID</TableCell>
             <TableCell>Action</TableCell>
             <TableCell>Timestamp</TableCell>
           </TableRow>
@@ -37,7 +38,8 @@ export default function ViewLogs() {
           {logs.map((l) => (
             <TableRow key={l.id}>
               <TableCell>{l.id}</TableCell>
-              <TableCell>{l.itemId}</TableCell>
+              <TableCell>{l.assetId}</TableCell>
+              <TableCell>{l.typeId}</TableCell>
               <TableCell>{l.action}</TableCell>
               <TableCell>{l.timestamp}</TableCell>
             </TableRow>
