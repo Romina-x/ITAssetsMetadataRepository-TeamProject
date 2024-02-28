@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
@@ -873,6 +874,43 @@ class MainControllerTest {
     mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 123))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.view().name("assetNotFound"));
+  }
+
+
+  /**
+   * Test to validate that upon accessing the /type/find/all path, all data stored about types in
+   * the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAllTypes() throws Exception {
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+    type1.setTypeName("Bean");
+
+    mc.addNewType(type1);
+
+    // asset to be added
+    Type type2 = new Type();
+    type2.setId(12332);
+    type2.setTypeName("Toast");
+
+    mc.addNewType(type2);
+
+    // Mock the behavior of the findAll method to return the mock types
+    when(typeRepository.findAll()).thenReturn(Arrays.asList(type1, type2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/type/find/all"))
+        // Expects that the request was successful with 2 types in database
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+        // Check the JSON properties of the first and second type in the array
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(12345))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].typeName").value("Bean"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(12332))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].typeName").value("Toast"));
+
   }
 
 }
