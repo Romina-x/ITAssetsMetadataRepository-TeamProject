@@ -929,8 +929,8 @@ class MainControllerTest {
   }
 
   /**
-   * Test to validate that upon accessing the /asset/find/{id} path, all data stored about asset
-   * with unique id in the database, is retrieved as a JSON successfully.
+   * Test to validate that upon accessing the /type/find/{id} path, all data stored about type with
+   * unique id in the database, is retrieved as a JSON successfully.
    *
    * @throws Exception , could be any unchecked exception.
    */
@@ -960,6 +960,57 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(12332))
         .andExpect(MockMvcResultMatchers.jsonPath("$.typeName").value("Toast"));
 
+  }
+
+  /**
+   * Test to validate that upon accessing the /type/deleteAsset path, all data stored about any type
+   * in the database, is deleted.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteTypeModel() throws Exception {
+
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+    type1.setTypeName("Beans");
+
+    mc.addNewType(type1);
+
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/type/deleteType"))
+        // Expect view name to be "deleteType"
+        .andExpect(MockMvcResultMatchers.view().name("deleteType"))
+        // Expect the model to contain an attribute named "deleteType"
+        .andExpect(MockMvcResultMatchers.model().attributeExists("deleteType"));
+
+  }
+
+  /**
+   * Test to validate that upon accessing the /type/deleteAsset path, all data stored about a type
+   * in the database, is deleted using its id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteTypeById() throws Exception {
+
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+    type1.setTypeName("Beans");
+
+    mc.addNewType(type1);
+
+    // mock repository behaviour
+    Mockito.when(typeRepository.existsById(12345)).thenReturn(true);
+
+    // Stimulate the HTTP delete request and check if it is successful
+    mvc.perform(MockMvcRequestBuilders.delete("/type/delete/{id}", 12345))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        // Expect view name to be "resultDeleteType"
+        .andExpect(MockMvcResultMatchers.view().name("resultDeleteType"));
   }
 
 
