@@ -499,7 +499,7 @@ public class MainController {
   }
   
   public void generateUserLDIF(User user) throws IOException {
-	FileWriter writer = new FileWriter("User.ldif");
+	FileWriter writer = new FileWriter("User_info.ldif", true);
 	String userLDIFContent = ("dn: cn=" + user.getName() + "ou=users,dc=AssetManagert,dc=local\n; objectClass: inetOrgPerson\n c:" + user.getName());
 	writer.write(userLDIFContent);
 	writer.close();
