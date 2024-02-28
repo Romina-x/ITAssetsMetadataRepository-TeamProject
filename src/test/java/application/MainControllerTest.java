@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
@@ -1011,6 +1012,72 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk())
         // Expect view name to be "resultDeleteType"
         .andExpect(MockMvcResultMatchers.view().name("resultDeleteType"));
+  }
+
+  /**
+   * Test to validate that action logs are successfully added to database and that upon accessing
+   * the /log/find/all, all data stored about actions in the database, is retrieved as a JSON
+   * successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testAddAndGetAllLog() throws Exception {
+
+    mc.addActionLog(134, "this is an action");
+    mc.addActionLog(154, "this is another action");
+
+    ActionLog al = new ActionLog();
+    al.setItemId(134);
+    al.setAction("this is an action");
+
+    ActionLog al2 = new ActionLog();
+    al2.setItemId(154);
+    al2.setAction("this is another action");
+
+    // Mock the behavior of the findAll method to return the mock types
+    when(actionLogRepository.findAll()).thenReturn(Arrays.asList(al, al2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/log/find/all"))
+        // Expects that the request was successful with 2 types in database
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+        // Check the JSON properties of the first and second type in the array
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].itemId").value(134))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].action").value("this is an action"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].itemId").value(154))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].action").value("this is another action"));
+
+  }
+
+  /**
+   * Test to validate that upon accessing the /log/find/{id} path, all data stored about action with
+   * unique id in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetLogById() throws Exception {
+
+    // create mock logs
+    ActionLog al = new ActionLog();
+    al.setItemId(134);
+    al.setAction("this is an action");
+
+    ActionLog al2 = new ActionLog();
+    al2.setItemId(154);
+    al2.setAction("this is another action");
+
+    mc.addActionLog(134, "this is an action");
+    mc.addActionLog(154, "this is another action");
+
+    // Mock the behavior of the findById method to return the log
+    when(actionLogRepository.findById(134)).thenReturn(Optional.of(al));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/log/find/{id}", 134))
+        // Check the JSON properties of the returned log
+        .andExpect(MockMvcResultMatchers.jsonPath("$.itemId").value(134))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.action").value("this is an action"));
+
   }
 
 
