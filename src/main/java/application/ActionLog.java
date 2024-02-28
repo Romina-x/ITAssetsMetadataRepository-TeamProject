@@ -18,7 +18,9 @@ public class ActionLog {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private Integer itemId;
+  private Integer assetId;
+  
+  private Integer typeId;
   
   private String action;
   
@@ -33,14 +35,22 @@ public class ActionLog {
     this.id = id;
   }
 
-  public Integer getItemId() {
-    return itemId;
+  public Integer getAssetId() {
+    return assetId;
   }
 
-  public void setItemId(Integer itemId) {
-    this.itemId = itemId;
+  public void setAssetId(Integer assetId) {
+    this.assetId = assetId;
   }
 
+  public Integer getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId(Integer typeId) {
+    this.typeId = typeId;
+  }
+  
   public String getAction() {
     return action;
   }
