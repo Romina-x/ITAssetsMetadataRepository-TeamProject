@@ -21,6 +21,8 @@ public class User {
   
   private String name;
   
+  private String surname;
+  
   private String password;
   
   //private Permissions role;
@@ -41,6 +43,10 @@ public class User {
 	  this.name = name;
   }
   
+  public void setSurname(String surname) {
+	  this.surname = surname;
+  }
+  
   public void setPassword(String password) {
 	  this.password = password;
   }
@@ -56,6 +62,10 @@ public class User {
   @Column(name = "name")
   public String getName() {
 	  return this.name;
+  }
+  
+  public String getSurname() {
+	  return this.surname;
   }
   
   public String getPassword() {

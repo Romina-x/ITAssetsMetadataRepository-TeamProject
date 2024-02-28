@@ -500,7 +500,7 @@ public class MainController {
   
   public void generateUserLDIF(User user) throws IOException {
 	FileWriter writer = new FileWriter("User_info.ldif", true);
-	String userLDIFContent = ("dn: cn=" + user.getName() + "ou=users,dc=AssetManagert,dc=local\n; objectClass: inetOrgPerson\n c:" + user.getName());
+	String userLDIFContent = ("dn: uid=" + user.getId() + "ou=users,dc=AssetManagert,dc=local\n; objectClass: top\n objectClass: person\n objectClass: organizationalPerson\n objectClass: inetOrgPerson\n c: " + user.getName() + "uid: " + user.getId() + "sn: " + user.getSurname() + "userPassword: " + user.getPassword());
 	writer.write(userLDIFContent);
 	writer.close();
   }
