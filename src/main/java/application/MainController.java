@@ -43,6 +43,9 @@ public class MainController {
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
+  
+  @Autowired 
+  private AssetCommentRepository assetCommentRepository;
 
   @Autowired
   public MainController(AssetRepository assetRepository) {
