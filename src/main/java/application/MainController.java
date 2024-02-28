@@ -1,5 +1,7 @@
 package application;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.ArrayList;
@@ -486,16 +488,21 @@ public class MainController {
    * @param model an interface for holding attribute values for the user created.
    * @return the resultCreateUser page which informs the user that the save was successful and
    *         prompts them to create another.
+ * @throws IOException 
    */
   @PostMapping("/user/createUser") // POST request : When you submit the form
-  public String userSubmit(@ModelAttribute User user, Model model) {
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
-    // Commented out as role was changed to String to meet sprint 2 demo deadline
-    // Will be re-implemented next sprint
+  public String userSubmit(@ModelAttribute User user, Model model) throws IOException {
     userRepository.save(user);
+    generateUserLDIF(user);
 
     return "resultCreateUser"; // renders resultCreateUser.html
+  }
+  
+  public void generateUserLDIF(User user) throws IOException {
+	FileWriter writer = new FileWriter("User.ldif");
+	String userLDIFContent = ("dn: cn=" + user.getName() + "ou=users,dc=AssetManagert,dc=local\n; objectClass: inetOrgPerson\n c:" + user.getName());
+	writer.write(userLDIFContent);
+	writer.close();
   }
 
   /**
