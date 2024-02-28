@@ -1195,6 +1195,57 @@ class MainControllerTest {
 
   }
 
+  /**
+   * Test to validate that upon accessing the /user/findName/{name} path, all data stored about user
+   * with name in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetUserByName() throws Exception {
+
+    mc.addNewUser("user1", "password1", "users role1");
+    mc.addNewUser("user2", "password2", "users role2");
+
+    // mock users
+    User user1 = new User();
+    user1.setName("user1");
+    user1.setPassword("password1");
+    user1.setRole("users role1");
+
+    User user2 = new User();
+    user2.setName("user2");
+    user2.setPassword("password2");
+    user2.setRole("users role2");
+
+    String nameToFind = "user2";
+
+    when(userRepository.findByName(nameToFind)).thenReturn(List.of(user2));
+
+
+    List<User> actualUsers = mc.getUserByName(nameToFind);
+
+    // Assert the result
+    assertEquals(1, actualUsers.size(), "Should return a list containing one user.");
+    assertEquals(nameToFind, actualUsers.get(0).getName(),
+        "Should return a user with the specified name.");
+
+  }
+
+  /**
+   * Test to validate the string response of the method which allows for population of the attribute
+   * data for a specific user.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testUserForm() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/user/createUser"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("createUser"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createUser"));
+  }
+
 
 
 }
