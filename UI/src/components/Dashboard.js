@@ -29,8 +29,7 @@ import OpenAsset from './OpenAsset';
 import OpenType from './OpenType';
 import AssetFind from './AssetFind';
 import TypeFind from './TypeFind';
-
-
+import EditAsset from './EditAsset';
 
 function Copyright(props) {
   return (
@@ -206,6 +205,7 @@ export default function Dashboard(props) {
               <Grid item xs={12}>
                 {props.page === "asset/add" && <AssetInput />}
                 {props.page === "asset/view" && <ViewAssets />}
+                {props.page === "asset/edit" && <EditAsset />}
                 {props.page === "type/add" && <TypeInput />}
                 {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
