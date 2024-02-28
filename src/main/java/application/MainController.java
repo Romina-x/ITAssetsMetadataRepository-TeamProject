@@ -523,10 +523,6 @@ public class MainController {
    */
   @PostMapping("/user/createUser") // POST request : When you submit the form
   public String userSubmit(@ModelAttribute User user, Model model) {
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
-    // Commented out as role was changed to String to meet sprint 2 demo deadline
-    // Will be re-implemented next sprint
     userRepository.save(user);
 
     return "resultCreateUser"; // renders resultCreateUser.html
