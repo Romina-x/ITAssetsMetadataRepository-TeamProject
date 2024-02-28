@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { userListItems, adminListItems } from "./listItems";
+import { readerListItems, userListItems, adminListItems } from "./listItems";
 import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
@@ -27,8 +27,9 @@ import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
 import OpenAsset from './OpenAsset';
 import OpenType from './OpenType';
-
-
+import AssetFind from './AssetFind';
+import TypeFind from './TypeFind';
+import EditAsset from './EditAsset';
 
 function Copyright(props) {
   return (
@@ -108,8 +109,17 @@ export default function Dashboard(props) {
   };
 
   const userChange = () => {
-    setUser((user) => (user === 'user' ? 'admin' : 'user'));
+    setUser((user) => {
+      if (user === 'user') {
+        return 'admin';
+      } else if (user === 'admin') {
+        return 'reader';
+      } else {
+        return 'user';
+      }
+    });
   }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -140,8 +150,11 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1, fontFamily: "Calibri" }}
             >
-              {props.page.toLowerCase().includes("asset") && <p>Asset</p>}
-              {props.page.toLowerCase().includes("type") && <p>Type</p>}
+              {props.page.toLowerCase().includes("asset")&& !props.page.toLowerCase().includes("find") && <p>Asset</p>}
+              {props.page.toLowerCase().includes("type") && !props.page.toLowerCase().includes("find") && <p>Type</p>}
+              {props.page.toLowerCase().includes("find") && !props.page.toLowerCase().includes("type") && <p>Search Assets</p>}
+              {props.page.toLowerCase().includes("find") && !props.page.toLowerCase().includes("asset") && <p>Search Types</p>}
+
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -169,7 +182,8 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{user === 'user' ? userListItems : adminListItems}</List>
+          <List component="nav">{user === 'user' ? userListItems : user === 'admin' ? adminListItems : readerListItems}
+          </List>
         </Drawer>
         <Box
           component="main"
@@ -191,6 +205,7 @@ export default function Dashboard(props) {
               <Grid item xs={12}>
                 {props.page === "asset/add" && <AssetInput />}
                 {props.page === "asset/view" && <ViewAssets />}
+                {props.page === "asset/edit" && <EditAsset />}
                 {props.page === "type/add" && <TypeInput />}
                 {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
@@ -198,6 +213,9 @@ export default function Dashboard(props) {
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
+                {props.page === "asset/find" && <AssetFind />}
+                {props.page === "type/find" && <TypeFind />}
+
 
               </Grid>
             </Grid>

@@ -5,8 +5,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-import * as TypeAPI from '../TypeAPI';
-import * as LogAPI from '../LogAPI';
+import * as TypeAPI from '../utility/TypeAPI';
+import * as LogAPI from '../utility/LogAPI';
 import { useParams } from "react-router-dom";
 
 

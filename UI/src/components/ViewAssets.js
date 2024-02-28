@@ -6,7 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 import { Link } from "react-router-dom";
-import * as AssetAPI from "../AssetAPI";
+import * as AssetAPI from "../utility/AssetAPI";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -16,7 +16,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './DeletionConfirm';
+import DeleteConfirmationDialog from './AssetDelConfirm';
+import EditConfirmationDialog from './EditConfirm'; 
 
 export default function ViewAssets() {
   const [assets, setAssets] = React.useState([]);
@@ -25,8 +26,8 @@ export default function ViewAssets() {
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [deletingAssetId, setDeletingAssetId] = React.useState(null);
   const [openAssetId, setOpenAssetId] = React.useState(null);
-
-
+  const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
+  const [editingAssetId, setEditingAssetId] = React.useState(null);
 
   React.useEffect(() => {
     const getAssets = async () => {
@@ -35,6 +36,16 @@ export default function ViewAssets() {
     };
     getAssets();
   }, []);
+
+  const handleEditConfirmation = (id) => {
+    setEditingAssetId(id);
+    setOpenEditConfirmation(true);
+  };
+
+  const handleEditAsset = () => {
+    setOpenEditConfirmation(false);
+    // Navigate to the oter page
+  };
 
   const handleDelete = (id) => {
     setDeletingAssetId(id);
@@ -59,7 +70,7 @@ export default function ViewAssets() {
   const handleOpen = (id) => {
     setOpenAssetId(id);
   };
-   
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -96,15 +107,14 @@ export default function ViewAssets() {
               <TableCell>{a.title}</TableCell>
               <TableCell>{a.progLang}</TableCell>
               <TableCell align="right">
-              <IconButton className={styles.link}>
-              <Link to={`/asset/open/${a.id}`} className={styles.link}>
-                  <VisibilityIcon />
-              </Link>
-              </IconButton>
                 <IconButton className={styles.link}>
-                  <Link to={`/asset/edit/${a.id}`} className={styles.link}>
-                    <EditIcon />
+                  <Link to={`/asset/open/${a.id}`} className={styles.link}>
+                    <VisibilityIcon />
                   </Link>
+                </IconButton>
+                <IconButton className={styles.link}>
+                  {/* Use handleEditConfirmation function for edit confirmation */}
+                  <EditIcon onClick={() => handleEditConfirmation(a.id)} />
                 </IconButton>
                 <IconButton
                   className={styles.link}
@@ -147,6 +157,18 @@ export default function ViewAssets() {
           Back To Dashboard
         </Button>
       </Stack>
+
+      <EditConfirmationDialog
+        open={openEditConfirmation}
+        handleClose={() => setOpenEditConfirmation(false)}
+        handleConfirm={() => {
+          setOpenEditConfirmation(false);
+          handleEditAsset(editingAssetId);
+        }}
+        assetId={editingAssetId}
+
+      />
+
       <DeleteConfirmationDialog
         open={openDeleteDialog}
         handleClose={() => setOpenDeleteDialog(false)}

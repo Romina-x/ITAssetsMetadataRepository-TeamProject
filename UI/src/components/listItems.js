@@ -3,14 +3,16 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import EditIcon from "@mui/icons-material/Edit";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AddIcon from "@mui/icons-material/Add";
-import SourceIcon from "@mui/icons-material/Source";
 import { Link } from "react-router-dom";
 import styles from "../style/listItems.module.css";
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
+import FindInPageIcon from '@mui/icons-material/FindInPage';
+import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
+import ViewListTwoToneIcon from '@mui/icons-material/ViewListTwoTone';
 
 export const adminListItems = (
   <React.Fragment>
@@ -22,71 +24,63 @@ export const adminListItems = (
         <ListItemText primary="Dashboard" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/view" className={styles.link}>
+    <Link to="/asset/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <SourceIcon />
+          <NoteAddIcon />
         </ListItemIcon>
-        <ListItemText primary="View Asset" />
+        <ListItemText primary="Add Asset" />
       </ListItemButton>
     </Link>
     <Link to="/type/add" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <AddIcon />
+          <NoteAddOutlinedIcon />
         </ListItemIcon>
         <ListItemText primary="Add Type" />
       </ListItemButton>
     </Link>
-    <Link to="/type/edit" className={styles.link}>
+    <Link to="/asset/find" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <EditIcon />
+          <FindInPageIcon />
         </ListItemIcon>
-        <ListItemText primary="Edit Type" />
+        <ListItemText primary="Find Asset" />
       </ListItemButton>
     </Link>
-    <Link to="/type/delete" className={styles.link}>
+    <Link to="/type/find" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <DeleteIcon />
+          <FindInPageOutlinedIcon />
         </ListItemIcon>
-        <ListItemText primary="Delete Type" />
+        <ListItemText primary="Find Type" />
+      </ListItemButton>
+    </Link>
+    <Link to="/asset/view" className={styles.link}>
+      <ListItemButton>
+        <ListItemIcon>
+          <ViewListIcon />
+        </ListItemIcon>
+        <ListItemText primary="View Assets" />
       </ListItemButton>
     </Link>
     <Link to="/type/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <SourceIcon />
+          <ViewListOutlinedIcon />
         </ListItemIcon>
-        <ListItemText primary="View Type" />
+        <ListItemText primary="View Types" />
       </ListItemButton>
     </Link>
     <Link to="/log/view" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <SourceIcon />
+          <ViewListTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary="View Log" />
+        <ListItemText primary="View Logs" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/open" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <SourceIcon />
-        </ListItemIcon>
-        <ListItemText primary="Open Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/type/open" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <SourceIcon />
-        </ListItemIcon>
-        <ListItemText primary="Open Type" />
-      </ListItemButton>
-    </Link>
-    <Link to="/login" className={styles.link}>
+    <Link to="/" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
           <LogoutIcon />
@@ -99,29 +93,82 @@ export const adminListItems = (
 
 export const userListItems = (
   <React.Fragment>
-    <Link to="/" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
-    </Link>
-    <Link to="/asset/view" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <SourceIcon />
-        </ListItemIcon>
-        <ListItemText primary="View Asset" />
-      </ListItemButton>
-    </Link>
-    <Link to="/login" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <LogoutIcon />
-        </ListItemIcon>
-        <ListItemText primary="Log out" />
-      </ListItemButton>
-    </Link>
-  </React.Fragment>
+  <Link to="/" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItemButton>
+  </Link>
+  <Link to="/asset/add" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <NoteAddIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Asset" />
+    </ListItemButton>
+  </Link>
+  <Link to="/asset/find" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <FindInPageIcon />
+      </ListItemIcon>
+      <ListItemText primary="Find Asset" />
+    </ListItemButton>
+  </Link>
+  <Link to="/type/find" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <FindInPageOutlinedIcon />
+      </ListItemIcon>
+      <ListItemText primary="Find Type" />
+    </ListItemButton>
+  </Link>
+  <Link to="/" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Log out" />
+    </ListItemButton>
+  </Link>
+</React.Fragment>
+);
+
+export const readerListItems = (
+  <React.Fragment>
+  <Link to="/" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItemButton>
+  </Link>
+  <Link to="/asset/find" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <FindInPageIcon />
+      </ListItemIcon>
+      <ListItemText primary="Find Asset" />
+    </ListItemButton>
+  </Link>
+  <Link to="/type/find" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <FindInPageOutlinedIcon />
+      </ListItemIcon>
+      <ListItemText primary="Find Type" />
+    </ListItemButton>
+  </Link>
+  <Link to="/" className={styles.link}>
+    <ListItemButton>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Log out" />
+    </ListItemButton>
+  </Link>
+</React.Fragment>
 );

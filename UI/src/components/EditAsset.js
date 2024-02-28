@@ -10,8 +10,11 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { getAll } from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI"
+import { useParams } from "react-router-dom";
 
 export default function FormPropsTextFields() {
+  let {editAssetId} = useParams();
+  
   //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
@@ -25,7 +28,6 @@ export default function FormPropsTextFields() {
   const [link, setLink] = useState("");
   const [lineNum, setlineNum] = useState("");
   const [progLang, setprogLang] = useState("");
-/*  const [author, setAuthor] = useState("");*/
   const [isDocumentedIn, setIsDocumentedIn] = useState("");
   const [dependsOn, setDependsOn] = useState("");
   const [succeededBy, setSucceededBy] = useState("");
@@ -33,6 +35,27 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
+
+  React.useEffect(() => {
+    const getAssets = async () => {
+      const res = await AssetAPI.get(editAssetId);     
+
+      setLink(res.link || "");
+      setType(res.type || "");
+      setTitle(res.title || "");
+      setprogLang(res.progLang || "");
+      setlineNum(res.lineNum || "");
+      setDependsOn(res.dependsOn || "");
+      setIsDocumentedIn(res.isDocumentedIn || "");
+      setSucceededBy(res.succeededBy || "");
+      setCustomAttribute1(res.customAttribute1 || "");
+      setCustomAttribute2(res.customAttribute2 || "");
+      setCustomAttribute3(res.customAttribute3 || "");
+      setCustomAttribute4(res.customAttribute4 || "");
+    };
+
+    getAssets();
+  }, []);
 
   //useEffect hook to fetch type names to populate the dropdown with
   useEffect(() => {
@@ -72,15 +95,6 @@ export default function FormPropsTextFields() {
     }
 
   }, [cancel]);
-  
-  useEffect(() => {
-    if (selectedType) {
-      setCustomAttribute1(""); 
-      setCustomAttribute2(""); 
-      setCustomAttribute3(""); 
-      setCustomAttribute4("");
-    }
-  }, [selectedType]);
 
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
@@ -90,6 +104,7 @@ export default function FormPropsTextFields() {
 
     try {
       const response = await AssetAPI.addAsset({
+        id: editAssetId,
         type: selectedType.typeName,
         title,
         link,
@@ -102,8 +117,7 @@ export default function FormPropsTextFields() {
         customAttribute2,
         customAttribute3,
         customAttribute4,
-      });
-      
+      });      
       
       if (!response.ok) {
         throw new Error('Failed to add asset');

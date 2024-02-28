@@ -8,21 +8,21 @@ const headers = {
   Authorization: token,
 };
 
-export const get = (typeId) =>
-  fetch(`${api}/type/find/${typeId}`, { headers })
+export const get = (commentId) =>
+  fetch(`${api}/comment/find/${commentId}`, { headers })
     .then((res) => res.json())
 
 export const getAll = () =>
-  fetch(`${api}/type/find/all`, {headers})
+  fetch(`${api}/comment/find/all`, {headers})
     .then((res) => res.json())
 
-export const update = (type) =>
-fetch(`${api}/type/${type.id}`, {
+export const update = (comment) =>
+fetch(`${api}/comment/${comment.id}`, {
       method: "PUT",
       headers: {
         ...headers,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ type }),
+      body: JSON.stringify({ comment }),
     })
     .then((res) => res.json());

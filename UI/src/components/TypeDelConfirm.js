@@ -5,13 +5,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
-export default function DeleteConfirmationDialog({ open, handleClose, handleConfirm, assetId }) {
+export default function DeleteConfirmationDialog({ open, handleClose, handleConfirm, typeId }) {
     return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>You Are Deleting an Asset</DialogTitle>
+        <DialogTitle>You are deleting a Type</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete asset with ID: {assetId}? <br/>
+            Are you sure you want to delete Type with ID: {typeId}? <br/>
             This cannot be undone!
           </DialogContentText>
         </DialogContent>
