@@ -110,8 +110,10 @@ export default function ViewTypes() {
                   <VisibilityIcon />
               </Link>
               </IconButton>
-              <IconButton className={styles.link} onClick={() => handleEditConfirmation(t.id)}>
+              <IconButton className={styles.link}>
+              <Link to={`/type/edit/${t.id}`} className={styles.link}>
                 <EditIcon />
+              </Link>
               </IconButton>
                 <IconButton
                   className={styles.link}
