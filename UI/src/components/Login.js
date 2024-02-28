@@ -19,7 +19,11 @@ export default function Login() {
     {
         username : "user3",
         password : "password"
-    }
+    },
+    {
+      username : "admin",
+      password : "admin"
+  }
   ]
 
   const handleLogin = () => {
@@ -39,7 +43,8 @@ export default function Login() {
       style={{ minHeight: "100vh", paddingTop: "10%" }}
     >
       <Grid item xs={12} sm={6} md={4} textAlign="center">
-        <Typography variant="h4">Welcome to the App</Typography>
+        <Typography variant="h4">Welcome to the 
+        IT Assets Metadata Repository</Typography>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <TextField
           label="Username"
