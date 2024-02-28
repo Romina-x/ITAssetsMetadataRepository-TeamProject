@@ -1123,7 +1123,77 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
   }
-  
+
+  /**
+   * Test to validate that users are successfully added to database and that upon accessing the
+   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
+   * successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testAddAndGetAllUsers() throws Exception {
+
+    mc.addNewUser("user1", "password1", "users role1");
+    mc.addNewUser("user2", "password2", "users role2");
+
+    // mock users
+    User user1 = new User();
+    user1.setName("user1");
+    user1.setPassword("password1");
+    user1.setRole("users role1");
+
+    User user2 = new User();
+    user2.setName("user2");
+    user2.setPassword("password2");
+    user2.setRole("users role2");
+
+    // Mock the behavior of the findAll method to return the mock users
+    when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+    // Perform the GET request*/
+    mvc.perform(MockMvcRequestBuilders.get("/user/find/all"))
+        // Expects that the request was successful with 2 users in database
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+        // Check the JSON properties of the first and second user in the array
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("user1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").value("password1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("user2"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].password").value("password2"));
+
+  }
+
+  /**
+   * Test to validate that upon accessing the /user/find/{id} path, all data stored about user with
+   * unique id in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetUserById() throws Exception {
+
+    mc.addNewUser("user1", "password1", "users role1");
+    mc.addNewUser("user2", "password2", "users role2");
+
+    // mock users
+    User user1 = new User();
+    user1.setName("user1");
+    user1.setPassword("password1");
+    user1.setRole("users role1");
+
+    User user2 = new User();
+    user2.setName("user2");
+    user2.setPassword("password2");
+    user2.setRole("users role2");
+
+    // Mock the behavior of the findById method to return the user
+    when(userRepository.findById(134)).thenReturn(Optional.of(user1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/user/find/{id}", 134))
+        // Check the JSON properties of the returned user
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("user1"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password1"));
+
+  }
 
 
 
