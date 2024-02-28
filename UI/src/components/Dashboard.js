@@ -30,6 +30,7 @@ import OpenType from './OpenType';
 import AssetFind from './AssetFind';
 import TypeFind from './TypeFind';
 import EditAsset from './EditAsset';
+import TypeEdit from './TypeEdit';
 
 function Copyright(props) {
   return (
@@ -216,6 +217,7 @@ export default function Dashboard(props) {
                 {props.page === "asset/find" && <AssetFind />}
                 {props.page === "type/find" && <TypeFind />}
 
+                {props.page === "type/edit" && <TypeEdit />}
 
               </Grid>
             </Grid>
