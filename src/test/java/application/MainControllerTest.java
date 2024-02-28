@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -885,14 +886,14 @@ class MainControllerTest {
    */
   @Test
   void testGetAllTypes() throws Exception {
-    // asset to be added
+    // type to be added
     Type type1 = new Type();
     type1.setId(12345);
     type1.setTypeName("Bean");
 
     mc.addNewType(type1);
 
-    // asset to be added
+    // type to be added
     Type type2 = new Type();
     type2.setId(12332);
     type2.setTypeName("Toast");
@@ -912,5 +913,55 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].typeName").value("Toast"));
 
   }
+
+  /**
+   * Test to validate the string response of the method which allows for population of the attribute
+   * data for a specific type.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testTypeForm() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/type/createType"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("createType"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createType"));
+  }
+
+  /**
+   * Test to validate that upon accessing the /asset/find/{id} path, all data stored about asset
+   * with unique id in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetTypeById() throws Exception {
+
+    // type to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+    type1.setTypeName("Beans");
+
+    mc.addNewType(type1);
+
+    // type to be added
+    Type type2 = new Type();
+    type2.setId(12332);
+    type2.setTypeName("Toast");
+
+    mc.addNewType(type2);
+
+
+    // Mock the behavior of the findById method to return the type
+    when(typeRepository.findById(12332)).thenReturn(Optional.of(type2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/type/find/{id}", 12332))
+        // Check the JSON properties of the returned type
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(12332))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.typeName").value("Toast"));
+
+  }
+
+
 
 }

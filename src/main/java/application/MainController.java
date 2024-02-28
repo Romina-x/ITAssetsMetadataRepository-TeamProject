@@ -54,6 +54,11 @@ public class MainController {
     this.actionLogRepository = actionLogRepository;
   }
 
+  public MainController(TypeRepository typeRepository, ActionLogRepository actionLogRepository) {
+    this.actionLogRepository = actionLogRepository;
+    this.typeRepository = typeRepository; 
+  }
+
   /**
    * This method allows for the application of CORS cross origin compatibility with the API
    *
