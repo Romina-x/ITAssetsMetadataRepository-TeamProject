@@ -17,6 +17,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
+import EditConfirmationDialog from './TypeEditConfirm'; 
 
 
 export default function ViewTypes() {
@@ -25,7 +26,9 @@ export default function ViewTypes() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [deletingTypeId, setDeletingTypeId] = React.useState(null);
-
+  const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
+  const [editingTypeId, setEditingTypeId] = React.useState(null);
+  
   React.useEffect(() => {
     const getTypes = async () => {
       const res = await TypeAPI.getAll();
@@ -64,6 +67,16 @@ export default function ViewTypes() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  
+   const handleEditConfirmation = (id) => {
+    setEditingTypeId(id);
+    setOpenEditConfirmation(true);
+  };
+  
+  const handleEditType = () => {
+    setOpenEditConfirmation(false);
+    // Navigate to the oter page
+  };
 
   return (
     <React.Fragment>
@@ -97,11 +110,9 @@ export default function ViewTypes() {
                   <VisibilityIcon />
               </Link>
               </IconButton>
-                <IconButton className={styles.link}>
-                  <Link to={`/type/edit/${t.id}`} className={styles.link}>
-                    <EditIcon />
-                  </Link>
-                </IconButton>
+              <IconButton className={styles.link} onClick={() => handleEditConfirmation(t.id)}>
+                <EditIcon />
+              </IconButton>
                 <IconButton
                   className={styles.link}
                   onClick={() => handleDelete(t.id)}
@@ -142,6 +153,16 @@ export default function ViewTypes() {
           Back To Dashboard
         </Button>
       </Stack>
+       <EditConfirmationDialog
+        open={openEditConfirmation}
+        handleClose={() => setOpenEditConfirmation(false)}
+        handleConfirm={() => {
+          setOpenEditConfirmation(false);
+          handleEditType(editingTypeId);
+        }}
+        typeId={editingTypeId}
+
+      />
       <DeleteConfirmationDialog
         open={openDeleteDialog}
         handleClose={() => setOpenDeleteDialog(false)}
