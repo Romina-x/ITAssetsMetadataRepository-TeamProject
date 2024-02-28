@@ -1080,6 +1080,51 @@ class MainControllerTest {
 
   }
 
+  /**
+   * Test to validate that upon accessing the /type/editType/{id}, the edit type page is rendered
+   * depending on a given type id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditTypeForm() throws Exception {
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+
+    mc.addNewType(type1);
+
+    // Mock the behavior of the findById method to return the asset
+    when(typeRepository.findById(12345)).thenReturn(Optional.of(type1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/type/editType/{id}", 12345))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("editType"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("type"))
+        .andExpect(MockMvcResultMatchers.model().attribute("type", type1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
+        .andExpect(MockMvcResultMatchers.model().attribute("id", 12345));
+
+  }
+
+  /**
+   * Test to validate the exception string response upon accessing the /type/editType/{id} with no
+   * type, the edit type page is not rendered.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditTypeForm_Exception() throws Exception {
+
+    Mockito.when(typeRepository.findById(123)).thenReturn(Optional.empty());
+
+    mvc.perform(MockMvcRequestBuilders.get("/type/editType/{id}", 123))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
+  }
+  
+
 
 
 }

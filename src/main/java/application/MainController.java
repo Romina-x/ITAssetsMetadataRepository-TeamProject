@@ -406,14 +406,6 @@ public class MainController {
   public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
       @RequestParam String role) {
 
-    // Permissions userRole = null;
-
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(role)) {
-    // userRole = perm;
-    // }
-    // }
-
     User newUser = new User();
     newUser.setName(name);
     newUser.setPassword(password);
