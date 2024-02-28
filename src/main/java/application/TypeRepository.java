@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called typeRepository
@@ -13,5 +15,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface TypeRepository extends CrudRepository<Type, Integer> {
+
+	Optional<Type> findByTypeName(String typeName);
 
 }
