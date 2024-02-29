@@ -57,6 +57,7 @@ public class MainController {
     this.actionLogRepository = actionLogRepository;
   }
 
+
   /**
    * This method allows for the application of CORS cross origin compatibility with the API
    *
@@ -439,14 +440,6 @@ public class MainController {
   @PostMapping(path = "/user/add") // Map ONLY POST Requests
   public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
       @RequestParam String role) {
-
-    // Permissions userRole = null;
-
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(role)) {
-    // userRole = perm;
-    // }
-    // }
 
     User newUser = new User();
     newUser.setName(name);
