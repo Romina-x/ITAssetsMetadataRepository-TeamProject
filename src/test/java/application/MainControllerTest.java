@@ -149,22 +149,21 @@ class MainControllerTest {
   }
 
 
-//  /**
-//   * Test to validate the string response of the method which allows for population of the attribute
-//   * data for a specific asset.
-//   *
-//   * @throws Exception , could be any checked exception.
-//   */
-//  @Test
-//  //TODO
-//  // test 2
-//  void testAssetForm() throws Exception {
-//    mvc.perform(MockMvcRequestBuilders.get("/asset/createAsset"))
-//        .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
-//        .andExpect(MockMvcResultMatchers.view().name("createAsset"))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));
-//
-//  }
+  /**
+   * Test to validate the string response of the method which allows for population of the attribute
+   * data for a specific asset.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  // test 2
+  void testAssetForm() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/asset/createAsset"))
+        .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
+        .andExpect(MockMvcResultMatchers.view().name("createAsset"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));
+
+  }
 
   /**
    * Test to validate the string response of method which populates database with asset attributes
@@ -786,105 +785,101 @@ class MainControllerTest {
 
   }
 
-//  /**
-//   * Test to validate that upon accessing the /asset/deleteAsset path, all data stored about any
-//   * asset in the database, is deleted.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testDeleteAssetModel() throws Exception {
-//
-//    // asset to be added
-//    Asset asset1 = new Asset();
-//    asset1.setId(12345);
-//    asset1.setTitle("Beans");
-//
-//    mc.addNewAsset(asset1);
-//
-//    // Perform the GET request
-//    mvc.perform(MockMvcRequestBuilders.get("/asset/deleteAsset"))
-//        // Expect view name to be "deleteAsset"
-//        .andExpect(MockMvcResultMatchers.view().name("deleteAsset"))
-//        // Expect the model to contain an attribute named "deleteAsset"
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("deleteAsset"));
-//
-//  }
+  /**
+   * Test to validate that upon accessing the /asset/deleteAsset path, all data stored about any
+   * asset in the database, is deleted.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteAssetModel() throws Exception {
 
-//  /**
-//   * Test to validate that upon accessing the /asset/deleteAsset path, all data stored about an
-//   * asset in the database, is deleted using its id.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testDeleteAssetById() throws Exception {
-//
-//    // asset to be added
-//    Asset asset1 = new Asset();
-//    asset1.setId(12345);
-//    asset1.setTitle("Beans");
-//
-//    mc.addNewAsset(asset1);
-//
-//    // mock repository behaviour
-//    Mockito.when(assetRepository.existsById(12345)).thenReturn(true);
-//
-//    // Stimulate the HTTP delete request and check if it is successful
-//    mvc.perform(MockMvcRequestBuilders.delete("/asset/delete/{id}", 12345))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        // Expect view name to be "resultDeleteAsset"
-//        .andExpect(MockMvcResultMatchers.view().name("resultDeleteAsset"));
-//  }
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setTitle("Beans");
 
-//  /**
-//   * Test to validate that upon accessing the /asset/editAsset/{id}, the edit asset page is rendered
-//   * depending on a given asset id.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testEditAssetForm() throws Exception {
-//    // asset to be added
-//    Asset asset1 = new Asset();
-//    asset1.setId(12345);
-//
-//    mc.addNewAsset(asset1);
-//
-//    // Mock the behavior of the findById method to return the asset
-//    when(assetRepository.findById(12345)).thenReturn(Optional.of(asset1));
-//    // Perform the GET request
-//    mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 12345))
-//        // Check the JSON properties of the returned asset
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.view().name("editAsset"))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("asset"))
-//        .andExpect(MockMvcResultMatchers.model().attribute("asset", asset1))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
-//        .andExpect(MockMvcResultMatchers.model().attribute("id", 12345));
-//
-//
-//  }
+    mc.addNewAsset(asset1);
 
-//  /**
-//   * Test to validate the exception string response upon accessing the /asset/editAsset/{id} with no
-//   * asset, the edit asset page is not rendered.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testEditAssetForm_Exception() throws Exception {
-//
-//    Mockito.when(assetRepository.findById(123)).thenReturn(Optional.empty());
-//
-//    mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 123))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.view().name("assetNotFound"));
-//  }
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/asset/deleteAsset"))
+        // Expect view name to be "deleteAsset"
+        .andExpect(MockMvcResultMatchers.view().name("deleteAsset"))
+        // Expect the model to contain an attribute named "deleteAsset"
+        .andExpect(MockMvcResultMatchers.model().attributeExists("deleteAsset"));
+
+  }
+
+  /**
+   * Test to validate that upon accessing the /asset/deleteAsset path, all data stored about an
+   * asset in the database, is deleted using its id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteAssetById() throws Exception {
+
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+    asset1.setTitle("Beans");
+
+    mc.addNewAsset(asset1);
+
+    // mock repository behaviour
+    Mockito.when(assetRepository.existsById(12345)).thenReturn(true);
+
+    // Stimulate the HTTP delete request and check if it is successful
+    mvc.perform(MockMvcRequestBuilders.delete("/asset/delete/{id}", 12345))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        // Expect view name to be "resultDeleteAsset"
+        .andExpect(MockMvcResultMatchers.view().name("resultDeleteAsset"));
+  }
+
+  /**
+   * Test to validate that upon accessing the /asset/editAsset/{id}, the edit asset page is rendered
+   * depending on a given asset id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditAssetForm() throws Exception {
+    // asset to be added
+    Asset asset1 = new Asset();
+    asset1.setId(12345);
+
+    mc.addNewAsset(asset1);
+
+    // Mock the behaviour of the findById method to return the asset
+    when(assetRepository.findById(12345)).thenReturn(Optional.of(asset1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 12345))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("editAsset"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("asset"))
+        .andExpect(MockMvcResultMatchers.model().attribute("asset", asset1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
+        .andExpect(MockMvcResultMatchers.model().attribute("id", 12345));
+
+
+  }
+
+  /**
+   * Test to validate the exception string response upon accessing the /asset/editAsset/{id} with no
+   * asset, the edit asset page is not rendered.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditAssetForm_Exception() throws Exception {
+
+    Mockito.when(assetRepository.findById(123)).thenReturn(Optional.empty());
+
+    mvc.perform(MockMvcRequestBuilders.get("/asset/editAsset/{id}", 123))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("assetNotFound"));
+  }
 
 
   /**
@@ -923,20 +918,19 @@ class MainControllerTest {
 
   }
 
-//  /**
-//   * Test to validate the string response of the method which allows for population of the attribute
-//   * data for a specific type.
-//   *
-//   * @throws Exception , could be any checked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testTypeForm() throws Exception {
-//    mvc.perform(MockMvcRequestBuilders.get("/type/createType"))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.view().name("createType"))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("createType"));
-//  }
+  /**
+   * Test to validate the string response of the method which allows for population of the attribute
+   * data for a specific type.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testTypeForm() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/type/createType"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("createType"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createType"));
+  }
 
   /**
    * Test to validate that upon accessing the /type/find/{id} path, all data stored about type with
@@ -972,58 +966,56 @@ class MainControllerTest {
 
   }
 
-//  /**
-//   * Test to validate that upon accessing the /type/deleteAsset path, all data stored about any type
-//   * in the database, is deleted.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testDeleteTypeModel() throws Exception {
-//
-//    // asset to be added
-//    Type type1 = new Type();
-//    type1.setId(12345);
-//    type1.setTypeName("Beans");
-//
-//    mc.addNewType(type1);
-//
-//    // Perform the GET request
-//    mvc.perform(MockMvcRequestBuilders.get("/type/deleteType"))
-//        // Expect view name to be "deleteType"
-//        .andExpect(MockMvcResultMatchers.view().name("deleteType"))
-//        // Expect the model to contain an attribute named "deleteType"
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("deleteType"));
-//
-//  }
+  /**
+   * Test to validate that upon accessing the /type/deleteAsset path, all data stored about any type
+   * in the database, is deleted.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteTypeModel() throws Exception {
 
-//  /**
-//   * Test to validate that upon accessing the /type/deleteAsset path, all data stored about a type
-//   * in the database, is deleted using its id.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testDeleteTypeById() throws Exception {
-//
-//    // asset to be added
-//    Type type1 = new Type();
-//    type1.setId(12345);
-//    type1.setTypeName("Beans");
-//
-//    mc.addNewType(type1);
-//
-//    // mock repository behaviour
-//    Mockito.when(typeRepository.existsById(12345)).thenReturn(true);
-//
-//    // Stimulate the HTTP delete request and check if it is successful
-//    mvc.perform(MockMvcRequestBuilders.delete("/type/delete/{id}", 12345))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        // Expect view name to be "resultDeleteType"
-//        .andExpect(MockMvcResultMatchers.view().name("resultDeleteType"));
-//  }
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+    type1.setTypeName("Beans");
+
+    mc.addNewType(type1);
+
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/type/deleteType"))
+        // Expect view name to be "deleteType"
+        .andExpect(MockMvcResultMatchers.view().name("deleteType"))
+        // Expect the model to contain an attribute named "deleteType"
+        .andExpect(MockMvcResultMatchers.model().attributeExists("deleteType"));
+
+  }
+
+  /**
+   * Test to validate that upon accessing the /type/deleteAsset path, all data stored about a type
+   * in the database, is deleted using its id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testDeleteTypeById() throws Exception {
+
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
+    type1.setTypeName("Beans");
+
+    mc.addNewType(type1);
+
+    // mock repository behaviour
+    Mockito.when(typeRepository.existsById(12345)).thenReturn(true);
+
+    // Stimulate the HTTP delete request and check if it is successful
+    mvc.perform(MockMvcRequestBuilders.delete("/type/delete/{id}", 12345))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        // Expect view name to be "resultDeleteType"
+        .andExpect(MockMvcResultMatchers.view().name("resultDeleteType"));
+  }
 
   /**
    * Test to validate that action logs are successfully added to database and that upon accessing
@@ -1091,51 +1083,49 @@ class MainControllerTest {
 
   }
 
-//  /**
-//   * Test to validate that upon accessing the /type/editType/{id}, the edit type page is rendered
-//   * depending on a given type id.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testEditTypeForm() throws Exception {
-//    // asset to be added
-//    Type type1 = new Type();
-//    type1.setId(12345);
-//
-//    mc.addNewType(type1);
-//
-//    // Mock the behaviour of the findById method to return the asset
-//    when(typeRepository.findById(12345)).thenReturn(Optional.of(type1));
-//    // Perform the GET request
-//    mvc.perform(MockMvcRequestBuilders.get("/type/editType/{id}", 12345))
-//        // Check the JSON properties of the returned asset
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.view().name("editType"))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("type"))
-//        .andExpect(MockMvcResultMatchers.model().attribute("type", type1))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
-//        .andExpect(MockMvcResultMatchers.model().attribute("id", 12345));
-//
-//  }
+  /**
+   * Test to validate that upon accessing the /type/editType/{id}, the edit type page is rendered
+   * depending on a given type id.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditTypeForm() throws Exception {
+    // asset to be added
+    Type type1 = new Type();
+    type1.setId(12345);
 
-//  /**
-//   * Test to validate the exception string response upon accessing the /type/editType/{id} with no
-//   * type, the edit type page is not rendered.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testEditTypeForm_Exception() throws Exception {
-//
-//    Mockito.when(typeRepository.findById(123)).thenReturn(Optional.empty());
-//
-//    mvc.perform(MockMvcRequestBuilders.get("/type/editType/{id}", 123))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
-//  }
+    mc.addNewType(type1);
+
+    // Mock the behaviour of the findById method to return the asset
+    when(typeRepository.findById(12345)).thenReturn(Optional.of(type1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/type/editType/{id}", 12345))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("editType"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("type"))
+        .andExpect(MockMvcResultMatchers.model().attribute("type", type1))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
+        .andExpect(MockMvcResultMatchers.model().attribute("id", 12345));
+
+  }
+
+  /**
+   * Test to validate the exception string response upon accessing the /type/editType/{id} with no
+   * type, the edit type page is not rendered.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testEditTypeForm_Exception() throws Exception {
+
+    Mockito.when(typeRepository.findById(123)).thenReturn(Optional.empty());
+
+    mvc.perform(MockMvcRequestBuilders.get("/type/editType/{id}", 123))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
+  }
 
   /**
    * Test to validate that users are successfully added to database and that upon accessing the
@@ -1245,20 +1235,19 @@ class MainControllerTest {
 
   }
 
-//  /**
-//   * Test to validate the string response of the method which allows for population of the attribute
-//   * data for a specific user.
-//   *
-//   * @throws Exception , could be any checked exception.
-//   */
-//  //TODO
-//  @Test
-//  void testUserForm() throws Exception {
-//    mvc.perform(MockMvcRequestBuilders.get("/user/createUser"))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.view().name("createUser"))
-//        .andExpect(MockMvcResultMatchers.model().attributeExists("createUser"));
-//  }
+  /**
+   * Test to validate the string response of the method which allows for population of the attribute
+   * data for a specific user.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testUserForm() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/user/createUser"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.view().name("createUser"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("createUser"));
+  }
 
 
 
