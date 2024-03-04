@@ -24,13 +24,22 @@ class ActionLogTest {
   }
   
   /**
-   * Test to verify the function of the ActionLog get/set item ID
+   * Test to verify the function of the ActionLog get/set asset ID
    */
   @Test
-  public void actionLogGetSetItemID() {
+  public void actionLogGetSetAssetID() {
     ActionLog al = new ActionLog();
-    al.setItemId(2);
-    assertEquals(al.getItemId(), 2, "Test that the item id can be set and retrieved");
+    al.setAssetId(2);
+    assertEquals(al.getAssetId(), 2, "Test that the asset id can be set and retrieved");
+  }
+  /**
+   * Test to verify the function of the ActionLog get/set type ID
+   */
+  @Test
+  public void actionLogGetSetTypeID() {
+    ActionLog al = new ActionLog();
+    al.setTypeId(2);
+    assertEquals(al.getTypeId(), 2, "Test that the type id can be set and retrieved");
   }
 
   /**

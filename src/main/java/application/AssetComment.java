@@ -7,22 +7,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
- * This class creates an Entity model of an Action Log for storage into the database with a standard
+ * This class creates an Entity model of an Asset Comment for storage into the database with a standard
  * format. This is the minimal version of the information required by the database.
  *
  * @author Sarah Haines
  */
 @Entity // This tells Hibernate to make a table out of this class
-public class ActionLog {
+public class AssetComment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private Integer assetId;
+  private Integer itemId;
   
-  private Integer typeId;
-  
-  private String action;
+  private String comment;
   
   private LocalDateTime timestamp;
   
@@ -35,28 +33,20 @@ public class ActionLog {
     this.id = id;
   }
 
-  public Integer getAssetId() {
-    return assetId;
+  public Integer getItemId() {
+    return itemId;
   }
 
-  public void setAssetId(Integer assetId) {
-    this.assetId = assetId;
+  public void setItemId(Integer itemId) {
+    this.itemId = itemId;
   }
 
-  public Integer getTypeId() {
-    return typeId;
+  public String getComment() {
+    return comment;
   }
 
-  public void setTypeId(Integer typeId) {
-    this.typeId = typeId;
-  }
-  
-  public String getAction() {
-    return action;
-  }
-
-  public void setAction(String action) {
-    this.action = action;
+  public void setComment(String comment) {
+    this.comment = comment;
   }
   
   public LocalDateTime getTimestamp() {
