@@ -29,7 +29,7 @@ sn: Alex
 uid: ben
 userPassword: ben
 
-dn: uid=bob,ou=Users ,dc=springframework,dc=org
+dn: uid=bob,ou=Users,dc=springframework,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
