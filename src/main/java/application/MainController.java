@@ -45,15 +45,20 @@ public class MainController {
   
   @Autowired 
   private AssetCommentRepository assetCommentRepository;
+  
+  @Autowired 
+  private AssociationRepository associationRepository;
 
   @Autowired
-  public MainController(AssetRepository assetRepository) {
+  public MainController(AssetRepository assetRepository, AssociationRepository associationRepository) {
     this.assetRepository = assetRepository;
+    this.associationRepository = associationRepository;
   }
 
-  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository) {
+  public MainController(AssetRepository assetRepository, ActionLogRepository actionLogRepository, AssociationRepository associationRepository) {
     this.assetRepository = assetRepository;
     this.actionLogRepository = actionLogRepository;
+    this.associationRepository = associationRepository;
   }
 
 
@@ -664,4 +669,26 @@ public class MainController {
     model.addAttribute("savedAssetComment", savedAssetComment); 
     return "result"; // renders result.html
   }
+  /// start of associations
+  
+  /**
+   * Post request to fetch type data from UI form and add it to the database.
+   * 
+   * @param associations
+   * @return response entity depending on outcome
+   */
+  @PostMapping(path = "/associations/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewAssociation(@RequestBody Association association) {
+    try {
+        associationRepository.save(association);    
+        addActionLog(association.getAssetId(), null, "Added association"); // Adds an action record to the log
+        return ResponseEntity.ok("Association saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
+  }
+  
+
+  
 }

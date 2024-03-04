@@ -57,6 +57,8 @@ class MainControllerTest {
   private UserRepository userRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
+  @MockBean
+  private AssociationRepository associationRepository;
 
   @Autowired
   private MainController mc;
@@ -181,7 +183,7 @@ class MainControllerTest {
     ActionLogRepository actionLogRepository = mock(ActionLogRepository.class);
 
     // Create an instance of MainController with mocks
-    MainController controller = new MainController(assetRepository, actionLogRepository);
+    MainController controller = new MainController(assetRepository, actionLogRepository, associationRepository);
 
     // Mock the behavior of assetRepository.save(asset) to return the asset
     when(assetRepository.save(asset)).thenReturn(asset);
