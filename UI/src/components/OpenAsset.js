@@ -118,37 +118,38 @@ const resetValue = () => {
   setTime("");
 }
 
-  const edges = [{ id: '1-2', source: '1', target: '2', label: a.associationRelationList[0], type: 'straightedge' },
-                  { id: '1-3', source: '1', target: '3', label: a.associationRelationList[1], type: 'straightedge' },
-                  { id: '1-4', source: '1', target: '4', label: a.associationRelationList[2], type: 'straightedge' },
-                  { id: '1-5', source: '1', target: '5', label: a.associationRelationList[3], type: 'straightedge' }];
+  const edges = [{ id: '1-2', source: '1', target: '2', label: a.associationRelation1, type: 'straightedge' },
+                  { id: '1-3', source: '1', target: '3', label: a.associationRelation2, type: 'straightedge' },
+                  { id: '1-4', source: '1', target: '4', label: a.associationRelation3, type: 'straightedge' },
+                  { id: '1-5', source: '1', target: '5', label: a.associationRelation4, type: 'straightedge' }
+                ];
                 
             
   const nodes = [{
                   id: '1',
                   data: { label: 'Title: ' + a.title },
-                  // position: { x: 220, y: 20 },
+                  position: { x: 220, y: 20 },
                   type: 'input',
                 },
                 {
                   id: '2',
-                  data: { label: 'Asset ID: ' + a.associationList[0] },
-                  // position: { x: 220, y: 170 },
+                  data: { label: 'Asset ID: ' + a.association1 },
+                  position: { x: 220, y: 170 },
                 },
                 {
                   id: '3',
-                  data: { label: 'Asset ID: ' + a.associationList[1] },
-                  // position: { x: 20, y: 170 },
+                  data: { label: 'Asset ID: ' + a.association2 },
+                  position: { x: 20, y: 170 },
                 },
                 {
                   id: '4',
-                  data: { label: 'Asset ID: ' + a.associationList[2] },
-                  // position: { x: 420, y: 170 },
+                  data: { label: 'Asset ID: ' + a.association3 },
+                  position: { x: 420, y: 170 },
                 },
                 {
                   id: '5',
-                  data: { label: 'Asset ID: ' + a.associationList[3] },
-                  // position: { x: 420, y: 170 },
+                  data: { label: 'Asset ID: ' + a.association4 },
+                  position: { x: 620, y: 170 },
                 }
                 ];
 

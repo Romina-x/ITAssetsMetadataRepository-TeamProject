@@ -97,7 +97,17 @@ export default function FormPropsTextFields() {
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
 
-    try {
+    try {    
+      const association1 = associationList.length > 0 ? associationList[0] : null;
+      const association2 = associationList.length > 1 ? associationList[1] : null;
+      const association3 = associationList.length > 2 ? associationList[2] : null;
+      const association4 = associationList.length > 3 ? associationList[3] : null;
+
+      const associationRelation1 = associationRelationList.length > 0 ? associationRelationList[0] : null;
+      const associationRelation2 = associationRelationList.length > 1 ? associationRelationList[1] : null;
+      const associationRelation3 = associationRelationList.length > 2 ? associationRelationList[2] : null;
+      const associationRelation4 = associationRelationList.length > 3 ? associationRelationList[3] : null;
+
       const response = await fetch('http://localhost:8080/asset/add', {
         method: 'POST',
         headers: {
@@ -113,8 +123,14 @@ export default function FormPropsTextFields() {
           customAttribute2,
           customAttribute3,
           customAttribute4,
-          associationList: associationList.map(item => item.association),
-          associationRelationList: associationRelationList.map(item => item.associationRelation)
+          association1: association1 ? association1.association : null,
+          association2: association2 ? association2.association : null,
+          association3: association3 ? association3.association : null,
+          association4: association4 ? association4.association : null,
+          associationRelation1: associationRelation1 ? associationRelation1.associationRelation : null,
+          associationRelation2: associationRelation2 ? associationRelation2.associationRelation : null,
+          associationRelation3: associationRelation3 ? associationRelation3.associationRelation : null,
+          associationRelation4: associationRelation4 ? associationRelation4.associationRelation : null
       })
       });
       

@@ -37,16 +37,28 @@ public class Asset {
 
   private String customAttribute4;
 
-  private List<String> associationList;
+  private String association1;
 
-  private List<String> associationRelationList;
+  private String association2;
+
+  private String association3;
+
+  private String association4;
+  
+  private String associationRelation1;
+
+  private String associationRelation2;
+
+  private String associationRelation3;
+
+  private String associationRelation4;
 
 
   public Asset() {}
 
   public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang,
       String customAttribute1, String customAttribute2, String customAttribute3, String customAttribute4,
-      List<String> associationList, List<String> associationRelationList) {
+      String association1, String association2, String association3, String association4) {//, List<String> associationRelationList) {
     this.id = id;
     this.type = type;
     this.title = title;
@@ -57,8 +69,14 @@ public class Asset {
     this.customAttribute2 = customAttribute2;
     this.customAttribute3 = customAttribute3;
     this.customAttribute4 = customAttribute4;
-    this.associationList = associationList;
-    this.associationRelationList = associationRelationList;
+    this.association1 = association1;
+    this.association2 = association2;
+    this.association3 = association3;
+    this.association4 = association4;
+    this.associationRelation1 = associationRelation1;
+    this.associationRelation2 = associationRelation2;
+    this.associationRelation3 = associationRelation3;
+    this.associationRelation4 = associationRelation4;
   }
 
   public Integer getId() {
@@ -141,19 +159,68 @@ public class Asset {
     this.customAttribute4 = customAttribute4;
   }
 
-  public List<String> getAssociationList() {
-    return associationList;
+  public void setAssociation1(String association1) {
+    this.association1 = association1;
   }
 
-  public void setAssociationList(List<String> associationList) {
-    this.associationList = associationList;
+  public String getAssociation1() {
+    return association1;
+  }
+  
+  public void setAssociation2(String association2) {
+    this.association2 = association2;
   }
 
-  public List<String> getAssociationRelationList() {
-    return associationRelationList;
+  public String getAssociation2() {
+    return association2;
+  }
+  
+  public void setAssociation3(String association3) {
+    this.association3 = association3;
   }
 
-  public void setAssociationRelationList(List<String> associationRelationList) {
-    this.associationRelationList = associationRelationList;
+  public String getAssociation3() {
+    return association3;
   }
+  
+  public void setAssociation4(String association4) {
+    this.association4 = association4;
+  }
+
+  public String getAssociation4() {
+    return association4;
+  }
+  
+  public void setAssociationRelation1(String associationRelation1) {
+    this.associationRelation1 = associationRelation1;
+  }
+
+  public String getAssociationRelation1() {
+    return associationRelation1;
+  }
+  
+  public void setAssociationRelation2(String associationRelation2) {
+    this.associationRelation2 = associationRelation2;
+  }
+
+  public String getAssociationRelation2() {
+    return associationRelation2;
+  }
+  
+  public void setAssociationRelation3(String associationRelation3) {
+    this.associationRelation3 = associationRelation3;
+  }
+
+  public String getAssociationRelation3() {
+    return associationRelation3;
+  }
+  
+  public void setAssociationRelation4(String associationRelation4) {
+    this.associationRelation4 = associationRelation4;
+  }
+
+  public String getAssociationRelation4() {
+    return associationRelation4;
+  }
+
 }
