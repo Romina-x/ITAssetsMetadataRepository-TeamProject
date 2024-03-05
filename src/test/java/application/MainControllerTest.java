@@ -1334,4 +1334,50 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$.comment").value("Comment"));
 
   }
+  
+  /**
+   * Test successful string response of method which runs the map for the post request of create new
+   * comment.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewComment() throws Exception {
+    String requestBody =
+        "{\"itemid\":1, \"comment\":\"Comment\"}";
+
+    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/comment/add")
+        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
+
+    assertEquals("Comment saved successfully", result.getResponse().getContentAsString());
+  }
+  
+  /**
+   * Test error string response of method which runs the map for the post request of create new
+   * comment.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewComment_Exception() throws Exception {
+
+    // asset to be added
+    AssetComment comment1 = new AssetComment();
+    comment1.setId(11);
+    comment1.setItemId(2);
+    comment1.setComment("Comment");
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+
+
+    // Mock the behaviour of assetRepository.save() to throw an exception
+    when(assetCommentRepository.save(comment1))
+        .thenThrow(new RuntimeException("This is a made up exception"));
+
+    // Call the addNewAsset method
+    ResponseEntity<String> response = mc.addNewComment(comment1);
+
+    // Verify that the response is as expected
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    assertEquals("Error: This is a made up exception", response.getBody());
+  }
 }
