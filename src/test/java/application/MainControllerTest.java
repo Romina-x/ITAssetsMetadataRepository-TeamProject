@@ -6,7 +6,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +34,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 
 /**
@@ -1249,6 +1254,46 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.model().attributeExists("createUser"));
   }
 
+  /**
+   * Test to validate that upon accessing the /comment/find/all path, all data stored about comments in
+   * the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAllComments() throws Exception {
+    // comment to be added
+    AssetComment comment1 = new AssetComment();
+    comment1.setId(11);
+    comment1.setItemId(2);
+    comment1.setComment("Comment");
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
 
+    assetCommentRepository.save(comment1);
 
+    // comment to be added
+    AssetComment comment2 = new AssetComment();
+    comment2.setId(12);
+    comment2.setItemId(4);
+    comment2.setComment("Comment2");
+    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30,00));
+
+    assetCommentRepository.save(comment2);
+
+    // Mock the behaviour of the findAll method to return the mock types
+    when(assetCommentRepository.findAll()).thenReturn(Arrays.asList(comment1, comment2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/comment/find/all"))
+        // Expects that the request was successful with 2 types in database
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+        // Check the JSON properties of the first and second type in the array
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(11))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].itemId").value(2))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].comment").value("Comment"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].timestamp").value(comment1.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(12))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].itemId").value(4))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].comment").value("Comment2"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].timestamp").value(comment2.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+  }
 }
