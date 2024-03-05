@@ -1296,4 +1296,42 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].comment").value("Comment2"))
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].timestamp").value(comment2.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
   }
+  
+  /**
+   * Test to validate that upon accessing the /comment/find/{id} path, all data stored about comment
+   * with unique id in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetCommentById() throws Exception {
+    
+    // comment to be added
+    AssetComment comment1 = new AssetComment();
+    comment1.setId(11);
+    comment1.setItemId(2);
+    comment1.setComment("Comment");
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+
+    assetCommentRepository.save(comment1);
+
+    // comment to be added
+    AssetComment comment2 = new AssetComment();
+    comment2.setId(12);
+    comment2.setItemId(4);
+    comment2.setComment("Comment2");
+    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30,00));
+
+    assetCommentRepository.save(comment2);
+
+
+    // Mock the behaviour of the findById method to return the asset
+    when(assetCommentRepository.findById(11)).thenReturn(Optional.of(comment1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/comment/find/{id}", 11))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(11))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.comment").value("Comment"));
+
+  }
 }
