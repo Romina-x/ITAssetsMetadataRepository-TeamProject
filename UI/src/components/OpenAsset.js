@@ -131,27 +131,27 @@ const resetValue = () => {
                   position: { x: 220, y: 20 },
                   type: 'input',
                 },
-                {
+                a.association1 && a.association1.length > 0 && {
                   id: '2',
                   data: { label: 'Asset ID: ' + a.association1 },
                   position: { x: 220, y: 170 },
                 },
-                {
+                a.association2 && a.association2.length > 0 && {
                   id: '3',
                   data: { label: 'Asset ID: ' + a.association2 },
                   position: { x: 20, y: 170 },
                 },
-                {
+                a.association3 && a.association3.length > 0 && {
                   id: '4',
                   data: { label: 'Asset ID: ' + a.association3 },
                   position: { x: 420, y: 170 },
                 },
-                {
+                a.association4 && a.association4.length > 0 && {
                   id: '5',
                   data: { label: 'Asset ID: ' + a.association4 },
                   position: { x: 620, y: 170 },
                 }
-                ];
+                ].filter(Boolean);
 
   return (
     <React.Fragment>
