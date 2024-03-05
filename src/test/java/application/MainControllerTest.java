@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,13 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 /**
@@ -57,9 +53,7 @@ class MainControllerTest {
   private UserRepository userRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
-  @MockBean
-  private AssociationRepository associationRepository;
-
+ 
   @Autowired
   private MainController mc;
 
@@ -183,9 +177,9 @@ class MainControllerTest {
     ActionLogRepository actionLogRepository = mock(ActionLogRepository.class);
 
     // Create an instance of MainController with mocks
-    MainController controller = new MainController(assetRepository, actionLogRepository, associationRepository);
+    MainController controller = new MainController(assetRepository, actionLogRepository);
 
-    // Mock the behavior of assetRepository.save(asset) to return the asset
+    // Mock the behaviour of assetRepository.save(asset) to return the asset
     when(assetRepository.save(asset)).thenReturn(asset);
 
     String result = "";

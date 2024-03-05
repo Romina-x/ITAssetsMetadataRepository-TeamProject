@@ -44,7 +44,7 @@ public class Asset {
   private String association3;
 
   private String association4;
-  
+
   private String associationRelation1;
 
   private String associationRelation2;
@@ -57,8 +57,11 @@ public class Asset {
   public Asset() {}
 
   public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang,
-      String customAttribute1, String customAttribute2, String customAttribute3, String customAttribute4,
-      String association1, String association2, String association3, String association4) {//, List<String> associationRelationList) {
+      String customAttribute1, String customAttribute2, String customAttribute3,
+      String customAttribute4, String association1, String association2, String association3,
+      String association4, String associationRelation1, String associationRelation2,
+      String associationRelation3, String associationRelation4) {// , List<String>
+                                                                 // associationRelationList) {
     this.id = id;
     this.type = type;
     this.title = title;
@@ -166,7 +169,7 @@ public class Asset {
   public String getAssociation1() {
     return association1;
   }
-  
+
   public void setAssociation2(String association2) {
     this.association2 = association2;
   }
@@ -174,7 +177,7 @@ public class Asset {
   public String getAssociation2() {
     return association2;
   }
-  
+
   public void setAssociation3(String association3) {
     this.association3 = association3;
   }
@@ -182,7 +185,7 @@ public class Asset {
   public String getAssociation3() {
     return association3;
   }
-  
+
   public void setAssociation4(String association4) {
     this.association4 = association4;
   }
@@ -190,7 +193,7 @@ public class Asset {
   public String getAssociation4() {
     return association4;
   }
-  
+
   public void setAssociationRelation1(String associationRelation1) {
     this.associationRelation1 = associationRelation1;
   }
@@ -198,7 +201,7 @@ public class Asset {
   public String getAssociationRelation1() {
     return associationRelation1;
   }
-  
+
   public void setAssociationRelation2(String associationRelation2) {
     this.associationRelation2 = associationRelation2;
   }
@@ -206,7 +209,7 @@ public class Asset {
   public String getAssociationRelation2() {
     return associationRelation2;
   }
-  
+
   public void setAssociationRelation3(String associationRelation3) {
     this.associationRelation3 = associationRelation3;
   }
@@ -214,7 +217,7 @@ public class Asset {
   public String getAssociationRelation3() {
     return associationRelation3;
   }
-  
+
   public void setAssociationRelation4(String associationRelation4) {
     this.associationRelation4 = associationRelation4;
   }

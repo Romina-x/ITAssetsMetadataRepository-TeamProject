@@ -74,29 +74,8 @@ class AssetTest {
     assertEquals(a.getProgLang(), "Java", "Test that the ProgLang can be set and retrieved");
   }
   
-  /**
-   * Test to verify the function of the Asset get/set relations list
-   */
-  @Test
-  public void assetGetSetAssociationRelationsList() {
-    Asset a = new Asset();
-    List<String> asRelList = new ArrayList<>();
-    asRelList.add("Depends On");
-    a.setAssociationRelationList(asRelList);
-    assertEquals(a.getAssociationRelationList(), asRelList , "Test that the relations list can be set and retrieved");
-  }
-  
-  /**
-   * Test to verify the function of the Asset get/set associations list
-   */
-  @Test
-  public void assetGetSetAssociationList() {
-    Asset a = new Asset();
-    List<String> asList = new ArrayList<>();
-    asList.add("4");
-    a.setAssociationList(asList);
-    assertEquals(a.getAssociationList(), asList , "Test that the associations list can be set and retrieved");
-  }
+
+
   
 
 }
