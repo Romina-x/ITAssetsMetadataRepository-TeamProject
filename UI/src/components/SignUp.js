@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Grid, TextField, Typography, Button } from "@mui/material";
-import Login from "./Login";
 
 export default function SignUp() {
   const [username, setUsername] = React.useState("");

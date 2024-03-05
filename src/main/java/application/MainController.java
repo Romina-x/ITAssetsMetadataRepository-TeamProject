@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import application.model.User;
+
 /**
  * This program handles HTTP requests to the application, specifically POST and GET.
  *
@@ -37,8 +39,8 @@ public class MainController {
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+//  @Autowired
+//  private UserRepository userRepository;
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
@@ -436,18 +438,18 @@ public class MainController {
     }
   }
 
-  @PostMapping(path = "/user/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
-      @RequestParam String role) {
-
-    User newUser = new User();
-    newUser.setName(name);
-    newUser.setPassword(password);
-    newUser.setRole(role);
-    userRepository.save(newUser);
-
-    return "Saved";
-  }
+//  @PostMapping(path = "/user/add") // Map ONLY POST Requests
+//  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
+//      @RequestParam String role) {
+//
+//    User newUser = new User();
+//    newUser.setName(name);
+//    newUser.setPassword(password);
+//    newUser.setRole(role);
+//    userRepository.save(newUser);
+//
+//    return "Saved";
+//  }
 
   /**
    * This method handles the submitted edit form and updates the type within the database.
@@ -465,10 +467,10 @@ public class MainController {
     return "resultCreateType";
   }
 
-  @GetMapping(path = "/user/find/all")
-  public @ResponseBody Iterable<User> getAllUsers() {
-    return userRepository.findAll();
-  }
+//  @GetMapping(path = "/user/find/all")
+//  public @ResponseBody Iterable<User> getAllUsers() {
+//    return userRepository.findAll();
+//  }
 
   /**
    * This method returns a user with an id matching the provided path variable value.
@@ -476,10 +478,10 @@ public class MainController {
    * @param id the id value to be searched for in the database
    * @return the User matching the provided id
    */
-  @GetMapping(path = "/user/find/{id}")
-  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
-    return userRepository.findById(id);
-  }
+//  @GetMapping(path = "/user/find/{id}")
+//  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
+//    return userRepository.findById(id);
+//  }
 
   /**
    * This method returns a user with a name matching the provided path variable value.
@@ -487,10 +489,10 @@ public class MainController {
    * @param name the name of the user being searched for.
    * @return the User matching the provided name.
    */
-  @GetMapping(path = "/user/findName/{name}")
-  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
-    return userRepository.findByName(name);
-  }
+//  @GetMapping(path = "/user/findName/{name}")
+//  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
+//    return userRepository.findByName(name);
+//  }
 
   /**
    * This method renders createUser.html with input forms for each attribute.
@@ -514,16 +516,16 @@ public class MainController {
    * @return the resultCreateUser page which informs the user that the save was successful and
    *         prompts them to create another.
    */
-  @PostMapping("/user/createUser") // POST request : When you submit the form
-  public String userSubmit(@ModelAttribute User user, Model model) {
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
-    // Commented out as role was changed to String to meet sprint 2 demo deadline
-    // Will be re-implemented next sprint
-    userRepository.save(user);
-
-    return "resultCreateUser"; // renders resultCreateUser.html
-  }
+//  @PostMapping("/user/createUser") // POST request : When you submit the form
+//  public String userSubmit(@ModelAttribute User user, Model model) {
+//     for(Permissions perm: Permissions.values()) {
+//     if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
+//     Commented out as role was changed to String to meet sprint 2 demo deadline
+//     Will be re-implemented next sprint
+//    userRepository.save(user);
+//
+//    return "resultCreateUser"; // renders resultCreateUser.html
+//  }
 
   /**
    * This method is a query function to request the details of assets by their title in the url
