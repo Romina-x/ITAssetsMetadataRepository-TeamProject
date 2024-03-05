@@ -689,6 +689,29 @@ public class MainController {
     }
   }
   
+  /**
+   * This method fetches all the asset associations stored in the database and returns a JSON file of the
+   * content to the web page.
+   *
+   * @return all the asset associations and their details
+   */
+  @GetMapping(path = "/association/find/all")
+  public @ResponseBody Iterable<Association> getAllAssociation() {
+    // This returns a JSON or XML with the comments
+    return associationRepository.findAll();
+  }
 
+  /**
+   * This method is a query function to request the details of an association by its Id number in the url
+   * localhost:8080/association/find/{id}.
+   *
+   * @param id of the comment entry to be queried
+   * @return JSON of the asset comment to be returned by the id number search
+   */
+  @GetMapping(path = "/association/find/{id}")
+  public @ResponseBody Optional<Association> getAssociationById(@PathVariable("id") Integer id) {
+    // This returns a JSON or XML with the comments
+    return associationRepository.findById(id);
+  }
   
 }

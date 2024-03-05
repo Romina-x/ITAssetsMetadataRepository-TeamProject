@@ -1,6 +1,8 @@
 package application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -73,32 +75,28 @@ class AssetTest {
   }
   
   /**
-   * Test to verify the function of the Asset get/set isDocumentedIn
+   * Test to verify the function of the Asset get/set relations list
    */
   @Test
-  public void assetGetSetIsDocumentedIn() {
+  public void assetGetSetAssociationRelationsList() {
     Asset a = new Asset();
-    a.setIsDocumentedIn(3);
-    assertEquals(a.getIsDocumentedIn(), 3 , "Test that the isDocumentedIn can be set and retrieved");
+    List<String> asRelList = new ArrayList<>();
+    asRelList.add("Depends On");
+    a.setAssociationRelationList(asRelList);
+    assertEquals(a.getAssociationRelationList(), asRelList , "Test that the relations list can be set and retrieved");
   }
   
   /**
-   * Test to verify the function of the Asset get/set dependsOn
+   * Test to verify the function of the Asset get/set associations list
    */
   @Test
-  public void assetGetSetDependsOn() {
+  public void assetGetSetAssociationList() {
     Asset a = new Asset();
-    a.setDependsOn(8);
-    assertEquals(a.getDependsOn(), 8, "Test that the dependsOn can be set and retrieved");
+    List<String> asList = new ArrayList<>();
+    asList.add("4");
+    a.setAssociationList(asList);
+    assertEquals(a.getAssociationList(), asList , "Test that the associations list can be set and retrieved");
   }
   
-  /**
-   * Test to verify the function of the Asset get/set suceededBy
-   */
-  @Test
-  public void assetGetSetSucceededBy() {
-    Asset a = new Asset();
-    a.setSucceededBy(5);
-    assertEquals(a.getSucceededBy(), 5, "Test that the suceededBy can be set and retrieved");
-  }
+
 }
