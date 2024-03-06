@@ -12,6 +12,7 @@ import { getAll } from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI"
 import { useParams } from "react-router-dom";
 
+
 export default function FormPropsTextFields() {
   let {editAssetId} = useParams();
   
@@ -28,13 +29,19 @@ export default function FormPropsTextFields() {
   const [link, setLink] = useState("");
   const [lineNum, setlineNum] = useState("");
   const [progLang, setprogLang] = useState("");
-  const [isDocumentedIn, setIsDocumentedIn] = useState("");
-  const [dependsOn, setDependsOn] = useState("");
-  const [succeededBy, setSucceededBy] = useState("");
   const [customAttribute1, setCustomAttribute1] = useState("");
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
+  const [association1, setAssociation1] = useState(""); 
+  const [association2, setAssociation2] = useState(""); 
+  const [association3, setAssociation3] = useState(""); 
+  const [association4, setAssociation4] = useState(""); 
+  const [associationRelation1, setAssociationRelation1] = useState("");
+  const [associationRelation2, setAssociationRelation2] = useState("");
+  const [associationRelation3, setAssociationRelation3] = useState("");
+  const [associationRelation4, setAssociationRelation4] = useState("");
+
 
   React.useEffect(() => {
     const getAssets = async () => {
@@ -45,13 +52,19 @@ export default function FormPropsTextFields() {
       setTitle(res.title || "");
       setprogLang(res.progLang || "");
       setlineNum(res.lineNum || "");
-      setDependsOn(res.dependsOn || "");
-      setIsDocumentedIn(res.isDocumentedIn || "");
-      setSucceededBy(res.succeededBy || "");
       setCustomAttribute1(res.customAttribute1 || "");
       setCustomAttribute2(res.customAttribute2 || "");
       setCustomAttribute3(res.customAttribute3 || "");
       setCustomAttribute4(res.customAttribute4 || "");
+      setAssociation1(res.association1 || "");
+      setAssociation2(res.association2 || "");
+      setAssociation3(res.association3 || "");
+      setAssociation4(res.association4 || "");
+      setAssociationRelation1(res.associationRelation1 || "");
+      setAssociationRelation2(res.associationRelation2 || "");
+      setAssociationRelation3(res.associationRelation3 || "");
+      setAssociationRelation4(res.associationRelation4 || "");
+
     };
 
     getAssets();
@@ -103,6 +116,7 @@ export default function FormPropsTextFields() {
     event.preventDefault();
 
     try {
+ 
       const response = await AssetAPI.addAsset({
         id: editAssetId,
         type: selectedType.typeName,
@@ -110,13 +124,18 @@ export default function FormPropsTextFields() {
         link,
         lineNum,
         progLang,
-        isDocumentedIn,
-        dependsOn,
-        succeededBy,
         customAttribute1,
         customAttribute2,
         customAttribute3,
         customAttribute4,
+        association1,
+        association2,
+        association3,
+        association4,
+        associationRelation1,
+        associationRelation2,
+        associationRelation3,
+        associationRelation4
       });      
       
       if (!response.ok) {
@@ -130,19 +149,23 @@ export default function FormPropsTextFields() {
   };
 
   const resetValue = () => {
-/*    setType("");*/
     setTitle("");
     setLink("");
     setlineNum("");
     setprogLang("");
-/*    setAuthor("");*/
-    setIsDocumentedIn("");
-    setDependsOn("");
-    setSucceededBy("");
     setCustomAttribute1("");
     setCustomAttribute2("");
     setCustomAttribute3("");
     setCustomAttribute4("");
+    setAssociation1("");
+    setAssociation2("");
+    setAssociation3("");
+    setAssociation4("");
+    setAssociationRelation1("");
+    setAssociationRelation2("");
+    setAssociationRelation3("");
+    setAssociationRelation4("");
+
   }
   
   // Function to handle type selection from dropdown
@@ -158,9 +181,9 @@ export default function FormPropsTextFields() {
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
-    
     resetValue()
   };
+
 
   return (
     <Box
@@ -183,19 +206,19 @@ export default function FormPropsTextFields() {
         alignItems="center"
         sx={{
           paddingBottom: 5,
-
         }}
       >
+        
         <Grid item xs={6}
         alignItems="center"
         >
+          <label>Attributes</label>
+          <br/>
           <TextField
             id="outlined-select-currency"
             select
             label="Type"
-            /*value={type}*/
             value={type}
-            /*onChange={(e) => setType(e.target.value)}*/
             onChange={handleTypeChange}
           >
             {types.map((typeName) => (
@@ -285,37 +308,86 @@ export default function FormPropsTextFields() {
             onChange={(e) => setCustomAttribute4(e.target.value)}
           />
         </Grid>
+        <Grid>
+        <label>Association(s)</label>
+        <Grid>
+          <div>
+          <TextField
+            id="outlined-textarea"
+            label="Relation 1:"
+            placeholder=""
+            multiline
+            value={associationRelation1}
+            onChange={(e) => setAssociationRelation1(e.target.value)}
+          />
+          <TextField
+            id="outlined-textarea"
+            label="Asset ID 1:"
+            placeholder=""
+            multiline
+            value={association1}
+            onChange={(e) => setAssociation1(e.target.value)}
+          />
+          </div>
+          <div>
+          <TextField
+            id="outlined-textarea"
+            label="Relation 2:"
+            placeholder=""
+            multiline
+            value={associationRelation2}
+            onChange={(e) => setAssociationRelation2(e.target.value)}
+          />
+          <TextField
+            id="outlined-textarea"
+            label="Asset ID 2:"
+            placeholder=""
+            multiline
+            value={association2}
+            onChange={(e) => setAssociation2(e.target.value)}
+          />
+          </div>
+          <div>
+          <TextField
+            id="outlined-textarea"
+            label="Relation 3:"
+            placeholder=""
+            multiline
+            value={associationRelation3}
+            onChange={(e) => setAssociationRelation3(e.target.value)}
+          />
+          <TextField
+            id="outlined-textarea"
+            label="Asset ID 3:"
+            placeholder=""
+            multiline
+            value={association3}
+            onChange={(e) => setAssociation3(e.target.value)}
+          />
+          </div>
+          <div>
+          <TextField
+            id="outlined-textarea"
+            label="Relation 4:"
+            placeholder=""
+            multiline
+            value={associationRelation4}
+            onChange={(e) => setAssociationRelation4(e.target.value)}
+          />
+          <TextField
+            id="outlined-textarea"
+            label="Asset ID 4:"
+            placeholder=""
+            multiline
+            value={association4}
+            onChange={(e) => setAssociation4(e.target.value)}
+          />
+          </div>
 
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Is Documented In"
-            placeholder="8"
-            multiline
-            value={isDocumentedIn}
-            onChange={(e) => setIsDocumentedIn(e.target.value)}
-          />
+        
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Depends On"
-            placeholder="4"
-            multiline
-            value={dependsOn}
-            onChange={(e) => setDependsOn(e.target.value)}
-          />
-        </Grid>     
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Succeeded By"
-            placeholder="4"
-            multiline
-            value={succeededBy}
-            onChange={(e) => setSucceededBy(e.target.value)}
-          />
-        </Grid>  
+
+        </Grid>
       </Grid>
 
       <Stack direction="row" spacing={2}>

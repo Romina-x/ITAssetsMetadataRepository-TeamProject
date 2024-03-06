@@ -8,8 +8,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import { getAll } from "../utility/TypeAPI";
-import { Hidden } from "@mui/material";
+import * as TypeAPI from "../utility/TypeAPI";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
@@ -18,6 +20,7 @@ export default function FormPropsTextFields() {
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [responseData, setResponseData] = useState([]);
+
     
   //state variables for form fields
   const [type, setType] = useState("");
@@ -25,18 +28,17 @@ export default function FormPropsTextFields() {
   const [link, setLink] = useState("");
   const [lineNum, setlineNum] = useState("");
   const [progLang, setprogLang] = useState("");
-/*  const [author, setAuthor] = useState("");*/
-  const [isDocumentedIn, setIsDocumentedIn] = useState("");
-  const [dependsOn, setDependsOn] = useState("");
-  const [succeededBy, setSucceededBy] = useState("");
   const [customAttribute1, setCustomAttribute1] = useState("");
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
+  const [associationList, setAssociationList] = useState([ { association: "" } ]); 
+  const [associationRelationList, setAssociationRelationList] = useState([{ associationRelation: "" }]);
+
 
   //useEffect hook to fetch type names to populate the dropdown with
   useEffect(() => {
-    getAll()
+    TypeAPI.getAll()
       .then((data) => {
         setResponseData(data);
         // Extract only the typeName from each type object
@@ -50,6 +52,8 @@ export default function FormPropsTextFields() {
       });
   }, []); 
   
+
+
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
     if (save === "Saved") {
@@ -88,7 +92,17 @@ export default function FormPropsTextFields() {
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
 
-    try {
+    try {    
+      const association1 = associationList.length > 0 ? associationList[0] : null;
+      const association2 = associationList.length > 1 ? associationList[1] : null;
+      const association3 = associationList.length > 2 ? associationList[2] : null;
+      const association4 = associationList.length > 3 ? associationList[3] : null;
+
+      const associationRelation1 = associationRelationList.length > 0 ? associationRelationList[0] : null;
+      const associationRelation2 = associationRelationList.length > 1 ? associationRelationList[1] : null;
+      const associationRelation3 = associationRelationList.length > 2 ? associationRelationList[2] : null;
+      const associationRelation4 = associationRelationList.length > 3 ? associationRelationList[3] : null;
+
       const response = await fetch('http://localhost:8080/asset/add', {
         method: 'POST',
         headers: {
@@ -100,14 +114,19 @@ export default function FormPropsTextFields() {
           link,
           lineNum,
           progLang,
-          isDocumentedIn,
-          dependsOn,
-          succeededBy,
           customAttribute1,
           customAttribute2,
           customAttribute3,
-          customAttribute4
-        })
+          customAttribute4,
+          association1: association1 ? association1.association : null,
+          association2: association2 ? association2.association : null,
+          association3: association3 ? association3.association : null,
+          association4: association4 ? association4.association : null,
+          associationRelation1: associationRelation1 ? associationRelation1.associationRelation : null,
+          associationRelation2: associationRelation2 ? associationRelation2.associationRelation : null,
+          associationRelation3: associationRelation3 ? associationRelation3.associationRelation : null,
+          associationRelation4: associationRelation4 ? associationRelation4.associationRelation : null
+      })
       });
       
       
@@ -122,20 +141,18 @@ export default function FormPropsTextFields() {
   };
 
   const resetValue = () => {
-/*    setType("");*/
     setTitle("");
     setLink("");
     setlineNum("");
     setprogLang("");
-/*    setAuthor("");*/
-    setIsDocumentedIn("");
-    setDependsOn("");
-    setSucceededBy("");
     setCustomAttribute1("");
     setCustomAttribute2("");
     setCustomAttribute3("");
     setCustomAttribute4("");
-  }
+    setAssociationList([{ association: "" }]);
+    setAssociationRelationList([{ associationRelation: "" }]);
+  };
+
   
   // Function to handle type selection from dropdown
   const handleTypeChange = (event) => {
@@ -150,9 +167,32 @@ export default function FormPropsTextFields() {
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
-    
     resetValue()
   };
+
+  const handleAssociationChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...associationList];
+    list[index] = { ...list[index], [name]: value };
+    setAssociationList(list);
+};
+
+const handleAssociationRemove = (index) => {
+    const list = [...associationList];
+    list.splice(index, 1);
+    setAssociationList(list);
+
+    const relList = [...associationRelationList];
+    relList.splice(index, 1);
+    setAssociationRelationList(relList);
+};
+
+const handleAssociationAdd = () => {
+    if (associationList.length < 4) {
+        setAssociationList([...associationList, { association: "" }]);
+        setAssociationRelationList([...associationRelationList, { associationRelation: "" }]);
+    }
+};
 
   return (
     <Box
@@ -181,13 +221,15 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}
         alignItems="center"
         >
+        <label>Mandatory Attributes: </label>
+        <Grid item xs={6}
+        alignItems="center"
+        >
           <TextField
-            id="outlined-select-currency"
+            id="outlined-select-type"
             select
             label="Type"
-            /*value={type}*/
             value={type}
-            /*onChange={(e) => setType(e.target.value)}*/
             onChange={handleTypeChange}
           >
             {types.map((typeName) => (
@@ -237,36 +279,9 @@ export default function FormPropsTextFields() {
             onChange={(e) => setprogLang(e.target.value)}
           />
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Is Documented In"
-            placeholder="8"
-            multiline
-            value={isDocumentedIn}
-            onChange={(e) => setIsDocumentedIn(e.target.value)}
-          />
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Depends On"
-            placeholder="4"
-            multiline
-            value={dependsOn}
-            onChange={(e) => setDependsOn(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Succeeded By"
-            placeholder="4"
-            multiline
-            value={succeededBy}
-            onChange={(e) => setSucceededBy(e.target.value)}
-          />
-        </Grid>
+        <label>Type Specific Attributes:</label>
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
@@ -312,6 +327,54 @@ export default function FormPropsTextFields() {
 	            style={{ display: selectedType && selectedType.customAttribute4 === "" ? "none" : "grid" }}
 	          />
 	        </Grid> 
+          </Grid>
+        <Grid>
+        <label>Association(s)</label>
+        {associationList.map((singleAssociation, index) => (
+          <div key={index} className="associations">
+            <div className="first-division">
+            <TextField
+                name="associationRelation"
+                type="text"
+                id={`associationRelation-${index}`}
+                label="Relation:"
+                placeholder="Is Documented in..."
+                value={singleAssociation.associationRelation}
+                onChange={(e) => handleAssociationChange(e, index)}
+              />
+              <TextField
+                name="association"
+                type="text"
+                id={`association-${index}`}
+                label="Asset Id:"
+                placeholder="3..."
+                value={singleAssociation.association}
+                onChange={(e) => handleAssociationChange(e, index)}
+              />
+              {associationList.length !== 1 && (
+                <DeleteOutlineIcon
+                  type="button"
+                  onClick={() => handleAssociationRemove(index)}
+                  className="remove-btn"
+                  fontSize="large"
+                  style={{ color: 'grey' }}
+                />  
+              )}
+            </div>
+            <div className="second-division">
+            {associationList.length - 1 === index && associationList.length < 4 && (
+                <AddIcon
+                  type="button"
+                  onClick={handleAssociationAdd}
+                  className="add-btn"
+                  fontSize="large"      
+                  style={{ color: 'grey' }}
+                />
+              )}
+            </div>
+          </div>
+        ))}
+        </Grid>
       </Grid>
 
       <Stack direction="row" spacing={2}>
@@ -328,10 +391,12 @@ export default function FormPropsTextFields() {
           variant="outlined"
           startIcon={<CancelIcon />}
           onClick={handleCancelButtonClick}
+          
         >
           {cancel}
         </Button>
       </Stack>
     </Box>
   );
+  
 }

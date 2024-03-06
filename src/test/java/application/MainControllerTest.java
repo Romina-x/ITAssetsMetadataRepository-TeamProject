@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
@@ -62,7 +62,7 @@ class MainControllerTest {
   private UserRepository userRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
-
+ 
   @Autowired
   private MainController mc;
 
@@ -167,7 +167,6 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
         .andExpect(MockMvcResultMatchers.view().name("createAsset"))
         .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));
-
   }
 
   /**
@@ -188,7 +187,7 @@ class MainControllerTest {
     // Create an instance of MainController with mocks
     MainController controller = new MainController(assetRepository, actionLogRepository);
 
-    // Mock the behavior of assetRepository.save(asset) to return the asset
+    // Mock the behaviour of assetRepository.save(asset) to return the asset
     when(assetRepository.save(asset)).thenReturn(asset);
 
     String result = "";
