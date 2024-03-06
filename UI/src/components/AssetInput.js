@@ -37,8 +37,8 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
-  const [associationList, setAssociationList] = useState([""]);
-  const [associationRelationList, setAssociationRelationList] = useState([""]);
+  const [associationList, setAssociationList] = useState([ { association: "" } ]); 
+  const [associationRelationList, setAssociationRelationList] = useState([{ associationRelation: "" }]);
 
 
   //useEffect hook to fetch type names to populate the dropdown with
@@ -154,8 +154,8 @@ export default function FormPropsTextFields() {
     setCustomAttribute2("");
     setCustomAttribute3("");
     setCustomAttribute4("");
-    setAssociationList([""]);
-    setAssociationRelationList([""])
+    setAssociationList([ { association: "" } ]); 
+    setAssociationRelationList([ { associationRelation: "" } ]);
   }
   
   // Function to handle type selection from dropdown
@@ -174,32 +174,28 @@ export default function FormPropsTextFields() {
     resetValue()
   };
 
-  const handleAssociationRelationChange = (e, index) => {
-    const { value } = e.target;
-    const list = [...associationRelationList];
-    list[index] = { associationRelation: value };
-    setAssociationRelationList(list);
-  };
-  
   const handleAssociationChange = (e, index) => {
-    const { value } = e.target;
+    const { name, value } = e.target;
     const list = [...associationList];
-    list[index] = { association: value };
+    list[index] = { ...list[index], [name]: value };
     setAssociationList(list);
-  };
-  
-  const handleAssociationRemove = (index) => {
+};
+
+const handleAssociationRemove = (index) => {
     const list = [...associationList];
     list.splice(index, 1);
     setAssociationList(list);
+
     const relList = [...associationRelationList];
     relList.splice(index, 1);
     setAssociationRelationList(relList);
-  };
+};
 
-  const handleAssociationAdd = () => {
-  setAssociationList([...associationList, { association: "" }]);
-  setAssociationRelationList([...associationRelationList, { associationRelation: "" }]);
+const handleAssociationAdd = () => {
+    if (associationList.length < 4) {
+        setAssociationList([...associationList, { association: "" }]);
+        setAssociationRelationList([...associationRelationList, { associationRelation: "" }]);
+    }
 };
 
   return (
@@ -348,7 +344,7 @@ export default function FormPropsTextFields() {
                 label="Relation:"
                 placeholder="Is Documented in..."
                 value={singleAssociation.associationRelation}
-                onChange={(e) => handleAssociationRelationChange(e, index)}
+                onChange={(e) => handleAssociationChange(e, index)}
               />
               <TextField
                 name="association"
