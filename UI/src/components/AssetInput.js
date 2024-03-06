@@ -10,13 +10,8 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 
-import { Hidden } from "@mui/material";
-import Title from "./Title";
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
@@ -154,9 +149,10 @@ export default function FormPropsTextFields() {
     setCustomAttribute2("");
     setCustomAttribute3("");
     setCustomAttribute4("");
-    setAssociationList([ { association: "" } ]); 
-    setAssociationRelationList([ { associationRelation: "" } ]);
-  }
+    setAssociationList([{ association: "" }]);
+    setAssociationRelationList([{ associationRelation: "" }]);
+  };
+
   
   // Function to handle type selection from dropdown
   const handleTypeChange = (event) => {
