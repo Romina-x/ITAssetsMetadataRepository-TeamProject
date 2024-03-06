@@ -172,10 +172,19 @@ export default function FormPropsTextFields() {
 
   const handleAssociationChange = (e, index) => {
     const { name, value } = e.target;
-    const list = [...associationList];
-    list[index] = { ...list[index], [name]: value };
-    setAssociationList(list);
+    const newList = [...associationList];
+    const newRelationList = [...associationRelationList];
+
+    if (name === 'association') {
+        newList[index] = { ...newList[index], [name]: value };
+    } else if (name === 'associationRelation') {
+        newRelationList[index] = { ...newRelationList[index], [name]: value };
+    }
+
+    setAssociationList(newList);
+    setAssociationRelationList(newRelationList);
 };
+
 
 const handleAssociationRemove = (index) => {
     const list = [...associationList];
