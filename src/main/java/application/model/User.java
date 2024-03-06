@@ -1,13 +1,6 @@
 package application.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,35 +8,33 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * This class creates an Entity model of a user for storage into the database with a standard
- * format. This is the minimal version of the information required by the database.
- *
- * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
- * @author Kyle Piazza-Nickson
- * @author Hien Phan
- */
 @Entity
-public class User implements UserDetails{
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-  
-  private String name;
+@Table(name = "user")
+public class User implements UserDetails {
 
-  private String username;
-  
-  private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-  @Enumerated(value = EnumType.STRING)
-  private Role role;
-  
-  //private Permissions role;
-  //Commented out and replaced with string for the sake of making the html createUser work in time
-  //will be re-implemented early next sprint
+    @Column(name = "first_name")
+    private String firstName;
 
-    public User() {
-    }
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     public Integer getId() {
         return id;
@@ -53,12 +44,20 @@ public class User implements UserDetails{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -109,6 +108,12 @@ public class User implements UserDetails{
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
 }
-  
-  
