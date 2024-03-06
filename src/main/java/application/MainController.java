@@ -3,7 +3,6 @@ package application;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +44,9 @@ public class MainController {
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
+  
+  @Autowired 
+  private AssetCommentRepository assetCommentRepository;
 
   @Autowired
   public MainController(AssetRepository assetRepository) {
@@ -55,6 +57,7 @@ public class MainController {
     this.assetRepository = assetRepository;
     this.actionLogRepository = actionLogRepository;
   }
+
 
   /**
    * This method allows for the application of CORS cross origin compatibility with the API
@@ -81,7 +84,8 @@ public class MainController {
   @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
   public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
     try {
-        assetRepository.save(asset);    
+        assetRepository.save(asset);
+        addActionLog(asset.getId(), null, "Added asset"); // Adds an action record to the log    
         return ResponseEntity.ok("Asset saved successfully");
     } catch (Exception e) {
         e.printStackTrace();
@@ -115,7 +119,7 @@ public class MainController {
   @PostMapping("/asset/createAsset") // POST request : When you submit the form
   public String assetSubmit(@ModelAttribute Asset asset, Model model) {
     Asset savedAsset = assetRepository.save(asset); // Add the asset object to the database
-    addActionLog(savedAsset.getId(), "Added asset"); // Adds an action record to the log
+    addActionLog(savedAsset.getId(), null, "Added asset"); // Adds an action record to the log
     model.addAttribute("savedAsset", savedAsset); // Add savedAsset to the model
     return "result"; // renders result.html
   }
@@ -170,7 +174,7 @@ public class MainController {
   @RequestMapping(value = "/asset/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteAsset(@PathVariable("id") Integer id) {
     assetRepository.deleteById(id);
-    addActionLog(id, "Deleted asset"); // Adds an action record to the log
+    addActionLog(id, null, "Deleted asset"); // Adds an action record to the log
     return "resultDeleteAsset"; // renders resultDeleteAsset.html
   }
 
@@ -188,6 +192,7 @@ public class MainController {
   public ResponseEntity<String> addNewType(@RequestBody Type type) {
     try {
         typeRepository.save(type);    
+        addActionLog(null, type.getId(), "Added type"); // Adds an action record to the log
         return ResponseEntity.ok("Type saved successfully");
     } catch (Exception e) {
         e.printStackTrace();
@@ -195,22 +200,23 @@ public class MainController {
     }
   }
   
-//  @PostMapping(path = "/type/add") // Map ONLY POST Requests
-//  public @ResponseBody String addNewType(@RequestParam String type,
-//      @RequestParam String customAttribute1, @RequestParam String customAttribute2,
-//      @RequestParam String customAttribute3, @RequestParam String customAttribute4) {
-//    // @ResponseBody means the returned String is the response, not a view name
-//    // @RequestParam means it is a parameter from the GET or POST request
-//
-//    Type t = new Type();
-//    t.setTypeName(type);
-//    t.setCustomAttribute1(customAttribute1);
-//    t.setCustomAttribute2(customAttribute2);
-//    t.setCustomAttribute3(customAttribute3);
-//    t.setCustomAttribute4(customAttribute4);
-//    typeRepository.save(t);
-//    return "Saved";
-//  }
+  @PostMapping(path = "/type/add") // Map ONLY POST Requests
+  public @ResponseBody String addNewType(@RequestParam String type,
+      @RequestParam String customAttribute1, @RequestParam String customAttribute2,
+      @RequestParam String customAttribute3, @RequestParam String customAttribute4) {
+    // @ResponseBody means the returned String is the response, not a view name
+    // @RequestParam means it is a parameter from the GET or POST request
+
+    Type t = new Type();
+    t.setTypeName(type);
+    t.setCustomAttribute1(customAttribute1);
+    t.setCustomAttribute2(customAttribute2);
+    t.setCustomAttribute3(customAttribute3);
+    t.setCustomAttribute4(customAttribute4);
+    typeRepository.save(t);
+    return "Saved";
+  }
+  
 
   /**
    * This method renders the edit asset page depending on a given asset id.
@@ -244,7 +250,7 @@ public class MainController {
   public String editAssetSubmit(@PathVariable("id") Integer id,
       @ModelAttribute Asset updatedAsset) {
     updatedAsset.setId(id);
-    addActionLog(updatedAsset.getId(), "Edited asset"); // Adds an action record to the log
+    addActionLog(updatedAsset.getId(), null, "Edited asset"); // Adds an action record to the log
     assetRepository.save(updatedAsset);
     return "result";
   }
@@ -286,7 +292,7 @@ public class MainController {
   @PostMapping("/type/createType") // POST request : When you submit the form
   public String typeSubmit(@ModelAttribute Type type, Model model) {
     Type savedType = typeRepository.save(type); // Add the type object to the database
-    addActionLog(savedType.getId(), "Created type"); // Adds an action record to the log
+    addActionLog(null, savedType.getId(), "Created type"); // Adds an action record to the log
     return "resultCreateType"; // renders resultCreateType.html
   }
 
@@ -301,6 +307,34 @@ public class MainController {
   public @ResponseBody Optional<Type> getTypeById(@PathVariable("id") Integer id) {
     // This returns a JSON or XML with the assets
     return typeRepository.findById(id);
+  }
+  
+  @GetMapping(path = "/type/findName/{typeName}")
+  public @ResponseBody Optional<Type> getTypeByName(@PathVariable("typeName") String typeName) {
+    // This returns a JSON or XML with the assets
+    return typeRepository.findByTypeName(typeName);
+  }
+  
+  @GetMapping(path = "type/returnAttributes/{typeName}")
+  public @ResponseBody List<String> getTypeAttributes(@PathVariable("typeName") String typeName) {
+	Optional<Type> optType = getTypeByName(typeName);
+	Type type = new Type();
+	List<String> attributeList = new ArrayList<String>();
+	if (optType.isPresent()) {
+		type = optType.get();
+	}
+		if (!(type.getCustomAttribute1().equals(""))) {
+			attributeList.add(type.getCustomAttribute1());
+		} if (!(type.getCustomAttribute2().equals(""))) {
+			attributeList.add(type.getCustomAttribute2());
+		} if (!(type.getCustomAttribute3().equals(""))) {
+			attributeList.add(type.getCustomAttribute3());
+		} if (!(type.getCustomAttribute4().equals(""))) {
+			attributeList.add(type.getCustomAttribute4());
+		}
+		
+	return attributeList;
+		
   }
 
   /**
@@ -326,7 +360,7 @@ public class MainController {
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteType(@PathVariable("id") Integer id) {
     typeRepository.deleteById(id);
-    addActionLog(id, "Deleted type"); // Adds an action record to the log
+    addActionLog(null, id, "Deleted type"); // Adds an action record to the log
     return "resultDeleteType";
   }
 
@@ -340,11 +374,12 @@ public class MainController {
    * @param action what task was being undertaken on that item id (such as: deleted)
    * @return confirmation string
    */
-  public @ResponseBody String addActionLog(@RequestParam Integer itemId,
+  public @ResponseBody String addActionLog(@RequestParam Integer assetId, @RequestParam Integer typeId,
       @RequestParam String action) {
 
     ActionLog al = new ActionLog();
-    al.setItemId(itemId);
+    al.setAssetId(assetId);
+    al.setTypeId(typeId);
     al.setAction(action);
     al.setTimestamp(LocalDateTime.now());
     actionLogRepository.save(al);
@@ -407,14 +442,6 @@ public class MainController {
   public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
       @RequestParam String role) {
 
-    // Permissions userRole = null;
-
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(role)) {
-    // userRole = perm;
-    // }
-    // }
-
     User newUser = new User();
     newUser.setName(name);
     newUser.setPassword(password);
@@ -435,7 +462,7 @@ public class MainController {
   @PostMapping("/type/editType/{id}")
   public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
     updatedType.setId(id);
-    addActionLog(updatedType.getId(), "Edited type"); // Adds an action record to the log
+    addActionLog(null, updatedType.getId(), "Edited type"); // Adds an action record to the log
     typeRepository.save(updatedType);
     return "resultCreateType";
   }
@@ -583,4 +610,63 @@ public class MainController {
     return assetsWithLang;
   }
 
+
+    //// Start of Comment functions.
+
+  /**
+   * This method fetches all the asset comments stored in the database and returns a JSON file of the
+   * content to the web page.
+   *
+   * @return all the assetcomments and their details
+   */
+  @GetMapping(path = "/comment/find/all")
+  public @ResponseBody Iterable<AssetComment> getAllComment() {
+    // This returns a JSON or XML with the comments
+    return assetCommentRepository.findAll();
+  }
+
+  /**
+   * This method is a query function to request the details of an asset by its Id number in the url
+   * localhost:8080/comment/find/{id}.
+   *
+   * @param id of the comment entry to be queried
+   * @return JSON of the asset comment to be returned by the id number search
+   */
+  @GetMapping(path = "/comment/find/{id}")
+  public @ResponseBody Optional<AssetComment> getCommentById(@PathVariable("id") Integer id) {
+    // This returns a JSON or XML with the comments
+    return assetCommentRepository.findById(id);
+  }
+
+  /**
+   * Post request to fetch comment data from UI form and add it to the database.
+   * 
+   * @param comment
+   * @return response entity depending on outcome
+   */
+  @PostMapping(path = "/comment/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewComment(@RequestBody AssetComment comment) {
+    try {
+        assetCommentRepository.save(comment);    
+        addActionLog(comment.getItemId(), null, "Added comment"); // Adds an action record to the log
+        return ResponseEntity.ok("Comment saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
+  }
+  
+
+  @GetMapping("/comment/createComment") // GET request
+  public String commentForm(Model model) {
+    model.addAttribute("createComment", new AssetComment());
+    return "createComment"; // renders 
+  }
+
+  @PostMapping("/comment/createComment") // POST request : When you submit the form
+  public String commentSubmit(@ModelAttribute AssetComment assetComment, Model model) {
+    AssetComment savedAssetComment = assetCommentRepository.save(assetComment); 
+    model.addAttribute("savedAssetComment", savedAssetComment); 
+    return "result"; // renders result.html
+  }
 }
