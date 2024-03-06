@@ -1,0 +1,41 @@
+dn: dc=springframework,dc=org
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: springframework
+
+dn: ou=groups,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: ou=subgroups,ou=groups,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: subgroups
+
+dn: ou=Users,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Users
+
+dn: uid=ben,ou=Users,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Ben Alex
+sn: Alex
+uid: ben
+userPassword: ben
+
+dn: uid=bob,ou=Users,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bob Hamilton
+sn: Hamilton
+uid: bob
+userPassword: slugger
+
