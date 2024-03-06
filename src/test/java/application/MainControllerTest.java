@@ -158,7 +158,6 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
         .andExpect(MockMvcResultMatchers.view().name("createAsset"))
         .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));
-
   }
 
   /**
