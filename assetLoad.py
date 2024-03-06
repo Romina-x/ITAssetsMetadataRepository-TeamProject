@@ -13,18 +13,13 @@ assets = [
         'link': 'http://example.com/asset1',
         'lineNum': 100,
         'progLang': 'Java',
+        'isDocumentedIn': '2',
+        'dependsOn': '3',
+        'succeededBy': '4',
         'customAttribute1': 'Jim Prince',
         'customAttribute2': 'Official Sensitive',
         'customAttribute3': 'Local',
-        'customAttribute4': 'Prometheus',
-        'association1': '1',
-        'association2': '2',
-        'association3': '3',
-        'association4': '4',
-        'associationRelation1': 'Depends on',
-        'associationRelation2': 'Obseleced by',
-        'associationRelation3': 'Replaces',
-        'associationRelation4': 'Suceeded by',
+        'customAttribute4': 'Prometheus'
     },
     {
         'type': 'Project Report',
@@ -32,14 +27,13 @@ assets = [
         'link': 'www.prince2.com',
         'lineNum': 200,
         'progLang': 'English',
+        'isDocumentedIn': '1',
+        'dependsOn': '1',
+        'succeededBy': '2',
         'customAttribute1': 'Artemis',
         'customAttribute2': 'Q1',
         'customAttribute3': 'Alan Cooper',
-        'customAttribute4': 'Delivery',
-        'association1': '55',
-        'association2': '66',
-        'associationRelation1': 'Depends on',
-        'associationRelation2': 'Obseleced by'
+        'customAttribute4': 'Delivery'
     },
     {
         'type': 'Document',
@@ -47,18 +41,13 @@ assets = [
         'link': 'http://example.com/asset3',
         'lineNum': 200,
         'progLang': 'Python',
+        'isDocumentedIn': '1',
+        'dependsOn': '2',
+        'succeededBy': '4',
         'customAttribute1': 'Tom Clancy',
         'customAttribute2': 'Unclassified',
         'customAttribute3': 'Cloud',
-        'customAttribute4': 'Flame',
-        'association1': '6',
-        'association2': '2',
-        'association3': '8',
-        'association4': '4',
-        'associationRelation1': 'Depends on',
-        'associationRelation2': 'Part of',
-        'associationRelation3': 'Replaces',
-        'associationRelation4': 'Suceeded by'
+        'customAttribute4': 'Flame'
     }
 ]
 
