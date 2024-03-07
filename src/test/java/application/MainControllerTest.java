@@ -181,6 +181,34 @@ class MainControllerTest {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     assertEquals("Error: This is a made up exception 2", response.getBody());
   }
+  
+  /**
+   * Test to make sure a conflict error message is produced when user chooses a type name which
+   * already exists in the database.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddType_ConflictingTitles() {
+    // Duplicate titled types to be added
+    Type type1 = new Type();
+    type1.setTypeName("Duplicate name type");
+
+    mc.addNewType(type1);
+
+    // Mock the behavior of typeRepository.existsByTitle() to return true, indicating the name
+    // already exists
+    when(typeRepository.existsByTitle(type1.getTypeName())).thenReturn(true);
+
+    Type type2 = new Type();
+    type2.setTypeName("Duplicate name type");
+
+    ResponseEntity<String> response = mc.addNewType(type2);
+
+    assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    assertEquals("A type with the same name already exists", response.getBody());
+
+  }
 
 
   /**

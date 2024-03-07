@@ -198,6 +198,12 @@ public class MainController {
   @PostMapping(path = "/type/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
   public ResponseEntity<String> addNewType(@RequestBody Type type) {
     try {
+  
+      // Check if a type with the same title already exists
+      if (typeRepository.existsByTitle(type.getTypeName())) {
+          // Type with the same name already exists, return a conflict status
+          return ResponseEntity.status(HttpStatus.CONFLICT).body("A type with the same name already exists");
+      }
         typeRepository.save(type);    
         addActionLog(null, type.getId(), "Added type"); // Adds an action record to the log
         return ResponseEntity.ok("Type saved successfully");

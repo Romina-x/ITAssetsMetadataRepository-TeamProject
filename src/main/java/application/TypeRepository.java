@@ -12,10 +12,13 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
+ * @author Yusur Taha
  */
 
 public interface TypeRepository extends CrudRepository<Type, Integer> {
 
 	Optional<Type> findByTypeName(String typeName);
+
+  boolean existsByTitle(String typeName);
 
 }
