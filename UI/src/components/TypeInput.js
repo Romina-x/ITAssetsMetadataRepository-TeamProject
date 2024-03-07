@@ -21,6 +21,7 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
@@ -47,28 +48,32 @@ export default function FormPropsTextFields() {
 
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
-    setSave("Saved");
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
-
-    try {
-      const response = await TypeAPI.addType({
-          typeName,
-          customAttribute1,
-          customAttribute2,
-          customAttribute3,
-          customAttribute4
-      });
-      
-      
-      if (!response.ok) {
-        throw new Error('Failed to add type');
-      }
-      resetValue()
-      console.log('Type added successfully');
-    } catch (error) {
-      console.error('Error adding type:', error);
-    }
+    const compType = await TypeAPI.getName(typeName);
+	if (compType) {
+	    try {
+	      const response = await TypeAPI.addType({
+	          typeName,
+	          customAttribute1,
+	          customAttribute2,
+	          customAttribute3,
+	          customAttribute4
+	      });
+	      
+	      
+	      if (!response.ok) {
+	        throw new Error('Failed to add type');
+	      }
+	      resetValue();
+	      setSave("Saved");
+	      console.log('Type added successfully');
+	    } catch (error) {
+	      console.error('Error adding type:', error);
+	    }
+  	} else {
+		  alert("Type name already exists");
+	}
   };
 
   const resetValue = () => {

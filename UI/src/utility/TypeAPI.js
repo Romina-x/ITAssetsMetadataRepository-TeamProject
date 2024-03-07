@@ -10,6 +10,9 @@ const headers = {
 
 export const get = (typeId) =>
   fetch(`${api}/type/find/${typeId}`, { headers }).then((res) => res.json());
+  
+export const getName = (typeName) =>
+  fetch(`${api}/type/getTypeName/${typeName}`, { headers }).then((res) => res.ok);
 
 export const getAll = () =>
   fetch(`${api}/type/find/all`, { headers }).then((res) => res.json());

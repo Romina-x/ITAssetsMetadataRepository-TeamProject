@@ -313,6 +313,12 @@ public class MainController {
     return typeRepository.findByTypeName(typeName);
   }
   
+  @GetMapping(path = "type/getTypeName/{typeName}")
+  public @ResponseBody Boolean getTypeName(@PathVariable("typeName") String typeName) {
+	Optional<Type> optType = getTypeByName(typeName);
+	return (optType.isPresent());
+  }
+  
   @GetMapping(path = "type/returnAttributes/{typeName}")
   public @ResponseBody List<String> getTypeAttributes(@PathVariable("typeName") String typeName) {
 	Optional<Type> optType = getTypeByName(typeName);
