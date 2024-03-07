@@ -47,7 +47,7 @@ public class MainController {
   
   @Autowired 
   private AssetCommentRepository assetCommentRepository;
-  
+
   @Autowired
   public MainController(AssetRepository assetRepository) {
     this.assetRepository = assetRepository;
@@ -669,5 +669,4 @@ public class MainController {
     model.addAttribute("savedAssetComment", savedAssetComment); 
     return "result"; // renders result.html
   }
-
 }
