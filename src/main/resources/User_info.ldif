@@ -39,3 +39,12 @@ sn: Hamilton
 uid: bob
 userPassword: slugger
 
+dn: uid=Admin,ou=Users,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Admin
+sn: Admin
+uid: Admin
+userPassword: Admin
