@@ -32,8 +32,14 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
-  const [associationList, setAssociationList] = useState([ { association: "" } ]); 
-  const [associationRelationList, setAssociationRelationList] = useState([{ associationRelation: "" }]);
+  const [association1, setAssociation1] = useState(""); 
+  const [association2, setAssociation2] = useState(""); 
+  const [association3, setAssociation3] = useState(""); 
+  const [association4, setAssociation4] = useState(""); 
+  const [associationRelation1, setAssociationRelation1] = useState("");
+  const [associationRelation2, setAssociationRelation2] = useState("");
+  const [associationRelation3, setAssociationRelation3] = useState("");
+  const [associationRelation4, setAssociationRelation4] = useState("");
 
 
   //useEffect hook to fetch type names to populate the dropdown with
@@ -93,16 +99,7 @@ export default function FormPropsTextFields() {
     event.preventDefault();
 
     try {    
-      const association1 = associationList.length > 0 ? associationList[0] : null;
-      const association2 = associationList.length > 1 ? associationList[1] : null;
-      const association3 = associationList.length > 2 ? associationList[2] : null;
-      const association4 = associationList.length > 3 ? associationList[3] : null;
-
-      const associationRelation1 = associationRelationList.length > 0 ? associationRelationList[0] : null;
-      const associationRelation2 = associationRelationList.length > 1 ? associationRelationList[1] : null;
-      const associationRelation3 = associationRelationList.length > 2 ? associationRelationList[2] : null;
-      const associationRelation4 = associationRelationList.length > 3 ? associationRelationList[3] : null;
-
+      
       const response = await fetch('http://localhost:8080/asset/add', {
         method: 'POST',
         headers: {
@@ -118,14 +115,14 @@ export default function FormPropsTextFields() {
           customAttribute2,
           customAttribute3,
           customAttribute4,
-          association1: association1 ? association1.association : null,
-          association2: association2 ? association2.association : null,
-          association3: association3 ? association3.association : null,
-          association4: association4 ? association4.association : null,
-          associationRelation1: associationRelation1 ? associationRelation1.associationRelation : null,
-          associationRelation2: associationRelation2 ? associationRelation2.associationRelation : null,
-          associationRelation3: associationRelation3 ? associationRelation3.associationRelation : null,
-          associationRelation4: associationRelation4 ? associationRelation4.associationRelation : null
+          association1,
+          association2,
+          association3,
+          association4,
+          associationRelation1,
+          associationRelation2,
+          associationRelation3,
+          associationRelation4
       })
       });
       
@@ -149,8 +146,14 @@ export default function FormPropsTextFields() {
     setCustomAttribute2("");
     setCustomAttribute3("");
     setCustomAttribute4("");
-    setAssociationList([{ association: "" }]);
-    setAssociationRelationList([{ associationRelation: "" }]);
+    setAssociation1("");
+    setAssociation2("");
+    setAssociation3("");
+    setAssociation4("");
+    setAssociationRelation1("");
+    setAssociationRelation2("");
+    setAssociationRelation3("");
+    setAssociationRelation4("");
   };
 
   
@@ -161,6 +164,7 @@ export default function FormPropsTextFields() {
     setSelectedType(selectedType);
     setType(typeName); // Update the type state variable
   };
+
   //function to handle changes when cancel button is clicked
   const handleCancelButtonClick = () => {
     const cancelButtonStyle = document.getElementById("cancel-button").style;
@@ -170,29 +174,6 @@ export default function FormPropsTextFields() {
     resetValue()
   };
 
-  const handleAssociationChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...associationList];
-    list[index] = { ...list[index], [name]: value };
-    setAssociationList(list);
-};
-
-const handleAssociationRemove = (index) => {
-    const list = [...associationList];
-    list.splice(index, 1);
-    setAssociationList(list);
-
-    const relList = [...associationRelationList];
-    relList.splice(index, 1);
-    setAssociationRelationList(relList);
-};
-
-const handleAssociationAdd = () => {
-    if (associationList.length < 4) {
-        setAssociationList([...associationList, { association: "" }]);
-        setAssociationRelationList([...associationRelationList, { associationRelation: "" }]);
-    }
-};
 
   return (
     <Box
@@ -329,51 +310,84 @@ const handleAssociationAdd = () => {
 	        </Grid> 
           </Grid>
         <Grid>
-        <label>Association(s)</label>
-        {associationList.map((singleAssociation, index) => (
-          <div key={index} className="associations">
-            <div className="first-division">
+          <label>Association(s)</label>
+          <div className="first-division">
             <TextField
-                name="associationRelation"
-                type="text"
-                id={`associationRelation-${index}`}
-                label="Relation:"
-                placeholder="Is Documented in..."
-                value={singleAssociation.associationRelation}
-                onChange={(e) => handleAssociationChange(e, index)}
-              />
-              <TextField
-                name="association"
-                type="text"
-                id={`association-${index}`}
-                label="Asset Id:"
-                placeholder="3..."
-                value={singleAssociation.association}
-                onChange={(e) => handleAssociationChange(e, index)}
-              />
-              {associationList.length !== 1 && (
-                <DeleteOutlineIcon
-                  type="button"
-                  onClick={() => handleAssociationRemove(index)}
-                  className="remove-btn"
-                  fontSize="large"
-                  style={{ color: 'grey' }}
-                />  
-              )}
-            </div>
-            <div className="second-division">
-            {associationList.length - 1 === index && associationList.length < 4 && (
-                <AddIcon
-                  type="button"
-                  onClick={handleAssociationAdd}
-                  className="add-btn"
-                  fontSize="large"      
-                  style={{ color: 'grey' }}
-                />
-              )}
-            </div>
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 1:"
+              placeholder="Is Documented in..."
+              value={associationRelation1}
+              onChange={(e) => setAssociationRelation1(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 1:"
+              placeholder="3..."
+              value={association1}
+              onChange={(e) => setAssociation1(e.target.value)}
+            />
+            <br/>
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 2:"
+              placeholder="Is Documented in..."
+              value={associationRelation2}
+              onChange={(e) => setAssociationRelation2(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 2:"
+              placeholder="3..."
+              value={association2}
+              onChange={(e) => setAssociation2(e.target.value)}
+            />
+            <br/>
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 3:"
+              placeholder="Is Documented in..."
+              value={associationRelation3}
+              onChange={(e) => setAssociationRelation3(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 3:"
+              placeholder="3..."
+              value={association3}
+              onChange={(e) => setAssociation3(e.target.value)}
+            />
+            <br/>
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 4:"
+              placeholder="Is Documented in..."
+              value={associationRelation4}
+              onChange={(e) => setAssociationRelation4(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 4:"
+              placeholder="3..."
+              value={association4}
+              onChange={(e) => setAssociation4(e.target.value)}
+            />
           </div>
-        ))}
         </Grid>
       </Grid>
 
