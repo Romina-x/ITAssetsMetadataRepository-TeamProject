@@ -14,7 +14,7 @@ import { IconButton, TablePagination } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './AssetDelConfirm';
+import DeleteConfirmationDialog from './TypeDelConfirm';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -231,10 +231,12 @@ function App() {
     <EditConfirmationDialog
         open={openEditConfirmation}
         handleClose={() => setOpenEditConfirmation(false)}
-        handleConfirm={handleEditType}
-
-        title="Edit Type"
-        message={`Are you sure you want to edit type with ID: ${editingTypeId}?`} 
+       
+        handleConfirm={() => {
+          setOpenEditConfirmation(false);
+          handleEditType(editingTypeId);
+        }}
+        typeId={editingTypeId}
       />
 
     <DeleteConfirmationDialog

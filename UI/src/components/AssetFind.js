@@ -22,8 +22,6 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import EditConfirmationDialog from './AssetEditConfirm'; 
 
-
-
 function App() {
 
   React.useEffect(() => {
@@ -195,7 +193,6 @@ function App() {
             </Link>
             </IconButton>
               <IconButton className={styles.link}>
-                {/* Use handleEditConfirmation function for edit confirmation */}
                 <EditIcon onClick={() => handleEditConfirmation(a.id)} />
               </IconButton>              
               <IconButton
@@ -232,10 +229,12 @@ function App() {
     <EditConfirmationDialog
         open={openEditConfirmation}
         handleClose={() => setOpenEditConfirmation(false)}
-        handleConfirm={handleEditAsset}
 
-        title="Edit Asset"
-        message={`Are you sure you want to edit asset with ID: ${editingAssetId}?`} 
+        handleConfirm={() => {
+          setOpenEditConfirmation(false);
+          handleEditAsset(editingAssetId);
+        }}
+        assetId = {editingAssetId}
       />
 
     <DeleteConfirmationDialog

@@ -161,10 +161,11 @@ export default function ViewAssets() {
       <EditConfirmationDialog
         open={openEditConfirmation}
         handleClose={() => setOpenEditConfirmation(false)}
-        handleConfirm={handleEditAsset}
-
-        title="Edit Asset"
-        message={`Are you sure you want to edit asset with ID: ${editingAssetId}?`} 
+        handleConfirm={() => {
+          setOpenEditConfirmation(false);
+          handleEditAsset(editingAssetId);
+        }}
+        assetId={editingAssetId}
       />
 
       <DeleteConfirmationDialog
