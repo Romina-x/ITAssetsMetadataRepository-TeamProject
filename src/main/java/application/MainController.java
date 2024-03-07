@@ -436,17 +436,15 @@ public class MainController {
     }
   }
 
-  @PostMapping(path = "/user/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
-      @RequestParam String role) {
-
-    User newUser = new User();
-    newUser.setName(name);
-    newUser.setPassword(password);
-    newUser.setRole(role);
-    userRepository.save(newUser);
-
-    return "Saved";
+  @PostMapping(path = "/user/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewUser(@RequestBody User user) {
+    try {
+        userRepository.save(user);
+        return ResponseEntity.ok("User saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
   }
 
   /**
@@ -470,6 +468,7 @@ public class MainController {
     return userRepository.findAll();
   }
 
+  
   /**
    * This method returns a user with an id matching the provided path variable value.
    * 
@@ -516,13 +515,22 @@ public class MainController {
    */
   @PostMapping("/user/createUser") // POST request : When you submit the form
   public String userSubmit(@ModelAttribute User user, Model model) {
+    User savedUser = userRepository.save(user); 
+    model.addAttribute("savedUser", savedUser); 
+    return "result"; 
     // for(Permissions perm: Permissions.values()) {
     // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
     // Commented out as role was changed to String to meet sprint 2 demo deadline
     // Will be re-implemented next sprint
-    userRepository.save(user);
+//    userRepository.save(user);
 
-    return "resultCreateUser"; // renders resultCreateUser.html
+//    return "resultCreateUser"; // renders resultCreateUser.html
+  }
+  
+  @RequestMapping(value = "/user/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String deleteUser(@PathVariable("id") Integer id) {
+    userRepository.deleteById(id);
+    return "resultDeleteUser"; // renders
   }
 
   /**
