@@ -21,8 +21,6 @@ public class User {
   
   private String name;
   
-  private String surname;
-  
   private String password;
   
   //private Permissions role;
@@ -30,8 +28,6 @@ public class User {
   //will be re-implemented early next sprint
   
   private String role;
-
-  
   
   public User() {
 	  
@@ -44,10 +40,6 @@ public class User {
   public void setName(String name) {
 	  this.name = name;
   }
-  public void setSurname(String surname) {
-    this.surname = surname;
-}
-
   
   public void setPassword(String password) {
 	  this.password = password;
@@ -72,10 +64,6 @@ public class User {
   
   public String getRole() {
 	  return this.role;
-  }
-
-  public String getSurname() {
-      return this.surname;
   }
 }
   
