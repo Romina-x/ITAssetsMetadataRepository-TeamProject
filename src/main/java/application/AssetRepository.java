@@ -11,6 +11,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  *
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
+ * @author Yusur Taha
  */
 
-public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {}
+public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {
+
+  boolean existsByTitle(String title);}

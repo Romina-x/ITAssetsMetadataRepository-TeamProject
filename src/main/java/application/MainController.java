@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
  * @author Romina Petrozzi
+ * @author Yusur Taha
  */
 @Controller // This means that this class is a Controller
 public class MainController {
@@ -81,15 +82,23 @@ public class MainController {
    */
   @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
   public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
-    try {
-        assetRepository.save(asset);
-        addActionLog(asset.getId(), null, "Added asset"); // Adds an action record to the log    
-        return ResponseEntity.ok("Asset saved successfully");
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-    }
+      try {
+          // Check if an asset with the same title already exists
+          if (assetRepository.existsByTitle(asset.getTitle())) {
+              // Asset with the same title already exists, return a conflict status
+              return ResponseEntity.status(HttpStatus.CONFLICT).body("An asset with the same title already exists");
+          }
+
+          // Save the asset to the database
+          assetRepository.save(asset);
+          addActionLog(asset.getId(), null, "Added asset"); // Adds an action record to the log
+          return ResponseEntity.ok("Asset saved successfully");
+      } catch (Exception e) {
+          e.printStackTrace();
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+      }
   }
+
 
 
   /**
