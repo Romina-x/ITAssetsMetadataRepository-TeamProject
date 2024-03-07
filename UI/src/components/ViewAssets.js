@@ -17,7 +17,7 @@ import Button from "@mui/material/Button";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import UndoIcon from "@mui/icons-material/Undo";
 import DeleteConfirmationDialog from './AssetDelConfirm';
-import EditConfirmationDialog from './EditConfirm'; 
+import EditConfirmationDialog from './AssetEditConfirm'; 
 
 export default function ViewAssets() {
   const [assets, setAssets] = React.useState([]);
@@ -161,12 +161,10 @@ export default function ViewAssets() {
       <EditConfirmationDialog
         open={openEditConfirmation}
         handleClose={() => setOpenEditConfirmation(false)}
-        handleConfirm={() => {
-          setOpenEditConfirmation(false);
-          handleEditAsset(editingAssetId);
-        }}
-        assetId={editingAssetId}
+        handleConfirm={handleEditAsset}
 
+        title="Edit Asset"
+        message={`Are you sure you want to edit asset with ID: ${editingAssetId}?`} 
       />
 
       <DeleteConfirmationDialog

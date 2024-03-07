@@ -20,6 +20,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import EditConfirmationDialog from './AssetEditConfirm'; 
 
 
 
@@ -46,6 +47,19 @@ function App() {
   const [deletingAssetId, setDeletingAssetId] = React.useState(null);
   const [assetAttributes, setAssetAttributes] = useState([]);
   const [selectedAssetAttribute, setSelectedAssetAttribute] = useState("");
+
+  const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
+  const [editingAssetId, setEditingAssetId] = React.useState(null);
+
+  const handleEditConfirmation = (id) => {
+    setEditingAssetId(id);
+    setOpenEditConfirmation(true);
+  };
+
+  const handleEditAsset = () => {
+    setOpenEditConfirmation(false);
+    // Navigate to the oter page
+  };
 
   // Function to handle type selection from dropdown
   const handleAssetAttributeChange = (event) => {
@@ -181,10 +195,9 @@ function App() {
             </Link>
             </IconButton>
               <IconButton className={styles.link}>
-                <Link to={`/asset/edit/${a.id}`} className={styles.link}>
-                  <EditIcon />
-                </Link>
-              </IconButton>
+                {/* Use handleEditConfirmation function for edit confirmation */}
+                <EditIcon onClick={() => handleEditConfirmation(a.id)} />
+              </IconButton>              
               <IconButton
                 className={styles.link}
                 onClick={() => handleDelete(a.id)}
@@ -216,6 +229,15 @@ function App() {
         Back To Dashboard
       </Button>
     </Stack>
+    <EditConfirmationDialog
+        open={openEditConfirmation}
+        handleClose={() => setOpenEditConfirmation(false)}
+        handleConfirm={handleEditAsset}
+
+        title="Edit Asset"
+        message={`Are you sure you want to edit asset with ID: ${editingAssetId}?`} 
+      />
+
     <DeleteConfirmationDialog
       open={openDeleteDialog}
       handleClose={() => setOpenDeleteDialog(false)}
