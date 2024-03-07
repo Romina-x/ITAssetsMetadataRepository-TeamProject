@@ -40,6 +40,7 @@ export default function FormPropsTextFields() {
   const [associationRelation2, setAssociationRelation2] = useState("");
   const [associationRelation3, setAssociationRelation3] = useState("");
   const [associationRelation4, setAssociationRelation4] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
 
   //useEffect hook to fetch type names to populate the dropdown with
@@ -95,9 +96,34 @@ export default function FormPropsTextFields() {
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
     setSave("Saved");
-    // logic for what happens when the asset is saved goes here
     event.preventDefault();
+    
+    const newAlertMessage = {};
 
+    // Validate line number
+    if (!validateInteger(lineNum)) {
+      newAlertMessage.lineNum = "Please enter an integer";
+    }
+
+    // Validate associations
+    const associationFields = [association1, association2, association3, association4];
+    for (let i = 0; i < associationFields.length; i++) {
+      if (associationFields[i] && !validateInteger(associationFields[i])) {
+        newAlertMessage.associations = `Asset ids must be integers`;
+        break;
+      }
+    }
+    // Check if any error message exists and set it
+    if (newAlertMessage.associations) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if association validation fails
+    } else if (newAlertMessage.lineNum) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if line number validation fails
+    }
+    
+    setAlertMessage("");
+    
     try {    
       
       const response = await fetch('http://localhost:8080/asset/add', {
@@ -135,6 +161,11 @@ export default function FormPropsTextFields() {
     } catch (error) {
       console.error('Error adding asset:', error);
     }
+  };
+  
+  // Function to validate if a value is an integer
+  const validateInteger = (value) => {
+    return /^\d+$/.test(value);
   };
 
   const resetValue = () => {
@@ -196,6 +227,7 @@ export default function FormPropsTextFields() {
         alignItems="center"
         sx={{
           paddingBottom: 5,
+          paddingLeft: 5,
 
         }}
       >
@@ -240,6 +272,10 @@ export default function FormPropsTextFields() {
             onChange={(e) => setLink(e.target.value)}
           />
         </Grid>
+        {/* Alert for line number */}
+        {alertMessage.lineNum && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.lineNum}</div>
+        )}
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
@@ -311,6 +347,10 @@ export default function FormPropsTextFields() {
           </Grid>
         <Grid>
           <label>Association(s)</label>
+          {/* Alert for line number */}
+          {alertMessage.associations && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.associations}</div>
+          )}
           <div className="first-division">
             <TextField
               name="associationRelation"
