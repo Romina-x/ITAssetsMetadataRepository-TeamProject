@@ -100,6 +100,11 @@ export default function FormPropsTextFields() {
     
     const newAlertMessage = {};
 
+    //Validate mandatory inputs
+    if (!title || !link || !lineNum || !progLang || !customAttribute1 || !customAttribute2 || !customAttribute3 || !customAttribute4) {
+      newAlertMessage.mandatory = "Please fill in all mandatory fields";
+    }
+    
     // Validate line number
     if (!validateInteger(lineNum)) {
       newAlertMessage.lineNum = "Please enter an integer";
@@ -113,6 +118,7 @@ export default function FormPropsTextFields() {
         break;
       }
     }
+    
     // Check if any error message exists and set it
     if (newAlertMessage.associations) {
       setAlertMessage(newAlertMessage);
@@ -120,6 +126,9 @@ export default function FormPropsTextFields() {
     } else if (newAlertMessage.lineNum) {
       setAlertMessage(newAlertMessage);
       return; // Return early if line number validation fails
+    } else if (newAlertMessage.mandatory) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if not all boxes are filed
     }
     
     setAlertMessage("");
@@ -235,6 +244,10 @@ export default function FormPropsTextFields() {
         alignItems="center"
         >
         <label>Mandatory Attributes: </label>
+        {/* Alert for mandatory boxes */}
+        {alertMessage.mandatory && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.mandatory}</div>
+        )}
         <Grid item xs={6}
         alignItems="center"
         >
@@ -346,8 +359,8 @@ export default function FormPropsTextFields() {
 	        </Grid> 
           </Grid>
         <Grid>
-          <label>Association(s)</label>
-          {/* Alert for line number */}
+          <label>Association(s) (Optional)</label>
+          {/* Alert for association IDs */}
           {alertMessage.associations && (
            <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.associations}</div>
           )}
