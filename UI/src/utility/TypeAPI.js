@@ -35,7 +35,7 @@ export const deleteById = async (id) => {
 
     return response;
   } catch (error) {
-    throw new Error(`Failed to delete asset with ID ${id}: ${error.message}`);
+    throw new Error(`Failed to delete type with ID ${id}: ${error.message}`);
   }
 };
 
