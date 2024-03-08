@@ -465,7 +465,17 @@ public class MainController {
 
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
-    return userRepository.findAll();
+      Iterable<User> allUsers = userRepository.findAll();
+      List<User> usersWithoutPassword = new ArrayList<>();
+      for (User user : allUsers) {
+          User userWithoutPassword = new User();
+          userWithoutPassword.setId(user.getId());
+          userWithoutPassword.setName(user.getName());
+          userWithoutPassword.setRole(user.getRole());
+          
+          usersWithoutPassword.add(userWithoutPassword);
+      }
+      return usersWithoutPassword;
   }
   
   /**
@@ -474,10 +484,20 @@ public class MainController {
    * @param id the id value to be searched for in the database
    * @return the User matching the provided id
    */
-  @GetMapping(path = "/user/find/{id}")
   public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
-    return userRepository.findById(id);
-  }
+    Optional<User> foundUserOptional = userRepository.findById(id);
+    if (foundUserOptional.isPresent()) {
+        User foundUser = foundUserOptional.get();
+        User userWithoutPassword = new User();
+        userWithoutPassword.setId(foundUser.getId());
+        userWithoutPassword.setName(foundUser.getName());
+        userWithoutPassword.setRole(foundUser.getRole());
+
+        return Optional.of(userWithoutPassword);
+    } else {
+        return Optional.empty(); 
+    }
+}
 
   /**
    * This method returns a user with a name matching the provided path variable value.
