@@ -19,7 +19,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
   const [userAttributes, setUserAttributes] = useState([]);
   const [selectedUserAttribute, setSelectedUserAttribute] = useState("");
   const filteredUserAttributes = userAttributes.filter(attributeName => attributeName !== 'password');
+  const [role, setRole] = React.useState('reader');
+
 
 
   // Function to handle type selection from dropdown
@@ -95,6 +98,39 @@ function App() {
     // Update the displayed types with the filtered results
     setUsers(filteredUsers);
   };
+
+
+const handleRoleChange = async (event, newRole) => {
+  const userId = event.currentTarget.getAttribute('data-userid'); 
+  try {
+    const userData = {
+      id: userId,
+      role: newRole
+    };
+
+    const response = await UserAPI.updateRole(userData);
+  
+    if (response.ok) {
+      // Update the local state with the new role
+      setUsers(prevUsers => {
+        return prevUsers.map(user => {
+          if (user.id === userId) {
+            return { ...user, role: newRole }; 
+          }
+          return user;
+        });
+      });
+      const updatedUsers = await UserAPI.getAll();
+      setUsers(updatedUsers);
+
+    } else {
+      console.error('Failed to update user role');
+    }
+  } catch (error) {
+    console.error('Error updating user role:', error);
+  }
+};
+
 
 	return (
     <React.Fragment>
@@ -158,8 +194,8 @@ function App() {
         <TableRow>
           <TableCell>ID</TableCell>
           <TableCell>Name</TableCell>
-          <TableCell align="right">Role</TableCell>
-
+          <TableCell>Role</TableCell>
+          <TableCell align="right">User Permissions</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -170,8 +206,19 @@ function App() {
           <TableRow key={u.id}>
             <TableCell>{u.id}</TableCell>
             <TableCell>{u.name}</TableCell>
-            <TableCell align="right">{u.role}</TableCell>
-
+            <TableCell>{u.role}</TableCell>
+            <TableCell align="right">
+              <ToggleButtonGroup
+                color="primary"
+                value={u.role}
+                exclusive
+                onChange={handleRoleChange}
+              >
+                <ToggleButton value="reader" data-userid={u.id}>Reader</ToggleButton>
+                <ToggleButton value="user" data-userid={u.id}>User</ToggleButton>
+                <ToggleButton value="admin" data-userid={u.id}>Admin</ToggleButton>
+              </ToggleButtonGroup>
+              </TableCell>
             <TableCell align="right">
               <IconButton
                 className={styles.link}

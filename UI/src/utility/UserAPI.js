@@ -54,3 +54,19 @@ export const addUser = async (userData) => {
     throw new Error('Failed to add Type:', error);
   }
 };
+
+export const updateRole = async (userData) => {
+  try {
+    const response = await fetch(`${api}/user/edit/role`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error('Failed to update role:', error);
+  }
+};

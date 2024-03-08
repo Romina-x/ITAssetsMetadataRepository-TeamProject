@@ -436,17 +436,6 @@ public class MainController {
     }
   }
 
-  @PostMapping(path = "/user/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
-  public ResponseEntity<String> addNewUser(@RequestBody User user) {
-    try {
-        userRepository.save(user);
-        return ResponseEntity.ok("User saved successfully");
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-    }
-  }
-
   /**
    * This method handles the submitted edit form and updates the type within the database.
    * 
@@ -462,12 +451,22 @@ public class MainController {
     typeRepository.save(updatedType);
     return "resultCreateType";
   }
+  
+  @PostMapping(path = "/user/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  public ResponseEntity<String> addNewUser(@RequestBody User user) {
+    try {
+        userRepository.save(user);
+        return ResponseEntity.ok("User saved successfully");
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+    }
+  }
 
   @GetMapping(path = "/user/find/all")
   public @ResponseBody Iterable<User> getAllUsers() {
     return userRepository.findAll();
   }
-
   
   /**
    * This method returns a user with an id matching the provided path variable value.
@@ -518,13 +517,6 @@ public class MainController {
     User savedUser = userRepository.save(user); 
     model.addAttribute("savedUser", savedUser); 
     return "result"; 
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
-    // Commented out as role was changed to String to meet sprint 2 demo deadline
-    // Will be re-implemented next sprint
-//    userRepository.save(user);
-
-//    return "resultCreateUser"; // renders resultCreateUser.html
   }
   
   @RequestMapping(value = "/user/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
@@ -533,6 +525,27 @@ public class MainController {
     return "resultDeleteUser"; // renders
   }
 
+
+  @PostMapping(path = "/user/edit/role", consumes = "application/json")
+  public ResponseEntity<String> updateUserRole(@RequestBody User newUser) {
+      try {
+          Integer userId = newUser.getId();
+          Optional<User> optionalUser = userRepository.findById(userId);
+          if (optionalUser.isPresent()) {
+              User user = optionalUser.get();
+              user.setRole(newUser.getRole());
+              userRepository.save(user);
+              return ResponseEntity.ok("User role updated successfully");
+          } else {
+              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with id: " + userId);
+          }
+      } catch (Exception e) {
+          e.printStackTrace();
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+      }
+  }
+  
+  
   /**
    * This method is a query function to request the details of assets by their title in the url
    * localhost:8080/asset/findTitle/{title}.
