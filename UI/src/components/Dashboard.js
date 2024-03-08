@@ -31,6 +31,8 @@ import AssetFind from './AssetFind';
 import TypeFind from './TypeFind';
 import EditAsset from './EditAsset';
 import TypeEdit from './TypeEdit';
+import UserFind from './UserFind';
+
 
 function Copyright(props) {
   return (
@@ -153,8 +155,9 @@ export default function Dashboard(props) {
             >
               {props.page.toLowerCase().includes("asset")&& !props.page.toLowerCase().includes("find") && <p>Asset</p>}
               {props.page.toLowerCase().includes("type") && !props.page.toLowerCase().includes("find") && <p>Type</p>}
-              {props.page.toLowerCase().includes("find") && !props.page.toLowerCase().includes("type") && <p>Search Assets</p>}
-              {props.page.toLowerCase().includes("find") && !props.page.toLowerCase().includes("asset") && <p>Search Types</p>}
+              {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
+              {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
+              {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("user") && <p>Search Users</p>}
 
             </Typography>
             <IconButton color="inherit">
@@ -216,8 +219,10 @@ export default function Dashboard(props) {
                 {props.page === "type/open" && <OpenType />}
                 {props.page === "asset/find" && <AssetFind />}
                 {props.page === "type/find" && <TypeFind />}
-
                 {props.page === "type/edit" && <TypeEdit />}
+                {props.page === "user/find" && <UserFind />}
+
+
 
               </Grid>
             </Grid>
