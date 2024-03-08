@@ -27,8 +27,7 @@ export default function FormPropsTextFields() {
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [lineNum, setlineNum] = useState("");
-  const [progLang, setprogLang] = useState("");
+  const [author, setAuthor] = useState("");
   const [customAttribute1, setCustomAttribute1] = useState("");
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
@@ -41,7 +40,7 @@ export default function FormPropsTextFields() {
   const [associationRelation2, setAssociationRelation2] = useState("");
   const [associationRelation3, setAssociationRelation3] = useState("");
   const [associationRelation4, setAssociationRelation4] = useState("");
-
+  const [alertMessage, setAlertMessage] = useState("");
 
   React.useEffect(() => {
     const getAssets = async () => {
@@ -50,8 +49,7 @@ export default function FormPropsTextFields() {
       setLink(res.link || "");
       setType(res.type || "");
       setTitle(res.title || "");
-      setprogLang(res.progLang || "");
-      setlineNum(res.lineNum || "");
+      setAuthor(res.author || "");
       setCustomAttribute1(res.customAttribute1 || "");
       setCustomAttribute2(res.customAttribute2 || "");
       setCustomAttribute3(res.customAttribute3 || "");
@@ -114,6 +112,46 @@ export default function FormPropsTextFields() {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
+    
+    const newAlertMessage = {};
+
+    //Validate mandatory inputs
+    if (!title || !link || !author) {
+      newAlertMessage.mandatory = "Please fill in all mandatory fields";
+    }
+
+    // Validate associations
+    const associationFields = [association1, association2, association3, association4];
+    for (let i = 0; i < associationFields.length; i++) {
+      if (associationFields[i] && !validateInteger(associationFields[i])) {
+        newAlertMessage.associations = `Asset ids must be integers`;
+        break;
+      }
+    }
+    
+    // Validate custom attributes based on the selected type
+    if (selectedType) {
+      const customAttributes = [customAttribute1, customAttribute2, customAttribute3, customAttribute4];
+      for (let i = 0; i < customAttributes.length; i++) {
+        const attributeName = `customAttribute${i + 1}`;
+        // Check if the custom attribute exists and is required
+        if (selectedType[attributeName] && !customAttributes[i]) {
+          newAlertMessage.customAttributes = `Please fill in all mandatory fields`;
+          break;
+        }
+      }
+    }
+    
+    // Check if any error message exists and set it
+    if (newAlertMessage.associations) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if association validation fails
+    }else if (newAlertMessage.mandatory || newAlertMessage.customAttributes) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if mandatory or custom attribute validation fails
+    } 
+    
+    setAlertMessage("");
 
     try {
  
@@ -122,8 +160,7 @@ export default function FormPropsTextFields() {
         type: selectedType.typeName,
         title,
         link,
-        lineNum,
-        progLang,
+        author,
         customAttribute1,
         customAttribute2,
         customAttribute3,
@@ -147,12 +184,16 @@ export default function FormPropsTextFields() {
       console.error('Error adding asset:', error);
     }
   };
+  
+  // Function to validate if a value is an integer
+  const validateInteger = (value) => {
+    return /^\d+$/.test(value);
+  };
 
   const resetValue = () => {
     setTitle("");
     setLink("");
-    setlineNum("");
-    setprogLang("");
+    setAuthor("");
     setCustomAttribute1("");
     setCustomAttribute2("");
     setCustomAttribute3("");
@@ -212,8 +253,11 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}
         alignItems="center"
         >
-          <label>Attributes</label>
-          <br/>
+        <label>Mandatory Attributes: </label>
+        {/* Alert for mandatory boxes */}
+        {alertMessage.mandatory && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.mandatory}</div>
+        )}
           <TextField
             id="outlined-select-currency"
             select
@@ -251,23 +295,18 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Line Number"
-            placeholder="50"
+            label="Author"
+            placeholder="Jane D"
             multiline
-            value={lineNum}
-            onChange={(e) => setlineNum(e.target.value)}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Programming Language"
-            placeholder="Python"
-            multiline
-            value={progLang}
-            onChange={(e) => setprogLang(e.target.value)}
-          />
-        </Grid>
+        <label>Type Specific Attributes:</label>
+        {/* Alert for mandatory boxes */}
+        {alertMessage.customAttributes && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.customAttributes}</div>
+        )}
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
@@ -309,7 +348,11 @@ export default function FormPropsTextFields() {
           />
         </Grid>
         <Grid>
-        <label>Association(s)</label>
+        <label>Association(s) (Optional)</label>
+        {/* Alert for association IDs */}
+          {alertMessage.associations && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.associations}</div>
+        )}
         <Grid>
           <div>
           <TextField

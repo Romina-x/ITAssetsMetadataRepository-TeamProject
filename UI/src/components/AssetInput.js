@@ -26,8 +26,7 @@ export default function FormPropsTextFields() {
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [lineNum, setlineNum] = useState("");
-  const [progLang, setprogLang] = useState("");
+  const [author, setAuthor] = useState("");
   const [customAttribute1, setCustomAttribute1] = useState("");
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
@@ -101,13 +100,8 @@ export default function FormPropsTextFields() {
     const newAlertMessage = {};
 
     //Validate mandatory inputs
-    if (!title || !link || !lineNum || !progLang || !customAttribute1 || !customAttribute2 || !customAttribute3 || !customAttribute4) {
+    if (!title || !link || !author) {
       newAlertMessage.mandatory = "Please fill in all mandatory fields";
-    }
-    
-    // Validate line number
-    if (!validateInteger(lineNum)) {
-      newAlertMessage.lineNum = "Please enter an integer";
     }
 
     // Validate associations
@@ -119,17 +113,27 @@ export default function FormPropsTextFields() {
       }
     }
     
+    // Validate custom attributes based on the selected type
+    if (selectedType) {
+      const customAttributes = [customAttribute1, customAttribute2, customAttribute3, customAttribute4];
+      for (let i = 0; i < customAttributes.length; i++) {
+        const attributeName = `customAttribute${i + 1}`;
+        // Check if the custom attribute exists and is required
+        if (selectedType[attributeName] && !customAttributes[i]) {
+          newAlertMessage.customAttributes = `Please fill in all mandatory fields`;
+          break;
+        }
+      }
+    }
+    
     // Check if any error message exists and set it
     if (newAlertMessage.associations) {
       setAlertMessage(newAlertMessage);
       return; // Return early if association validation fails
-    } else if (newAlertMessage.lineNum) {
+    }else if (newAlertMessage.mandatory || newAlertMessage.customAttributes) {
       setAlertMessage(newAlertMessage);
-      return; // Return early if line number validation fails
-    } else if (newAlertMessage.mandatory) {
-      setAlertMessage(newAlertMessage);
-      return; // Return early if not all boxes are filed
-    }
+      return; // Return early if mandatory or custom attribute validation fails
+    } 
     
     setAlertMessage("");
     
@@ -144,8 +148,7 @@ export default function FormPropsTextFields() {
           type: selectedType.typeName,
           title,
           link,
-          lineNum,
-          progLang,
+          author,
           customAttribute1,
           customAttribute2,
           customAttribute3,
@@ -180,8 +183,7 @@ export default function FormPropsTextFields() {
   const resetValue = () => {
     setTitle("");
     setLink("");
-    setlineNum("");
-    setprogLang("");
+    setAuthor("");
     setCustomAttribute1("");
     setCustomAttribute2("");
     setCustomAttribute3("");
@@ -285,33 +287,23 @@ export default function FormPropsTextFields() {
             onChange={(e) => setLink(e.target.value)}
           />
         </Grid>
-        {/* Alert for line number */}
-        {alertMessage.lineNum && (
-           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.lineNum}</div>
-        )}
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Line Number"
-            placeholder="50"
+            label="Author"
+            placeholder="Jane D"
             multiline
-            value={lineNum}
-            onChange={(e) => setlineNum(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Programming Language"
-            placeholder="Python"
-            multiline
-            value={progLang}
-            onChange={(e) => setprogLang(e.target.value)}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
         </Grid>
         </Grid>
         <Grid item xs={6}>
         <label>Type Specific Attributes:</label>
+        {/* Alert for mandatory boxes */}
+        {alertMessage.customAttributes && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.customAttributes}</div>
+        )}
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
