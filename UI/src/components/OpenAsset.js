@@ -163,7 +163,7 @@ const resetValue = () => {
             <TableCell>Type</TableCell>
             <TableCell>Link</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell>Programming language</TableCell>
+            <TableCell>Author</TableCell>
             {t && (
               <>
                 <TableCell>{t.customAttribute1}</TableCell>
@@ -179,7 +179,7 @@ const resetValue = () => {
               <TableCell>{a.type}</TableCell>
               <TableCell>{a.link}</TableCell>
               <TableCell>{a.title}</TableCell>
-              <TableCell>{a.progLang}</TableCell>
+              <TableCell>{a.author}</TableCell>
               <TableCell>{a.customAttribute1}</TableCell>
               <TableCell>{a.customAttribute2}</TableCell>
               <TableCell>{a.customAttribute3}</TableCell>

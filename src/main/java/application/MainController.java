@@ -633,17 +633,17 @@ public class MainController {
    * @param progLang of asset that user wants
    * @return asset that has same programming language as the searched link
    */
-  @GetMapping(path = "/asset/findProgLang/{progLang}")
-  public @ResponseBody List<Asset> getAssetByLang(@PathVariable("progLang") String progLang) {
-    List<Asset> assetsWithLang = new ArrayList<>();
+  @GetMapping(path = "/asset/findAuthor/{author}")
+  public @ResponseBody List<Asset> getAssetByAuthor(@PathVariable("author") String author) {
+    List<Asset> assetsWithAuthor = new ArrayList<>();
 
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
-      if (asset.getProgLang().equals(progLang)) {
-        assetsWithLang.add(asset);
+      if (asset.getAuthor().equals(author)) {
+        assetsWithAuthor.add(asset);
       }
     }
-    return assetsWithLang;
+    return assetsWithAuthor;
   }
 
 
