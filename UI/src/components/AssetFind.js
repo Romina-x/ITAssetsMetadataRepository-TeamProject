@@ -159,7 +159,7 @@ function App() {
           <TableCell>Type</TableCell>
           <TableCell>Link</TableCell>
           <TableCell>Title</TableCell>
-          <TableCell>Programming language</TableCell>
+          <TableCell>Author</TableCell>
           <TableCell align="right">Actions</TableCell>
         </TableRow>
       </TableHead>
@@ -173,7 +173,7 @@ function App() {
             <TableCell>{a.type}</TableCell>
             <TableCell>{a.link}</TableCell>
             <TableCell>{a.title}</TableCell>
-            <TableCell>{a.progLang}</TableCell>
+            <TableCell>{a.author}</TableCell>
             <TableCell align="right">
             <IconButton className={styles.link}>
             <Link to={`/asset/open/${a.id}`} className={styles.link}>
