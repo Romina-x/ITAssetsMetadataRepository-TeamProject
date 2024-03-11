@@ -9,7 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { getAll } from "../utility/TypeAPI";
-import { Hidden } from "@mui/material";
+import * as AssetAPI from "../utility/AssetAPI";
 
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
@@ -84,42 +84,50 @@ export default function FormPropsTextFields() {
 
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
-    setSave("Saved");
-    // logic for what happens when the asset is saved goes here
-    event.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:8080/asset/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          type: selectedType.typeName,
-          title,
-          link,
-          lineNum,
-          progLang,
-          isDocumentedIn,
-          dependsOn,
-          succeededBy,
-          customAttribute1,
-          customAttribute2,
-          customAttribute3,
-          customAttribute4
-        })
-      });
-      
-      
-      if (!response.ok) {
-        throw new Error('Failed to add asset');
-      }
-      resetValue()
-      console.log('Asset added successfully');
-    } catch (error) {
-      console.error('Error adding asset:', error);
-    }
-  };
+	event.preventDefault();
+	console.log(type);
+	console.log(title);
+	const compAsset = await AssetAPI.getExists(title, type);
+	console.log(compAsset)
+	if (compAsset) {
+	    setSave("Saved");
+	    // logic for what happens when the asset is saved goes here
+	
+	    try {
+	      const response = await fetch('http://localhost:8080/asset/add', {
+	        method: 'POST',
+	        headers: {
+	          'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify({
+	          type: selectedType.typeName,
+	          title,
+	          link,
+	          lineNum,
+	          progLang,
+	          isDocumentedIn,
+	          dependsOn,
+	          succeededBy,
+	          customAttribute1,
+	          customAttribute2,
+	          customAttribute3,
+	          customAttribute4
+	        })
+	      });
+	      
+	      
+	      if (!response.ok) {
+	        throw new Error('Failed to add asset');
+	      }
+	      resetValue()
+	      console.log('Asset added successfully');
+	    } catch (error) {
+	      console.error('Error adding asset:', error);
+	    }
+  } else {
+	  alert("Asset of this type with the same name already exists")
+  }
+ };
 
   const resetValue = () => {
 /*    setType("");*/
