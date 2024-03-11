@@ -105,24 +105,12 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
-  const [user, setUser] = React.useState('user');
+  const role = sessionStorage.role;
+  console.log(role);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const userChange = () => {
-    setUser((user) => {
-      if (user === 'user') {
-        return 'admin';
-      } else if (user === 'admin') {
-        return 'reader';
-      } else {
-        return 'user';
-      }
-    });
-  }
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -165,7 +153,7 @@ export default function Dashboard(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" onClick={userChange}>
+            <IconButton color="inherit" onClick={{}}>
               <Badge badgeContent={8} color="secondary">
                 <AccountCircleIcon />
               </Badge>
@@ -186,7 +174,7 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{user === 'user' ? userListItems : user === 'admin' ? adminListItems : readerListItems}
+          <List component="nav">{role === 'USER' ? userListItems : role === 'ADMIN' ? adminListItems : readerListItems}
           </List>
         </Drawer>
         <Box
