@@ -24,15 +24,7 @@ public class Asset {
 
   private String link;
 
-  private Integer lineNum;
-
-  private String progLang;
-
-  private Integer isDocumentedIn;
-
-  private Integer dependsOn;
-
-  private Integer succeededBy;
+  private String author;
 
   private String customAttribute1;
 
@@ -42,26 +34,48 @@ public class Asset {
 
   private String customAttribute4;
 
+  private String association1;
+
+  private String association2;
+
+  private String association3;
+
+  private String association4;
+
+  private String associationRelation1;
+
+  private String associationRelation2;
+
+  private String associationRelation3;
+
+  private String associationRelation4;
 
 
   public Asset() {}
 
-  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang,
-      Integer isDocumentedIn, Integer dependsOn, Integer succeededBy, String customAttribute1,
-      String customAttribute2, String customAttribute3, String customAttribute4) {
+  public Asset(Integer id, String type, String title, String link, String author,
+      String customAttribute1, String customAttribute2, String customAttribute3,
+      String customAttribute4, String association1, String association2, String association3,
+      String association4, String associationRelation1, String associationRelation2,
+      String associationRelation3, String associationRelation4) {// , List<String>
+                                                                 // associationRelationList) {
     this.id = id;
     this.type = type;
     this.title = title;
     this.link = link;
-    this.lineNum = lineNum;
-    this.progLang = progLang;
-    this.isDocumentedIn = isDocumentedIn;
-    this.dependsOn = dependsOn;
-    this.succeededBy = succeededBy;
+    this.author = author;
     this.customAttribute1 = customAttribute1;
-    this.customAttribute1 = customAttribute2;
-    this.customAttribute1 = customAttribute3;
-    this.customAttribute1 = customAttribute4;
+    this.customAttribute2 = customAttribute2;
+    this.customAttribute3 = customAttribute3;
+    this.customAttribute4 = customAttribute4;
+    this.association1 = association1;
+    this.association2 = association2;
+    this.association3 = association3;
+    this.association4 = association4;
+    this.associationRelation1 = associationRelation1;
+    this.associationRelation2 = associationRelation2;
+    this.associationRelation3 = associationRelation3;
+    this.associationRelation4 = associationRelation4;
   }
 
   public Integer getId() {
@@ -96,50 +110,18 @@ public class Asset {
     this.link = link;
   }
 
-  public Integer getLineNum() {
-    return lineNum;
+  public String getAuthor() {
+    return author;
   }
 
-  public void setLineNum(Integer lineNum) {
-    this.lineNum = lineNum;
+  public void setAuthor(String author) {
+    this.author = author;
   }
 
-  public String getProgLang() {
-    return progLang;
-  }
-
-  public void setProgLang(String progLang) {
-    this.progLang = progLang;
-  }
-
-  public Integer getIsDocumentedIn() {
-    return isDocumentedIn;
-  }
-
-  public void setIsDocumentedIn(Integer isDocumentedIn) {
-    this.isDocumentedIn = isDocumentedIn;
-  }
-
-  public Integer getDependsOn() {
-    return dependsOn;
-  }
-
-  public void setDependsOn(Integer dependsOn) {
-    this.dependsOn = dependsOn;
-  }
-
-  public Integer getSucceededBy() {
-    return succeededBy;
-  }
-
-  public void setSucceededBy(Integer succeededBy) {
-    this.succeededBy = succeededBy;
-  }
-  
   public String getCustomAttribute1() {
     return customAttribute1;
   }
-  
+
   public void setCustomAttribute1(String customAttribute1) {
     this.customAttribute1 = customAttribute1;
   }
@@ -147,23 +129,89 @@ public class Asset {
   public String getCustomAttribute2() {
     return customAttribute2;
   }
-  
+
   public void setCustomAttribute2(String customAttribute2) {
     this.customAttribute2 = customAttribute2;
   }
+
   public String getCustomAttribute3() {
     return customAttribute3;
   }
-  
+
   public void setCustomAttribute3(String customAttribute3) {
     this.customAttribute3 = customAttribute3;
   }
+
   public String getCustomAttribute4() {
     return customAttribute4;
   }
-  
+
   public void setCustomAttribute4(String customAttribute4) {
     this.customAttribute4 = customAttribute4;
+  }
+
+  public void setAssociation1(String association1) {
+    this.association1 = association1;
+  }
+
+  public String getAssociation1() {
+    return association1;
+  }
+
+  public void setAssociation2(String association2) {
+    this.association2 = association2;
+  }
+
+  public String getAssociation2() {
+    return association2;
+  }
+
+  public void setAssociation3(String association3) {
+    this.association3 = association3;
+  }
+
+  public String getAssociation3() {
+    return association3;
+  }
+
+  public void setAssociation4(String association4) {
+    this.association4 = association4;
+  }
+
+  public String getAssociation4() {
+    return association4;
+  }
+
+  public void setAssociationRelation1(String associationRelation1) {
+    this.associationRelation1 = associationRelation1;
+  }
+
+  public String getAssociationRelation1() {
+    return associationRelation1;
+  }
+
+  public void setAssociationRelation2(String associationRelation2) {
+    this.associationRelation2 = associationRelation2;
+  }
+
+  public String getAssociationRelation2() {
+    return associationRelation2;
+  }
+
+  public void setAssociationRelation3(String associationRelation3) {
+    this.associationRelation3 = associationRelation3;
+  }
+
+  public String getAssociationRelation3() {
+    return associationRelation3;
+  }
+
+  public void setAssociationRelation4(String associationRelation4) {
+    this.associationRelation4 = associationRelation4;
+  }
+
+  public String getAssociationRelation4() {
+    return associationRelation4;
   }
 
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import SearchIcon from '@mui/icons-material/Search';
-import * as AssetAPI from "../utility/AssetAPI";
+import * as UserAPI from "../utility/UserAPI";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,54 +14,59 @@ import { IconButton, TablePagination } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import UndoIcon from "@mui/icons-material/Undo";
-import DeleteConfirmationDialog from './AssetDelConfirm';
+import DeleteConfirmationDialog from './UserDelConfirm';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 function App() {
 
   React.useEffect(() => {
-    const getAssets = async () => {
-      const res = await AssetAPI.getAll();
-      setAssets(res);
-      setOriginalAssets(res);
-      const assetAttributes = Object.keys(res[0]);
-      setAssetAttributes(assetAttributes);
-      setSelectedAssetAttribute("title");
+    const getUsers = async () => {
+      const res = await UserAPI.getAll();
+      setUsers(res);
+      setOriginalUsers(res);
+      const userAttributes = Object.keys(res[0]);
+      setUserAttributes(userAttributes);
+      setSelectedUserAttribute("name");
     };
-    getAssets();
+    getUsers();
   }, []);
 
-  const [assets, setAssets] = React.useState([])
-  const [originalAssets, setOriginalAssets] = useState([]);
+  const [users, setUsers] = React.useState([])
+  const [originalUsers, setOriginalUsers] = useState([]);
 	const [searchVal, setSearchVal] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [deletingAssetId, setDeletingAssetId] = React.useState(null);
-  const [assetAttributes, setAssetAttributes] = useState([]);
-  const [selectedAssetAttribute, setSelectedAssetAttribute] = useState("");
+  const [deletingUserId, setDeletingUserId] = React.useState(null);
+  const [userAttributes, setUserAttributes] = useState([]);
+  const [selectedUserAttribute, setSelectedUserAttribute] = useState("");
+  const filteredUserAttributes = userAttributes.filter(attributeName => attributeName !== 'password');
+  const [role, setRole] = React.useState('READER');
+
+
 
   // Function to handle type selection from dropdown
-  const handleAssetAttributeChange = (event) => {
+  const handleUserAttributeChange = (event) => {
     const attributeName = event.target.value;
-    setSelectedAssetAttribute(attributeName);
+    setSelectedUserAttribute(attributeName);
   };
 
   const handleDelete = (id) => {
-    setDeletingAssetId(id);
+    setDeletingUserId(id);
     setOpenDeleteDialog(true);
   };
 
-  const handleDeleteAsset = async (id) => {
+  const handleDeleteUser = async (id) => {
     try {
       console.log(id);
-      const response = await AssetAPI.deleteById(id);
-      setAssets((assets) => assets.filter((a) => a.id !== id));
+      const response = await UserAPI.deleteById(id);
+      setUsers((users) => users.filter((u) => u.id !== id));
       if (response.status === 200) {
         console.log("Deleted");
       } else {
@@ -82,18 +86,51 @@ function App() {
     setPage(0);
   };
 
-  // Function to handle live search as the user types
+  // Function to handle live search as the user users
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchVal(value);
-    // Filter the original assets based on the search value
-    const filteredAssets = originalAssets.filter((asset) => {
-      const stringQuery = String(asset[selectedAssetAttribute]);
+    // Filter the original types based on the search value
+    const filteredUsers = originalUsers.filter((user) => {
+      const stringQuery = String(user[selectedUserAttribute]);
       return stringQuery.toLowerCase().includes(value.toLowerCase());
     });
-    // Update the displayed assets with the filtered results
-    setAssets(filteredAssets);
+    // Update the displayed types with the filtered results
+    setUsers(filteredUsers);
   };
+
+
+const handleRoleChange = async (event, newRole) => {
+  const userId = event.currentTarget.getAttribute('data-userid'); 
+  try {
+    const userData = {
+      id: userId,
+      role: newRole
+    };
+
+    const response = await UserAPI.updateRole(userData);
+  
+    if (response.ok) {
+      // Update the local state with the new role
+      setUsers(prevUsers => {
+        return prevUsers.map(user => {
+          if (user.id === userId) {
+            return { ...user, role: newRole }; 
+          }
+          return user;
+        });
+      });
+      const updatedUsers = await UserAPI.getAll();
+      setUsers(updatedUsers);
+
+    } else {
+      console.error('Failed to update user role');
+    }
+  } catch (error) {
+    console.error('Error updating user role:', error);
+  }
+};
+
 
 	return (
     <React.Fragment>
@@ -125,11 +162,11 @@ function App() {
         <TextField
           id="outlined-select-currency"
           select
-          label="Asset Attribute"
-          value={selectedAssetAttribute}
-          onChange={handleAssetAttributeChange}
+          label="User Attribute"
+          value={selectedUserAttribute}
+          onChange={handleUserAttributeChange}
         >
-          {assetAttributes.map((attributeName) => (
+          {filteredUserAttributes.map((attributeName) => (
             <MenuItem key={attributeName} value={attributeName}>
               {attributeName}
             </MenuItem>
@@ -156,38 +193,36 @@ function App() {
       <TableHead>
         <TableRow>
           <TableCell>ID</TableCell>
-          <TableCell>Type</TableCell>
-          <TableCell>Link</TableCell>
-          <TableCell>Title</TableCell>
-          <TableCell>Author</TableCell>
-          <TableCell align="right">Actions</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Role</TableCell>
+          <TableCell align="right">User Permissions</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {(rowsPerPage > 0
-          ? assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          : assets
-        ).map((a) => (
-          <TableRow key={a.id}>
-            <TableCell>{a.id}</TableCell>
-            <TableCell>{a.type}</TableCell>
-            <TableCell>{a.link}</TableCell>
-            <TableCell>{a.title}</TableCell>
-            <TableCell>{a.author}</TableCell>
+          ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          : users
+        ).map((u) => (
+          <TableRow key={u.id}>
+            <TableCell>{u.id}</TableCell>
+            <TableCell>{u.name}</TableCell>
+            <TableCell>{u.role}</TableCell>
             <TableCell align="right">
-            <IconButton className={styles.link}>
-            <Link to={`/asset/open/${a.id}`} className={styles.link}>
-                <VisibilityIcon />
-            </Link>
-            </IconButton>
-              <IconButton className={styles.link}>
-                <Link to={`/asset/edit/${a.id}`} className={styles.link}>
-                  <EditIcon />
-                </Link>
-              </IconButton>
+              <ToggleButtonGroup
+                color="primary"
+                value={u.role}
+                exclusive
+                onChange={handleRoleChange}
+              >
+                <ToggleButton value="READER" data-userid={u.id}>Reader</ToggleButton>
+                <ToggleButton value="USER" data-userid={u.id}>User</ToggleButton>
+                <ToggleButton value="ADMIN" data-userid={u.id}>Admin</ToggleButton>
+              </ToggleButtonGroup>
+              </TableCell>
+            <TableCell align="right">
               <IconButton
                 className={styles.link}
-                onClick={() => handleDelete(a.id)}
+                onClick={() => handleDelete(u.id)}
               >
                 <DeleteIcon />
               </IconButton>
@@ -199,7 +234,7 @@ function App() {
     <TablePagination
       rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
       component="div"
-      count={assets.length}
+      count={users.length}
       rowsPerPage={rowsPerPage}
       page={page}
       onPageChange={handleChangePage}
@@ -221,10 +256,10 @@ function App() {
       handleClose={() => setOpenDeleteDialog(false)}
       handleConfirm={() => {
         setOpenDeleteDialog(false);
-        // Call handleDeleteAsset function to delete the asset
-        handleDeleteAsset(deletingAssetId);
+        // Call handleDeleteType function to delete the type
+        handleDeleteUser(deletingUserId);
       }}
-      assetId={deletingAssetId}
+      typeId={deletingUserId}
     />
     </React.Fragment>
 
