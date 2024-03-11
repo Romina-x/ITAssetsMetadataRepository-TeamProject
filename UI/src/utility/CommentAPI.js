@@ -1,11 +1,11 @@
 const api = "http://localhost:8080";
-let token = localStorage.token;
+let token = sessionStorage.token;
 
-if (!token) token = localStorage.token = Math.random().toString(36).substr(-8);
+if (!token) token = sessionStorage.token = Math.random().toString(36).substr(-8);
 
 const headers = {
   Accept: "application/json",
-  Authorization: token,
+  Authorization: `Bearer ${token}`,
 };
 
 export const get = (commentId) =>

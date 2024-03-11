@@ -31,6 +31,8 @@ import AssetFind from './AssetFind';
 import TypeFind from './TypeFind';
 import EditAsset from './EditAsset';
 import TypeEdit from './TypeEdit';
+import UserFind from './UserFind';
+
 
 function Copyright(props) {
   return (
@@ -103,24 +105,12 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
-  const [user, setUser] = React.useState('user');
+  const role = sessionStorage.role;
+  console.log(role);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const userChange = () => {
-    setUser((user) => {
-      if (user === 'user') {
-        return 'admin';
-      } else if (user === 'admin') {
-        return 'reader';
-      } else {
-        return 'user';
-      }
-    });
-  }
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -153,8 +143,9 @@ export default function Dashboard(props) {
             >
               {props.page.toLowerCase().includes("asset")&& !props.page.toLowerCase().includes("find") && <p>Asset</p>}
               {props.page.toLowerCase().includes("type") && !props.page.toLowerCase().includes("find") && <p>Type</p>}
-              {props.page.toLowerCase().includes("find") && !props.page.toLowerCase().includes("type") && <p>Search Assets</p>}
-              {props.page.toLowerCase().includes("find") && !props.page.toLowerCase().includes("asset") && <p>Search Types</p>}
+              {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
+              {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
+              {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("user") && <p>Search Users</p>}
 
             </Typography>
             <IconButton color="inherit">
@@ -162,7 +153,7 @@ export default function Dashboard(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" onClick={userChange}>
+            <IconButton color="inherit" onClick={{}}>
               <Badge badgeContent={8} color="secondary">
                 <AccountCircleIcon />
               </Badge>
@@ -183,7 +174,7 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{user === 'user' ? userListItems : user === 'admin' ? adminListItems : readerListItems}
+          <List component="nav">{role === 'USER' ? userListItems : role === 'ADMIN' ? adminListItems : readerListItems}
           </List>
         </Drawer>
         <Box
@@ -216,8 +207,10 @@ export default function Dashboard(props) {
                 {props.page === "type/open" && <OpenType />}
                 {props.page === "asset/find" && <AssetFind />}
                 {props.page === "type/find" && <TypeFind />}
-
                 {props.page === "type/edit" && <TypeEdit />}
+                {props.page === "user/find" && <UserFind />}
+
+
 
               </Grid>
             </Grid>

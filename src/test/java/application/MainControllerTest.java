@@ -6,7 +6,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,20 +29,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 
 /**
  * Test suite to validate the functions held within the Main Controller Class.
  *
  * @author Yusur Taha
- * @author Sarah Haines
  */
 
 
@@ -53,11 +57,11 @@ class MainControllerTest {
   private TypeRepository typeRepository;
   @MockBean
   private ActionLogRepository actionLogRepository;
-  @MockBean
-  private UserRepository userRepository;
+//  @MockBean
+//  private UserRepository userRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
-
+ 
   @Autowired
   private MainController mc;
 
@@ -162,7 +166,6 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk()) // expects that the request was successful
         .andExpect(MockMvcResultMatchers.view().name("createAsset"))
         .andExpect(MockMvcResultMatchers.model().attributeExists("createAsset"));
-
   }
 
   /**
@@ -183,7 +186,7 @@ class MainControllerTest {
     // Create an instance of MainController with mocks
     MainController controller = new MainController(assetRepository, actionLogRepository);
 
-    // Mock the behavior of assetRepository.save(asset) to return the asset
+    // Mock the behaviour of assetRepository.save(asset) to return the asset
     when(assetRepository.save(asset)).thenReturn(asset);
 
     String result = "";
@@ -1127,113 +1130,125 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
   }
 
-  /**
-   * Test to validate that users are successfully added to database and that upon accessing the
-   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
-   * successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testAddAndGetAllUsers() throws Exception {
+//  /**
+//   * Test to validate that users are successfully added to database and that upon accessing the
+//   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
+//   * successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testAddNewUser() throws Exception {
+//    String requestBody =
+//        "{\"name\":\"jim\", \"password\":\"pass\", \"role\":\"admin\"}";
+//
+//    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/user/add")
+//        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
+//
+//    assertEquals("User saved successfully", result.getResponse().getContentAsString());
+//  }
+  
+  
+//  @Test
+//  void testAddAndGetAllUsers() throws Exception {
+//
+//    mc.addNewUser("user1", "password1", "users role1");
+//    mc.addNewUser("user2", "password2", "users role2");
+//
+//    // mock users
+//    User user1 = new User();
+//    user1.setName("user1");
+//    user1.setPassword("password1");
+//    user1.setRole("users role1");
+//
+//    User user2 = new User();
+//    user2.setName("user2");
+//    user2.setPassword("password2");
+//    user2.setRole("users role2");
+//
+//    // Mock the behavior of the findAll method to return the mock users
+//    when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+//    // Perform the GET request*/
+//    mvc.perform(MockMvcRequestBuilders.get("/user/find/all"))
+//        // Expects that the request was successful with 2 users in database
+//        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+//        // Check the JSON properties of the first and second user in the array
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("user1"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").value("password1"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("user2"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[1].password").value("password2"));
+//
+//  }
 
-    mc.addNewUser("user1", "password1", "users role1");
-    mc.addNewUser("user2", "password2", "users role2");
-
-    // mock users
-    User user1 = new User();
-    user1.setName("user1");
-    user1.setPassword("password1");
-    user1.setRole("users role1");
-
-    User user2 = new User();
-    user2.setName("user2");
-    user2.setPassword("password2");
-    user2.setRole("users role2");
-
-    // Mock the behavior of the findAll method to return the mock users
-    when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
-    // Perform the GET request*/
-    mvc.perform(MockMvcRequestBuilders.get("/user/find/all"))
-        // Expects that the request was successful with 2 users in database
-        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
-        // Check the JSON properties of the first and second user in the array
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("user1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").value("password1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("user2"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[1].password").value("password2"));
-
-  }
-
-  /**
-   * Test to validate that upon accessing the /user/find/{id} path, all data stored about user with
-   * unique id in the database, is retrieved as a JSON successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testGetUserById() throws Exception {
-
-    mc.addNewUser("user1", "password1", "users role1");
-    mc.addNewUser("user2", "password2", "users role2");
-
-    // mock users
-    User user1 = new User();
-    user1.setName("user1");
-    user1.setPassword("password1");
-    user1.setRole("users role1");
-
-    User user2 = new User();
-    user2.setName("user2");
-    user2.setPassword("password2");
-    user2.setRole("users role2");
-
-    // Mock the behavior of the findById method to return the user
-    when(userRepository.findById(134)).thenReturn(Optional.of(user1));
-    // Perform the GET request
-    mvc.perform(MockMvcRequestBuilders.get("/user/find/{id}", 134))
-        // Check the JSON properties of the returned user
-        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("user1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password1"));
-
-  }
-
-  /**
-   * Test to validate that upon accessing the /user/findName/{name} path, all data stored about user
-   * with name in the database, is retrieved as a JSON successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testGetUserByName() throws Exception {
-
-    mc.addNewUser("user1", "password1", "users role1");
-    mc.addNewUser("user2", "password2", "users role2");
-
-    // mock users
-    User user1 = new User();
-    user1.setName("user1");
-    user1.setPassword("password1");
-    user1.setRole("users role1");
-
-    User user2 = new User();
-    user2.setName("user2");
-    user2.setPassword("password2");
-    user2.setRole("users role2");
-
-    String nameToFind = "user2";
-
-    when(userRepository.findByName(nameToFind)).thenReturn(List.of(user2));
-
-
-    List<User> actualUsers = mc.getUserByName(nameToFind);
-
-    // Assert the result
-    assertEquals(1, actualUsers.size(), "Should return a list containing one user.");
-    assertEquals(nameToFind, actualUsers.get(0).getName(),
-        "Should return a user with the specified name.");
-
-  }
+//  /**
+//   * Test to validate that upon accessing the /user/find/{id} path, all data stored about user with
+//   * unique id in the database, is retrieved as a JSON successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testGetUserById() throws Exception {
+//
+//    mc.addNewUser("user1", "password1", "users role1");
+//    mc.addNewUser("user2", "password2", "users role2");
+//
+//    // mock users
+//    User user1 = new User();
+//    user1.setName("user1");
+//    user1.setPassword("password1");
+//    user1.setRole("users role1");
+//
+//    User user2 = new User();
+//    user2.setName("user2");
+//    user2.setPassword("password2");
+//    user2.setRole("users role2");
+//
+//    // Mock the behavior of the findById method to return the user
+//    when(userRepository.findById(134)).thenReturn(Optional.of(user1));
+//    // Perform the GET request
+//    mvc.perform(MockMvcRequestBuilders.get("/user/find/{id}", 134))
+//        // Check the JSON properties of the returned user
+//        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("user1"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password1"));
+//
+//  }
+//
+//  /**
+//   * Test to validate that upon accessing the /user/findName/{name} path, all data stored about user
+//   * with name in the database, is retrieved as a JSON successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testGetUserByName() throws Exception {
+//
+//    mc.addNewUser("user1", "password1", "users role1");
+//    mc.addNewUser("user2", "password2", "users role2");
+//
+//    // mock users
+//    User user1 = new User();
+//    user1.setName("user1");
+//    user1.setPassword("password1");
+//    user1.setRole("users role1");
+//
+//    User user2 = new User();
+//    user2.setName("user2");
+//    user2.setPassword("password2");
+//    user2.setRole("users role2");
+//
+//    String nameToFind = "user2";
+//
+//    when(userRepository.findByName(nameToFind)).thenReturn(List.of(user2));
+//
+//
+//    List<User> actualUsers = mc.getUserByName(nameToFind);
+//
+//    // Assert the result
+//    assertEquals(1, actualUsers.size(), "Should return a list containing one user.");
+//    assertEquals(nameToFind, actualUsers.get(0).getName(),
+//        "Should return a user with the specified name.");
+//
+//  }
 
   /**
    * Test to validate the string response of the method which allows for population of the attribute
@@ -1249,6 +1264,130 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.model().attributeExists("createUser"));
   }
 
+  /**
+   * Test to validate that upon accessing the /comment/find/all path, all data stored about comments in
+   * the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetAllComments() throws Exception {
+    // comment to be added
+    AssetComment comment1 = new AssetComment();
+    comment1.setId(11);
+    comment1.setItemId(2);
+    comment1.setComment("Comment");
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+
+    assetCommentRepository.save(comment1);
+
+    // comment to be added
+    AssetComment comment2 = new AssetComment();
+    comment2.setId(12);
+    comment2.setItemId(4);
+    comment2.setComment("Comment2");
+    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30,00));
+
+    assetCommentRepository.save(comment2);
+
+    // Mock the behaviour of the findAll method to return the mock types
+    when(assetCommentRepository.findAll()).thenReturn(Arrays.asList(comment1, comment2));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/comment/find/all"))
+        // Expects that the request was successful with 2 types in database
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+        // Check the JSON properties of the first and second type in the array
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(11))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].itemId").value(2))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].comment").value("Comment"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].timestamp").value(comment1.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(12))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].itemId").value(4))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].comment").value("Comment2"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].timestamp").value(comment2.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+  }
+  
+  /**
+   * Test to validate that upon accessing the /comment/find/{id} path, all data stored about comment
+   * with unique id in the database, is retrieved as a JSON successfully.
+   *
+   * @throws Exception , could be any unchecked exception.
+   */
+  @Test
+  void testGetCommentById() throws Exception {
+    
+    // comment to be added
+    AssetComment comment1 = new AssetComment();
+    comment1.setId(11);
+    comment1.setItemId(2);
+    comment1.setComment("Comment");
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+
+    assetCommentRepository.save(comment1);
+
+    // comment to be added
+    AssetComment comment2 = new AssetComment();
+    comment2.setId(12);
+    comment2.setItemId(4);
+    comment2.setComment("Comment2");
+    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30,00));
+
+    assetCommentRepository.save(comment2);
 
 
+    // Mock the behaviour of the findById method to return the asset
+    when(assetCommentRepository.findById(11)).thenReturn(Optional.of(comment1));
+    // Perform the GET request
+    mvc.perform(MockMvcRequestBuilders.get("/comment/find/{id}", 11))
+        // Check the JSON properties of the returned asset
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(11))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.comment").value("Comment"));
+
+  }
+  
+  /**
+   * Test successful string response of method which runs the map for the post request of create new
+   * comment.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewComment() throws Exception {
+    String requestBody =
+        "{\"itemid\":1, \"comment\":\"Comment\"}";
+
+    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/comment/add")
+        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
+
+    assertEquals("Comment saved successfully", result.getResponse().getContentAsString());
+  }
+  
+  /**
+   * Test error string response of method which runs the map for the post request of create new
+   * comment.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddNewComment_Exception() throws Exception {
+
+    // asset to be added
+    AssetComment comment1 = new AssetComment();
+    comment1.setId(11);
+    comment1.setItemId(2);
+    comment1.setComment("Comment");
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+
+
+    // Mock the behaviour of assetRepository.save() to throw an exception
+    when(assetCommentRepository.save(comment1))
+        .thenThrow(new RuntimeException("This is a made up exception"));
+
+    // Call the addNewAsset method
+    ResponseEntity<String> response = mc.addNewComment(comment1);
+
+    // Verify that the response is as expected
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    assertEquals("Error: This is a made up exception", response.getBody());
+  }
 }

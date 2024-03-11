@@ -2,37 +2,34 @@ import * as React from "react";
 import { TextField, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
+import * as LoginAPI from "../utility/LoginAPI";
 
 export default function Login() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
-  const accounts = [
-    {
-        username : "user",
-        password : "password"
-    },
-    {
-        username : "user2",
-        password : "password"
-    },
-    {
-        username : "user3",
-        password : "password"
-    },
-    {
-      username : "admin",
-      password : "admin"
-  }
-  ]
+  const [loading, setLoading] = React.useState(false)
 
-  const handleLogin = () => {
-    accounts.forEach(account => {
-        if (username === account.username && password === account.password) {
-            window.location.href = "/asset/add";
-        }
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await LoginAPI.login({
+        username,
+        password
       });
-    setError("Invalid username or password");
+      if (response.message.toLowerCase().includes("successful")) {
+        localStorage.setItem("token", response.token);
+        window.location.href = "asset/view";
+      } else {
+        setError("Invalid username or password");
+      }
+    } catch (error) {
+      setError("An error occurred, please try again later");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -69,7 +66,7 @@ export default function Login() {
           fullWidth
           style={{ marginTop: "5%",marginBottom: "5%" }}
         >
-          Login
+          {loading ? "Logging in ..." : "Login"}
         </Button>
         <Link href="/signup">
             Create A New Account

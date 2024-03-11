@@ -2,8 +2,10 @@ import Dashboard from "./components/Dashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import React from "react";
 
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>
@@ -22,8 +24,7 @@ function App() {
         <Route exact path="/type/edit/:editTypeId" element={<Dashboard page="type/edit" />} />
         <Route exact path="/asset/find" element={<Dashboard page="asset/find" />} />
         <Route exact path="/type/find" element={<Dashboard page="type/find" />} />
-
-
+        <Route exact path="/user/find" element={<Dashboard page="user/find" />} />
       </Routes>
     </BrowserRouter>
   );
