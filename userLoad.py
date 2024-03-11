@@ -10,17 +10,17 @@ users = [
     {
         'name': 'Terry Admin',
         'password': 'Everything',
-        'role': 'admin'
+        'role': 'ADMIN'
     },
     {
         'name': 'Maria User',
         'password': 'Some',
-        'role': 'user'
+        'role': 'USER'
     },
     {
         'name': 'Rebecca Reader',
         'password': 'Little',
-        'role': 'reader'
+        'role': 'READER'
     }
 ]
 

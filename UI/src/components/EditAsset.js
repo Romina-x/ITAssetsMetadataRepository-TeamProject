@@ -27,8 +27,7 @@ export default function FormPropsTextFields() {
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [lineNum, setlineNum] = useState("");
-  const [progLang, setprogLang] = useState("");
+  const [author, setAuthor] = useState("");
   const [customAttribute1, setCustomAttribute1] = useState("");
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
@@ -41,7 +40,7 @@ export default function FormPropsTextFields() {
   const [associationRelation2, setAssociationRelation2] = useState("");
   const [associationRelation3, setAssociationRelation3] = useState("");
   const [associationRelation4, setAssociationRelation4] = useState("");
-
+  const [alertMessage, setAlertMessage] = useState("");
 
   React.useEffect(() => {
     const getAssets = async () => {
@@ -50,8 +49,7 @@ export default function FormPropsTextFields() {
       setLink(res.link || "");
       setType(res.type || "");
       setTitle(res.title || "");
-      setprogLang(res.progLang || "");
-      setlineNum(res.lineNum || "");
+      setAuthor(res.author || "");
       setCustomAttribute1(res.customAttribute1 || "");
       setCustomAttribute2(res.customAttribute2 || "");
       setCustomAttribute3(res.customAttribute3 || "");
@@ -114,6 +112,46 @@ export default function FormPropsTextFields() {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
+    
+    const newAlertMessage = {};
+
+    //Validate mandatory inputs
+    if (!title || !link || !author) {
+      newAlertMessage.mandatory = "Please fill in all mandatory fields";
+    }
+
+    // Validate associations
+    const associationFields = [association1, association2, association3, association4];
+    for (let i = 0; i < associationFields.length; i++) {
+      if (associationFields[i] && !validateInteger(associationFields[i])) {
+        newAlertMessage.associations = `Asset ids must be integers`;
+        break;
+      }
+    }
+    
+    // Validate custom attributes based on the selected type
+    if (selectedType) {
+      const customAttributes = [customAttribute1, customAttribute2, customAttribute3, customAttribute4];
+      for (let i = 0; i < customAttributes.length; i++) {
+        const attributeName = `customAttribute${i + 1}`;
+        // Check if the custom attribute exists and is required
+        if (selectedType[attributeName] && !customAttributes[i]) {
+          newAlertMessage.customAttributes = `Please fill in all mandatory fields`;
+          break;
+        }
+      }
+    }
+    
+    // Check if any error message exists and set it
+    if (newAlertMessage.associations) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if association validation fails
+    }else if (newAlertMessage.mandatory || newAlertMessage.customAttributes) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if mandatory or custom attribute validation fails
+    } 
+    
+    setAlertMessage("");
 
     try {
  
@@ -122,8 +160,7 @@ export default function FormPropsTextFields() {
         type: selectedType.typeName,
         title,
         link,
-        lineNum,
-        progLang,
+        author,
         customAttribute1,
         customAttribute2,
         customAttribute3,
@@ -147,12 +184,16 @@ export default function FormPropsTextFields() {
       console.error('Error adding asset:', error);
     }
   };
+  
+  // Function to validate if a value is an integer
+  const validateInteger = (value) => {
+    return /^\d+$/.test(value);
+  };
 
   const resetValue = () => {
     setTitle("");
     setLink("");
-    setlineNum("");
-    setprogLang("");
+    setAuthor("");
     setCustomAttribute1("");
     setCustomAttribute2("");
     setCustomAttribute3("");
@@ -186,7 +227,7 @@ export default function FormPropsTextFields() {
 
 
   return (
-    <Box
+      <Box
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "40ch" },
@@ -206,16 +247,23 @@ export default function FormPropsTextFields() {
         alignItems="center"
         sx={{
           paddingBottom: 5,
+          paddingLeft: 5,
+
         }}
       >
-        
         <Grid item xs={6}
         alignItems="center"
         >
-          <label>Attributes</label>
-          <br/>
+        <label>Mandatory Attributes: </label>
+        {/* Alert for mandatory boxes */}
+        {alertMessage.mandatory && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.mandatory}</div>
+        )}
+        <Grid item xs={6}
+        alignItems="center"
+        >
           <TextField
-            id="outlined-select-currency"
+            id="outlined-select-type"
             select
             label="Type"
             value={type}
@@ -251,23 +299,20 @@ export default function FormPropsTextFields() {
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
-            label="Line Number"
-            placeholder="50"
+            label="Author"
+            placeholder="Jane D"
             multiline
-            value={lineNum}
-            onChange={(e) => setlineNum(e.target.value)}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
           />
+        </Grid>
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Programming Language"
-            placeholder="Python"
-            multiline
-            value={progLang}
-            onChange={(e) => setprogLang(e.target.value)}
-          />
-        </Grid>
+        <label>Type Specific Attributes:</label>
+        {/* Alert for mandatory boxes */}
+        {alertMessage.customAttributes && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.customAttributes}</div>
+        )}
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
@@ -276,8 +321,10 @@ export default function FormPropsTextFields() {
             multiline
             value={customAttribute1}
             onChange={(e) => setCustomAttribute1(e.target.value)}
+            style={{ display: selectedType && selectedType.customAttribute1 === "" ? "none" : "grid" }}
           />
         </Grid>
+
         <Grid item xs={6}>
           <TextField
             id="outlined-textarea"
@@ -286,6 +333,7 @@ export default function FormPropsTextFields() {
             multiline
             value={customAttribute2}
             onChange={(e) => setCustomAttribute2(e.target.value)}
+            style={{ display: selectedType && selectedType.customAttribute2 === "" ? "none" : "grid" }}
           />
         </Grid>
         <Grid item xs={6}>
@@ -296,97 +344,104 @@ export default function FormPropsTextFields() {
             multiline
             value={customAttribute3}
             onChange={(e) => setCustomAttribute3(e.target.value)}
+            style={{ display: selectedType && selectedType.customAttribute3 === "" ? "none" : "grid" }}
           />
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
-            placeholder=""
-            multiline
-            value={customAttribute4}
-            onChange={(e) => setCustomAttribute4(e.target.value)}
-          />
-        </Grid>
+            <Grid item xs={6}>
+              <TextField
+                id="outlined-textarea"
+                label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
+                placeholder=""
+                multiline
+                value={customAttribute4}
+                onChange={(e) => setCustomAttribute4(e.target.value)}
+                style={{ display: selectedType && selectedType.customAttribute4 === "" ? "none" : "grid" }}
+              />
+            </Grid> 
+          </Grid>
         <Grid>
-        <label>Association(s)</label>
-        <Grid>
-          <div>
-          <TextField
-            id="outlined-textarea"
-            label="Relation 1:"
-            placeholder=""
-            multiline
-            value={associationRelation1}
-            onChange={(e) => setAssociationRelation1(e.target.value)}
-          />
-          <TextField
-            id="outlined-textarea"
-            label="Asset ID 1:"
-            placeholder=""
-            multiline
-            value={association1}
-            onChange={(e) => setAssociation1(e.target.value)}
-          />
+          <label>Association(s) (Optional)</label>
+          {/* Alert for association IDs */}
+          {alertMessage.associations && (
+           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.associations}</div>
+          )}
+          <div className="first-division">
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 1:"
+              placeholder="Is Documented in..."
+              value={associationRelation1}
+              onChange={(e) => setAssociationRelation1(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 1:"
+              placeholder="3..."
+              value={association1}
+              onChange={(e) => setAssociation1(e.target.value)}
+            />
+            <br/>
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 2:"
+              placeholder="Is Documented in..."
+              value={associationRelation2}
+              onChange={(e) => setAssociationRelation2(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 2:"
+              placeholder="3..."
+              value={association2}
+              onChange={(e) => setAssociation2(e.target.value)}
+            />
+            <br/>
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 3:"
+              placeholder="Is Documented in..."
+              value={associationRelation3}
+              onChange={(e) => setAssociationRelation3(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 3:"
+              placeholder="3..."
+              value={association3}
+              onChange={(e) => setAssociation3(e.target.value)}
+            />
+            <br/>
+            <TextField
+              name="associationRelation"
+              type="text"
+              id="outlined-textarea"
+              label="Relation 4:"
+              placeholder="Is Documented in..."
+              value={associationRelation4}
+              onChange={(e) => setAssociationRelation4(e.target.value)}
+            />
+            <TextField
+              name="association"
+              type="text"
+              id="outlined-textarea"
+              label="Asset Id 4:"
+              placeholder="3..."
+              value={association4}
+              onChange={(e) => setAssociation4(e.target.value)}
+            />
           </div>
-          <div>
-          <TextField
-            id="outlined-textarea"
-            label="Relation 2:"
-            placeholder=""
-            multiline
-            value={associationRelation2}
-            onChange={(e) => setAssociationRelation2(e.target.value)}
-          />
-          <TextField
-            id="outlined-textarea"
-            label="Asset ID 2:"
-            placeholder=""
-            multiline
-            value={association2}
-            onChange={(e) => setAssociation2(e.target.value)}
-          />
-          </div>
-          <div>
-          <TextField
-            id="outlined-textarea"
-            label="Relation 3:"
-            placeholder=""
-            multiline
-            value={associationRelation3}
-            onChange={(e) => setAssociationRelation3(e.target.value)}
-          />
-          <TextField
-            id="outlined-textarea"
-            label="Asset ID 3:"
-            placeholder=""
-            multiline
-            value={association3}
-            onChange={(e) => setAssociation3(e.target.value)}
-          />
-          </div>
-          <div>
-          <TextField
-            id="outlined-textarea"
-            label="Relation 4:"
-            placeholder=""
-            multiline
-            value={associationRelation4}
-            onChange={(e) => setAssociationRelation4(e.target.value)}
-          />
-          <TextField
-            id="outlined-textarea"
-            label="Asset ID 4:"
-            placeholder=""
-            multiline
-            value={association4}
-            onChange={(e) => setAssociation4(e.target.value)}
-          />
-          </div>
-
-        
-        </Grid>
-
         </Grid>
       </Grid>
 
@@ -404,6 +459,7 @@ export default function FormPropsTextFields() {
           variant="outlined"
           startIcon={<CancelIcon />}
           onClick={handleCancelButtonClick}
+          
         >
           {cancel}
         </Button>
