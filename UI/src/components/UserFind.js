@@ -194,7 +194,7 @@ const handleRoleChange = async (event, newRole) => {
         <TableRow>
           <TableCell>ID</TableCell>
           <TableCell>Name</TableCell>
-          <TableCell>Role</TableCell>
+          <TableCell>Username</TableCell>
           <TableCell align="right">User Permissions</TableCell>
         </TableRow>
       </TableHead>
@@ -205,8 +205,8 @@ const handleRoleChange = async (event, newRole) => {
         ).map((u) => (
           <TableRow key={u.id}>
             <TableCell>{u.id}</TableCell>
-            <TableCell>{u.name}</TableCell>
-            <TableCell>{u.role}</TableCell>
+            <TableCell>{`${u.firstname} ${u.lastname}`}</TableCell>
+            <TableCell>{u.username}</TableCell>
             <TableCell align="right">
               <ToggleButtonGroup
                 color="primary"

@@ -29,6 +29,7 @@ export const deleteById = async (id) => {
     const response = await fetch(`${api}/asset/delete/${id}`, {
       method: "DELETE",
       headers: {
+        ...headers,
         "Content-Type": "application/json",
       },
     });
@@ -44,6 +45,7 @@ export const addAsset = async (assetData) => {
     const response = await fetch(`${api}/asset/add`, {
       method: 'POST',
       headers: {
+        ...headers,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(assetData),

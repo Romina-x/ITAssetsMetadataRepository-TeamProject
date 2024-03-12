@@ -9,6 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
+import * as AssetAPI from "../utility/AssetAPI";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
@@ -139,12 +140,7 @@ export default function FormPropsTextFields() {
     
     try {    
       
-      const response = await fetch('http://localhost:8080/asset/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      const response = await AssetAPI.addAsset({
           type: selectedType.typeName,
           title,
           link,
@@ -161,7 +157,6 @@ export default function FormPropsTextFields() {
           associationRelation2,
           associationRelation3,
           associationRelation4
-      })
       });
       
       

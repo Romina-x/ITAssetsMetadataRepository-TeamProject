@@ -3,8 +3,8 @@ import { Grid, TextField, Typography, Button } from "@mui/material";
 import * as SignUpAPI from "../utility/SignUpAPI";
 
 export default function SignUp() {
-  const [firstname, setFirstname] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
+  const [firstName, setFirstname] = React.useState("");
+  const [lastName, setLastname] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [retypePassword, setRetypePassword] = React.useState("");
@@ -27,8 +27,8 @@ export default function SignUp() {
       const res = await SignUpAPI.register({
         username,
         password,
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         role
       })
 
@@ -67,7 +67,7 @@ export default function SignUp() {
         <TextField
           label="First Name"
           placeholder="firstname"
-          value={firstname}
+          value={firstName}
           fullWidth
           onChange={(e) => setFirstname(e.target.value)}
           margin="normal"
@@ -75,7 +75,7 @@ export default function SignUp() {
         <TextField
           label="Last name"
           placeholder="lastname"
-          value={lastname}
+          value={lastName}
           fullWidth
           onChange={(e) => setLastname(e.target.value)}
           margin="normal"
