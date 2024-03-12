@@ -49,7 +49,7 @@ export default function FormPropsTextFields() {
   const handleSaveButtonClick = async (event) => {
 	event.preventDefault();
 	const compType = await TypeAPI.getTypeExists(typeName);
-	if (compType) {
+	if (!compType) {
 	    // logic for what happens when the asset is saved goes here
 	
 	    try {
