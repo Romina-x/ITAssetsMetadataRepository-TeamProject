@@ -89,7 +89,7 @@ export default function FormPropsTextFields() {
 	console.log(title);
 	const compAsset = await AssetAPI.getExists(title, type);
 	console.log(compAsset)
-	if (compAsset) {
+	if (!compAsset) {
 	    setSave("Saved");
 	    // logic for what happens when the asset is saved goes here
 	
