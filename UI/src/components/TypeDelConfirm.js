@@ -12,6 +12,8 @@ export default function DeleteConfirmationDialog({ open, handleClose, handleConf
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete Type with ID: {typeId}? <br/>
+            This will also delete all assets of this type <br/>
+
             This cannot be undone!
           </DialogContentText>
         </DialogContent>
