@@ -86,16 +86,10 @@ const handleSaveButtonClick = async (event) => {
   const currentTime = new Date().toISOString();
 
   try {
-    const response = await fetch('http://localhost:8080/comment/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const response = await CommentAPI.addComment({
         itemId: a.id,
         comment: comment,
         timestamp: currentTime
-      })
     });
     
     

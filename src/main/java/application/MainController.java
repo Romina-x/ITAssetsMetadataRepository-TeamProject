@@ -351,7 +351,7 @@ public class MainController {
   }
 
   /**
-   * This method allows for the deletion of individual types by referencing their id numbers in the
+   * This method allows for the deletion of individual types and corresponding assets by referencing their id numbers in the
    * url localhost:8080/type/delete/{id}.
    *
    * @param id of the type to be deleted
@@ -359,11 +359,27 @@ public class MainController {
    */
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteType(@PathVariable("id") Integer id) {
-    typeRepository.deleteById(id);
-    addActionLog(null, id, "Deleted type"); // Adds an action record to the log
-    return "resultDeleteType";
+      Optional<Type> typeOptional = typeRepository.findById(id);
+      if (!typeOptional.isPresent()) {
+          // Handle case where type with the provided id doesn't exist
+          return "Type not found"; 
+      }
+      Type typeToDelete = typeOptional.get();
+      
+      // Find all assets with matching type name
+      List<Asset> assetsToDelete = assetRepository.findByType(typeToDelete.getTypeName());
+      for (Asset asset : assetsToDelete) {
+          // Delete each associated asset
+          assetRepository.delete(asset);
+          addActionLog(asset.getId(), null, "Deleted asset"); // Add an action record to the log for each deleted asset
+      }
+      
+      // Delete the type itself
+      typeRepository.deleteById(id);
+      addActionLog(null, id, "Deleted type"); // Add an action record to the log for the deleted type
+      
+      return "Type deleted";
   }
-
   //// End of Type functions. Start of Log functions.
 
   /**

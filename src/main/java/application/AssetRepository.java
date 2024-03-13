@@ -1,5 +1,6 @@
 package application;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -13,4 +14,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @author Sarah Haines
  */
 
-public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {}
+public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {
+  List<Asset> findByType(String type);
+}
