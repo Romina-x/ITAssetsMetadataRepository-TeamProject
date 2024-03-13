@@ -22,7 +22,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 
 
-function App() {
+function App(props) {
 
   React.useEffect(() => {
     const getTypes = async () => {
@@ -38,13 +38,14 @@ function App() {
 
   const [types, setTypes] = React.useState([])
   const [originalTypes, setOriginalTypes] = useState([]);
-	const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [deletingTypeId, setDeletingTypeId] = React.useState(null);
   const [typeAttributes, setTypeAttributes] = useState([]);
   const [selectedTypeAttribute, setSelectedTypeAttribute] = useState("");
+  const { role } = props;
 
   // Function to handle type selection from dropdown
   const handleTypeAttributeChange = (event) => {
@@ -180,6 +181,8 @@ function App() {
                 <VisibilityIcon />
             </Link>
             </IconButton>
+            {role === 'ADMIN' && (
+            <>
               <IconButton className={styles.link}>
                 <Link to={`/type/edit/${t.id}`} className={styles.link}>
                   <EditIcon />
@@ -191,6 +194,8 @@ function App() {
               >
                 <DeleteIcon />
               </IconButton>
+            </>
+            )}
             </TableCell>
           </TableRow>
         ))}
