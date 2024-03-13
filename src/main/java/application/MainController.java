@@ -1,6 +1,8 @@
 package application;
 
+import java.security.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import application.model.User;
 
 /**
@@ -392,12 +393,15 @@ public class MainController {
    */
   public @ResponseBody String addActionLog(@RequestParam Integer assetId, @RequestParam Integer typeId,
       @RequestParam String action) {
+    
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     ActionLog al = new ActionLog();
     al.setAssetId(assetId);
     al.setTypeId(typeId);
     al.setAction(action);
-    al.setTimestamp(LocalDateTime.now());
+    al.setTimestamp(now.format(formatter));
     actionLogRepository.save(al);
     return "Saved";
   }

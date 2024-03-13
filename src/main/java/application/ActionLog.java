@@ -24,7 +24,7 @@ public class ActionLog {
   
   private String action;
   
-  private LocalDateTime timestamp;
+  private String timestamp;
   
 
   public Integer getId() {
@@ -59,11 +59,11 @@ public class ActionLog {
     this.action = action;
   }
   
-  public LocalDateTime getTimestamp() {
+  public String getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(LocalDateTime timestamp) {
+  public void setTimestamp (String timestamp) {
     this.timestamp = timestamp;
   }
   
