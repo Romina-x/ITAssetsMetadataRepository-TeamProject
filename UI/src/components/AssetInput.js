@@ -9,6 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
+import * as AssetAPI from "../utility/AssetAPI";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
@@ -94,8 +95,11 @@ export default function FormPropsTextFields() {
 
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
-    setSave("Saved");
     event.preventDefault();
+    const compAsset = await AssetAPI.getExists(title, type);
+	if (!compAsset) {
+		setSave("Saved");
+
     
     const newAlertMessage = {};
 
@@ -173,6 +177,9 @@ export default function FormPropsTextFields() {
     } catch (error) {
       console.error('Error adding asset:', error);
     }
+  } else {
+	alert("Asset of this type with the same name already exists");
+  }  
   };
   
   // Function to validate if a value is an integer
