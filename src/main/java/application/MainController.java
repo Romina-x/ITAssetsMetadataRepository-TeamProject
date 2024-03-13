@@ -1,6 +1,5 @@
 package application;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,9 +38,6 @@ public class MainController {
 
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
-
-//  @Autowired
-//  private UserRepository userRepository;
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
@@ -458,19 +454,6 @@ public class MainController {
     }
   }
 
-//  @PostMapping(path = "/user/add") // Map ONLY POST Requests
-//  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
-//      @RequestParam String role) {
-//
-//    User newUser = new User();
-//    newUser.setName(name);
-//    newUser.setPassword(password);
-//    newUser.setRole(role);
-//    userRepository.save(newUser);
-//
-//    return "Saved";
-//  }
-
   /**
    * This method handles the submitted edit form and updates the type within the database.
    * 
@@ -487,64 +470,6 @@ public class MainController {
     return "resultCreateType";
   }
   
-//  @PostMapping(path = "/user/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
-//  public ResponseEntity<String> addNewUser(@RequestBody User user) {
-//    try {
-//        userRepository.save(user);
-//        return ResponseEntity.ok("User saved successfully");
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-//    }
-//  }
-
-//  @GetMapping(path = "/user/find/all")
-//  public @ResponseBody Iterable<User> getAllUsers() {
-//      Iterable<User> allUsers = userRepository.findAll();
-//      List<User> usersWithoutPassword = new ArrayList<>();
-//      for (User user : allUsers) {
-//          User userWithoutPassword = new User();
-//          userWithoutPassword.setId(user.getId());
-//          userWithoutPassword.setName(user.getName());
-//          userWithoutPassword.setRole(user.getRole());
-//          
-//          usersWithoutPassword.add(userWithoutPassword);
-//      }
-//      return usersWithoutPassword;
-//  }
-  
-  /**
-   * This method returns a user with an id matching the provided path variable value.
-   * 
-   * @param id the id value to be searched for in the database
-   * @return the User matching the provided id
-   */
-//  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
-//    Optional<User> foundUserOptional = userRepository.findById(id);
-//    if (foundUserOptional.isPresent()) {
-//        User foundUser = foundUserOptional.get();
-//        User userWithoutPassword = new User();
-//        userWithoutPassword.setId(foundUser.getId());
-//        userWithoutPassword.setName(foundUser.getName());
-//        userWithoutPassword.setRole(foundUser.getRole());
-//
-//        return Optional.of(userWithoutPassword);
-//    } else {
-//        return Optional.empty(); 
-//    }
-//}
-
-  /**
-   * This method returns a user with a name matching the provided path variable value.
-   * 
-   * @param name the name of the user being searched for.
-   * @return the User matching the provided name.
-   */
-//  @GetMapping(path = "/user/findName/{name}")
-//  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
-//    return userRepository.findByName(name);
-//  }
-
   /**
    * This method renders createUser.html with input forms for each attribute.
    * 
@@ -557,49 +482,6 @@ public class MainController {
                                                    // attributes to
      return "createUser"; // renders createUser.html
    }
-
-  /**
-   * This method occurs once the submit button on the createUser html page is pressed. Saves the
-   * created user to the database and renders the result page.
-   * 
-   * @param user the User created by assigning input form values in the userForm method.
-   * @param model an interface for holding attribute values for the user created.
-   * @return the resultCreateUser page which informs the user that the save was successful and
-   *         prompts them to create another.
-   */
-//  @PostMapping("/user/createUser") // POST request : When you submit the form
-//  public String userSubmit(@ModelAttribute User user, Model model) {
-//    User savedUser = userRepository.save(user); 
-//    model.addAttribute("savedUser", savedUser); 
-//    return "result"; 
-//  }
-  
-//  @RequestMapping(value = "/user/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-//  public String deleteUser(@PathVariable("id") Integer id) {
-//    userRepository.deleteById(id);
-//    return "resultDeleteUser"; // renders
-//  }
-
-
-//  @PostMapping(path = "/user/edit/role", consumes = "application/json")
-//  public ResponseEntity<String> updateUserRole(@RequestBody User newUser) {
-//      try {
-//          Integer userId = newUser.getId();
-//          Optional<User> optionalUser = userRepository.findById(userId);
-//          if (optionalUser.isPresent()) {
-//              User user = optionalUser.get();
-//              user.setRole(newUser.getRole());
-//              userRepository.save(user);
-//              return ResponseEntity.ok("User role updated successfully");
-//          } else {
-//              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with id: " + userId);
-//          }
-//      } catch (Exception e) {
-//          e.printStackTrace();
-//          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-//      }
-//  }
-  
   
   /**
    * This method is a query function to request the details of assets by their title in the url
