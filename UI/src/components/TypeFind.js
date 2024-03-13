@@ -21,7 +21,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import EditConfirmationDialog from './TypeEditConfirm'; 
 
-function App() {
+function App(props) {
 
   React.useEffect(() => {
     const getTypes = async () => {
@@ -37,13 +37,14 @@ function App() {
 
   const [types, setTypes] = React.useState([])
   const [originalTypes, setOriginalTypes] = useState([]);
-	const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [deletingTypeId, setDeletingTypeId] = React.useState(null);
   const [typeAttributes, setTypeAttributes] = useState([]);
   const [selectedTypeAttribute, setSelectedTypeAttribute] = useState("");
+  const { role } = props;
 
   const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
   const [editingTypeId, setEditingTypeId] = React.useState(null);
@@ -193,6 +194,8 @@ function App() {
                 <VisibilityIcon />
             </Link>
             </IconButton>
+            {role === 'ADMIN' && (
+            <>
               <IconButton className={styles.link}>
                 <EditIcon onClick={() => handleEditConfirmation(t.id)} />
               </IconButton>
@@ -202,6 +205,8 @@ function App() {
               >
                 <DeleteIcon />
               </IconButton>
+            </>
+            )}
             </TableCell>
           </TableRow>
         ))}
