@@ -1,7 +1,6 @@
 package application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -58,7 +57,7 @@ class ActionLogTest {
   @Test
   public void actionLogGetSetTimestamp() {
     ActionLog al = new ActionLog();
-    LocalDateTime time = LocalDateTime.now();
+    String time = "11:30";
     al.setTimestamp(time);
     assertEquals(al.getTimestamp(), time, "Test that the timestamp can be set and retrieved");
   }

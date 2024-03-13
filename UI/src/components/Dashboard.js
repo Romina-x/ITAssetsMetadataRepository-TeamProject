@@ -18,10 +18,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { readerListItems, userListItems, adminListItems } from "./listItems";
-import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
-import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
@@ -196,10 +194,8 @@ export default function Dashboard(props) {
               {/* Chart */}
               <Grid item xs={12}>
                 {props.page === "asset/add" && <AssetInput />}
-                {props.page === "asset/view" && <ViewAssets />}
                 {props.page === "asset/edit" && <EditAsset />}
                 {props.page === "type/add" && <TypeInput />}
-                {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
                 {props.page === "asset/delete" && <AssetDelete />}
                 {props.page === "type/delete" && <TypeDelete />}

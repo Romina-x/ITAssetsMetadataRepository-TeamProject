@@ -1,19 +1,16 @@
 package application.service;
 
 
-import application.model.AuthenticationResponse;
-import application.model.Role;
-import application.model.Token;
-import application.model.User;
-import application.repository.TokenRepository;
-import application.repository.UserRepository;
+import java.util.List;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import application.model.AuthenticationResponse;
+import application.model.Token;
+import application.model.User;
+import application.repository.TokenRepository;
+import application.repository.UserRepository;
 
 @Service
 public class AuthenticationService {

@@ -25,7 +25,7 @@ export default function OpenType() {
 
   React.useEffect(() => {
     const getLogs = async () => {
-      const res = await LogAPI.get(openTypeId);
+      const res = await LogAPI.getAll();
       console.log(res)
       setLogs(res)
     };
@@ -33,7 +33,7 @@ export default function OpenType() {
   }, []);
 
   const [t, setTypes] = React.useState([])
-  const [l, setLogs] = React.useState([])
+  const [logs, setLogs] = React.useState([])
 
 
   return (
@@ -68,16 +68,24 @@ export default function OpenType() {
         <TableHead>
         <TableRow>
             <TableCell>Action ID</TableCell>
-            <TableCell>Action</TableCell>
-            <TableCell>Timestamp</TableCell>
+            <TableCell>Logged Action</TableCell>
+            <TableCell align="right">Timestamp</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-            <TableRow key={l.id}>
-              <TableCell>{l.id}</TableCell>
-              <TableCell>{l.action}</TableCell>
-              <TableCell>{l.timestamp}</TableCell>
-            </TableRow>
+          {logs.map((l) => {
+            if (l.typeId === t.id) {
+              return (
+                <TableRow key={l.id}>
+                  <TableCell>{l.id}</TableCell>
+                  <TableCell>{l.action}</TableCell>
+                  <TableCell align="right">{l.timestamp}</TableCell>
+                </TableRow>
+              );
+            } else {
+              return null; 
+            }
+          })}
         </TableBody>
       </Table>
 
