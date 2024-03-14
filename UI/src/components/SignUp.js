@@ -10,7 +10,7 @@ export default function SignUp() {
   const [retypePassword, setRetypePassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
-  const role = "USER";
+  const role = "READER";
 
   const handleReturn = () => {
     window.location.href = "/";
