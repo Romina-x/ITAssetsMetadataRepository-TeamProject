@@ -40,32 +40,17 @@ export const deleteById = async (id) => {
   }
 };
 
-export const addUser = async (userData) => {
-  try {
-    const response = await fetch(`${api}/user/add`, {
-      method: 'POST',
-      headers: {
-        ...headers,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-
-    return response;
-  } catch (error) {
-    throw new Error('Failed to add Type:', error);
-  }
-};
-
 export const updateRole = async (userData) => {
   try {
-    const response = await fetch(`${api}/user/edit/role`, {
-      method: 'POST',
+    const response = await fetch(`${api}/user/${userData.updatingUsername}/role`, {
+      method: 'PUT',
       headers: {
         ...headers,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify({
+        "role" : userData.updatingRole
+      }),
     });
 
     return response;
