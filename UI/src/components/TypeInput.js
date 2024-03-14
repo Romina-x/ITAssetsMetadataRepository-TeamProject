@@ -119,6 +119,7 @@ export default function FormPropsTextFields() {
             label="Type Name"
             placeholder="Document"
             multiline
+            required
             value = {typeName}
             onChange={ (e) => setTypeName(e.target.value)}
           />
@@ -129,6 +130,7 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 1"
             placeholder="Author"
             multiline
+            required
             value = {customAttribute1}
             onChange={ (e) => setCustomAttribute1(e.target.value)}
           />

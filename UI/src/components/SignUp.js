@@ -1,29 +1,38 @@
 import * as React from "react";
 import { Grid, TextField, Typography, Button } from "@mui/material";
-import Login from "./Login";
+import * as SignUpAPI from "../utility/SignUpAPI";
 
 export default function SignUp() {
+  const [firstName, setFirstname] = React.useState("");
+  const [lastName, setLastname] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [retypePassword, setRetypePassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
+  const role = "USER";
 
   const handleReturn = () => {
     window.location.href = "/";
   };
 
-  const handleSignUp = () => {
+  const handleSignUp =  async () => {
     if (retypePassword === password) {
       setSuccess(true);
       setError("");
       setUsername("");
       setPassword("");
       setRetypePassword("");
-      console.log({
+
+      const res = await SignUpAPI.register({
         username,
         password,
-      });
+        firstName,
+        lastName,
+        role
+      })
+
+      console.log(res)
     } else {
       setSuccess(false);
       setPassword("");
@@ -56,11 +65,28 @@ export default function SignUp() {
           <p style={{ color: "Green" }}>Create new user success</p>
         )}
         <TextField
+          label="First Name"
+          placeholder="firstname"
+          value={firstName}
+          fullWidth
+          onChange={(e) => setFirstname(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          label="Last name"
+          placeholder="lastname"
+          value={lastName}
+          fullWidth
+          onChange={(e) => setLastname(e.target.value)}
+          margin="normal"
+        />
+        <TextField
           label="Username"
           placeholder="username"
           value={username}
           fullWidth
           onChange={(e) => setUsername(e.target.value)}
+          margin="normal"
         />
         <TextField
           label="Password"
@@ -77,6 +103,7 @@ export default function SignUp() {
           fullWidth
           value={retypePassword}
           onChange={(e) => setRetypePassword(e.target.value)}
+          margin="normal"
         />
         <Button
           variant="contained"

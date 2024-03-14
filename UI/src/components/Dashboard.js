@@ -18,10 +18,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { readerListItems, userListItems, adminListItems } from "./listItems";
-import ViewAssets from "./ViewAssets";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
-import ViewTypes from './ViewTypes';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
@@ -105,24 +103,12 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
-  const [user, setUser] = React.useState('user');
+  const role = sessionStorage.role;
+  console.log(role);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  const userChange = () => {
-    setUser((user) => {
-      if (user === 'user') {
-        return 'admin';
-      } else if (user === 'admin') {
-        return 'reader';
-      } else {
-        return 'user';
-      }
-    });
-  }
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -165,7 +151,7 @@ export default function Dashboard(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" onClick={userChange}>
+            <IconButton color="inherit" onClick={{}}>
               <Badge badgeContent={8} color="secondary">
                 <AccountCircleIcon />
               </Badge>
@@ -186,7 +172,7 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{user === 'user' ? userListItems : user === 'admin' ? adminListItems : readerListItems}
+          <List component="nav">{role === 'USER' ? userListItems : role === 'ADMIN' ? adminListItems : readerListItems}
           </List>
         </Drawer>
         <Box
@@ -208,17 +194,15 @@ export default function Dashboard(props) {
               {/* Chart */}
               <Grid item xs={12}>
                 {props.page === "asset/add" && <AssetInput />}
-                {props.page === "asset/view" && <ViewAssets />}
                 {props.page === "asset/edit" && <EditAsset />}
                 {props.page === "type/add" && <TypeInput />}
-                {props.page === "type/view" && <ViewTypes />}
                 {props.page === "log/view" && <ViewLogs />}
                 {props.page === "asset/delete" && <AssetDelete />}
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
                 {props.page === "asset/find" && <AssetFind />}
-                {props.page === "type/find" && <TypeFind />}
+                {props.page === "type/find" && ( <TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
                 {props.page === "user/find" && <UserFind />}
 

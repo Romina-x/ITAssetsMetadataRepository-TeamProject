@@ -6,13 +6,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +28,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -59,8 +53,8 @@ class MainControllerTest {
   private TypeRepository typeRepository;
   @MockBean
   private ActionLogRepository actionLogRepository;
-  @MockBean
-  private UserRepository userRepository;
+//  @MockBean
+//  private UserRepository userRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
  
@@ -1109,23 +1103,23 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
   }
 
-  /**
-   * Test to validate that users are successfully added to database and that upon accessing the
-   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
-   * successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testAddNewUser() throws Exception {
-    String requestBody =
-        "{\"name\":\"jim\", \"password\":\"pass\", \"role\":\"admin\"}";
-
-    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/user/add")
-        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
-
-    assertEquals("User saved successfully", result.getResponse().getContentAsString());
-  }
+//  /**
+//   * Test to validate that users are successfully added to database and that upon accessing the
+//   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
+//   * successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testAddNewUser() throws Exception {
+//    String requestBody =
+//        "{\"name\":\"jim\", \"password\":\"pass\", \"role\":\"admin\"}";
+//
+//    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/user/add")
+//        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
+//
+//    assertEquals("User saved successfully", result.getResponse().getContentAsString());
+//  }
   
   
 //  @Test

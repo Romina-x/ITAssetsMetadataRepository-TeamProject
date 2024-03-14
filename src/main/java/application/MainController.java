@@ -1,6 +1,7 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import application.model.User;
 
 /**
  * This program handles HTTP requests to the application, specifically POST and GET.
@@ -36,9 +38,6 @@ public class MainController {
 
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
-
-  @Autowired
-  private UserRepository userRepository;
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
@@ -349,7 +348,7 @@ public class MainController {
   }
 
   /**
-   * This method allows for the deletion of individual types by referencing their id numbers in the
+   * This method allows for the deletion of individual types and corresponding assets by referencing their id numbers in the
    * url localhost:8080/type/delete/{id}.
    *
    * @param id of the type to be deleted
@@ -357,11 +356,27 @@ public class MainController {
    */
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteType(@PathVariable("id") Integer id) {
-    typeRepository.deleteById(id);
-    addActionLog(null, id, "Deleted type"); // Adds an action record to the log
-    return "resultDeleteType";
+      Optional<Type> typeOptional = typeRepository.findById(id);
+      if (!typeOptional.isPresent()) {
+          // Handle case where type with the provided id doesn't exist
+          return "Type not found"; 
+      }
+      Type typeToDelete = typeOptional.get();
+      
+      // Find all assets with matching type name
+      List<Asset> assetsToDelete = assetRepository.findByType(typeToDelete.getTypeName());
+      for (Asset asset : assetsToDelete) {
+          // Delete each associated asset
+          assetRepository.delete(asset);
+          addActionLog(asset.getId(), null, "Deleted asset"); // Add an action record to the log for each deleted asset
+      }
+      
+      // Delete the type itself
+      typeRepository.deleteById(id);
+      addActionLog(null, id, "Deleted type"); // Add an action record to the log for the deleted type
+      
+      return "Type deleted";
   }
-
   //// End of Type functions. Start of Log functions.
 
   /**
@@ -374,12 +389,15 @@ public class MainController {
    */
   public @ResponseBody String addActionLog(@RequestParam Integer assetId, @RequestParam Integer typeId,
       @RequestParam String action) {
+    
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     ActionLog al = new ActionLog();
     al.setAssetId(assetId);
     al.setTypeId(typeId);
     al.setAction(action);
-    al.setTimestamp(LocalDateTime.now());
+    al.setTimestamp(now.format(formatter));
     actionLogRepository.save(al);
     return "Saved";
   }
@@ -452,125 +470,23 @@ public class MainController {
     return "resultCreateType";
   }
   
-  @PostMapping(path = "/user/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
-  public ResponseEntity<String> addNewUser(@RequestBody User user) {
-    try {
-        userRepository.save(user);
-        return ResponseEntity.ok("User saved successfully");
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-    }
-  }
-
-  @GetMapping(path = "/user/find/all")
-  public @ResponseBody Iterable<User> getAllUsers() {
-      Iterable<User> allUsers = userRepository.findAll();
-      List<User> usersWithoutPassword = new ArrayList<>();
-      for (User user : allUsers) {
-          User userWithoutPassword = new User();
-          userWithoutPassword.setId(user.getId());
-          userWithoutPassword.setName(user.getName());
-          userWithoutPassword.setRole(user.getRole());
-          
-          usersWithoutPassword.add(userWithoutPassword);
-      }
-      return usersWithoutPassword;
-  }
-  
-  /**
-   * This method returns a user with an id matching the provided path variable value.
-   * 
-   * @param id the id value to be searched for in the database
-   * @return the User matching the provided id
-   */
-  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
-    Optional<User> foundUserOptional = userRepository.findById(id);
-    if (foundUserOptional.isPresent()) {
-        User foundUser = foundUserOptional.get();
-        User userWithoutPassword = new User();
-        userWithoutPassword.setId(foundUser.getId());
-        userWithoutPassword.setName(foundUser.getName());
-        userWithoutPassword.setRole(foundUser.getRole());
-
-        return Optional.of(userWithoutPassword);
-    } else {
-        return Optional.empty(); 
-    }
-}
-
-  /**
-   * This method returns a user with a name matching the provided path variable value.
-   * 
-   * @param name the name of the user being searched for.
-   * @return the User matching the provided name.
-   */
-  @GetMapping(path = "/user/findName/{name}")
-  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
-    return userRepository.findByName(name);
-  }
-
   /**
    * This method renders createUser.html with input forms for each attribute.
    * 
    * @param model an interface for holding attribute values for the user to be created.
    * @return the createUser webpage
    */
-  @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createUser
-  public String userForm(Model model) {
-    model.addAttribute("createUser", new User()); // Gives the form a user object to add
-                                                  // attributes to
-    return "createUser"; // renders createUser.html
-  }
-
-  /**
-   * This method occurs once the submit button on the createUser html page is pressed. Saves the
-   * created user to the database and renders the result page.
-   * 
-   * @param user the User created by assigning input form values in the userForm method.
-   * @param model an interface for holding attribute values for the user created.
-   * @return the resultCreateUser page which informs the user that the save was successful and
-   *         prompts them to create another.
-   */
-  @PostMapping("/user/createUser") // POST request : When you submit the form
-  public String userSubmit(@ModelAttribute User user, Model model) {
-    User savedUser = userRepository.save(user); 
-    model.addAttribute("savedUser", savedUser); 
-    return "result"; 
-  }
-  
-  @RequestMapping(value = "/user/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String deleteUser(@PathVariable("id") Integer id) {
-    userRepository.deleteById(id);
-    return "resultDeleteUser"; // renders
-  }
-
-
-  @PostMapping(path = "/user/edit/role", consumes = "application/json")
-  public ResponseEntity<String> updateUserRole(@RequestBody User newUser) {
-      try {
-          Integer userId = newUser.getId();
-          Optional<User> optionalUser = userRepository.findById(userId);
-          if (optionalUser.isPresent()) {
-              User user = optionalUser.get();
-              user.setRole(newUser.getRole());
-              userRepository.save(user);
-              return ResponseEntity.ok("User role updated successfully");
-          } else {
-              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with id: " + userId);
-          }
-      } catch (Exception e) {
-          e.printStackTrace();
-          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-      }
-  }
-  
+   @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createUser
+   public String userForm(Model model) {
+     model.addAttribute("createUser", new User()); // Gives the form a user object to add
+                                                   // attributes to
+     return "createUser"; // renders createUser.html
+   }
   
   /**
    * This method is a query function to request the details of assets by their title in the url
    * localhost:8080/asset/findTitle/{title}.
    *
-   * @param title of asset user wants
    * @return asset list that has assets of the same title as the searched title
    */
   @GetMapping(path = "/asset/findTitle/{title}")
