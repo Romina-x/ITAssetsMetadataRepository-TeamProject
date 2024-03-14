@@ -47,28 +47,33 @@ export default function FormPropsTextFields() {
 
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
-    setSave("Saved");
-    // logic for what happens when the asset is saved goes here
-    event.preventDefault();
-
-    try {
-      const response = await TypeAPI.addType({
-          typeName,
-          customAttribute1,
-          customAttribute2,
-          customAttribute3,
-          customAttribute4
-      });
-      
-      
-      if (!response.ok) {
-        throw new Error('Failed to add type');
-      }
-      resetValue()
-      console.log('Type added successfully');
-    } catch (error) {
-      console.error('Error adding type:', error);
-    }
+	event.preventDefault();
+	const compType = await TypeAPI.getTypeExists(typeName);
+	if (!compType) {
+	    // logic for what happens when the asset is saved goes here
+	
+	    try {
+	      const response = await TypeAPI.addType({
+	          typeName,
+	          customAttribute1,
+	          customAttribute2,
+	          customAttribute3,
+	          customAttribute4
+	      });
+	      
+	      
+	      if (!response.ok) {
+	        throw new Error('Failed to add type');
+	      }
+	      resetValue();
+	      setSave("Saved");
+	      console.log('Type added successfully');
+	    } catch (error) {
+	      console.error('Error adding type:', error);
+	    }
+	} else {
+		alert("Type name already exists");
+	}
   };
 
   const resetValue = () => {

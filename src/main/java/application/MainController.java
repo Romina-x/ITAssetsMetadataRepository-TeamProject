@@ -312,6 +312,25 @@ public class MainController {
     return typeRepository.findByTypeName(typeName);
   }
   
+  @GetMapping(path = "type/getTypeExists/{typeName}")
+  public @ResponseBody Boolean getTypeExists(@PathVariable("typeName") String typeName) {
+	Optional<Type> optType = getTypeByName(typeName);
+	return (optType.isPresent());
+  }
+  
+  @GetMapping(path = "asset/getAssetExists/{title}/{type}")
+  public @ResponseBody Boolean getAssetExists(@PathVariable("title") String assetName, @PathVariable("type") String typeName) {
+	List<Asset> assetList = getAssetByTitle(assetName);
+	if (assetList.size() > 0) {
+		for (Asset i: assetList) {
+			if (i.getType().equalsIgnoreCase(typeName)) {
+				return true;
+			}
+		}
+	}
+	return false;
+  }
+  
   @GetMapping(path = "type/returnAttributes/{typeName}")
   public @ResponseBody List<String> getTypeAttributes(@PathVariable("typeName") String typeName) {
 	Optional<Type> optType = getTypeByName(typeName);
