@@ -13,6 +13,9 @@ export const get = (assetId) =>
 
 export const getAll = () =>
   fetch(`${api}/asset/find/all`, { headers }).then((res) => res.json());
+  
+export const getExists = (title, type) =>
+  fetch(`${api}/asset/getAssetExists/${title}/${type}`, { headers }).then((res) => res.json()).then(data => data);
 
 export const update = (asset) =>
   fetch(`${api}/asset/${asset.id}`, {

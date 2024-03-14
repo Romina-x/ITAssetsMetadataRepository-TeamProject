@@ -26,3 +26,20 @@ fetch(`${api}/comment/${comment.id}`, {
       body: JSON.stringify({ comment }),
     })
     .then((res) => res.json());
+
+export const addComment = async (commentData) => {
+  try {
+    const response = await fetch(`${api}/comment/add`, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(commentData),
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error('Failed to add Comment:', error);
+  }
+};

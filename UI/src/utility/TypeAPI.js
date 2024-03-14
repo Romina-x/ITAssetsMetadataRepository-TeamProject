@@ -14,6 +14,9 @@ export const get = (typeId) =>
 export const getAll = () =>
   fetch(`${api}/type/find/all`, { headers }).then((res) => res.json());
 
+export const getTypeExists = (typeName) =>
+  fetch(`${api}/type/getTypeExists/${typeName}`, { headers }).then((res) => res.json()).then(data => data);
+
 export const update = (type) =>
   fetch(`${api}/type/${type.id}`, {
     method: "PUT",

@@ -21,7 +21,7 @@ export default function Login() {
       });
       if (response.message.toLowerCase().includes("successful")) {
         localStorage.setItem("token", response.token);
-        window.location.href = "asset/view";
+        window.location.href = "asset/find";
       } else {
         setError("Invalid username or password");
       }
