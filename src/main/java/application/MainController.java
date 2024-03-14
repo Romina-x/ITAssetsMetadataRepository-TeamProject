@@ -1,6 +1,7 @@
 package application;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import application.model.User;
 
 /**
  * This program handles HTTP requests to the application, specifically POST and GET.
@@ -37,9 +39,6 @@ public class MainController {
 
   @Autowired // This gets the bean called typeRepository
   private TypeRepository typeRepository;
-
-  @Autowired
-  private UserRepository userRepository;
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
@@ -328,6 +327,25 @@ public class MainController {
     return typeRepository.findByTypeName(typeName);
   }
   
+  @GetMapping(path = "type/getTypeExists/{typeName}")
+  public @ResponseBody Boolean getTypeExists(@PathVariable("typeName") String typeName) {
+	Optional<Type> optType = getTypeByName(typeName);
+	return (optType.isPresent());
+  }
+  
+  @GetMapping(path = "asset/getAssetExists/{title}/{type}")
+  public @ResponseBody Boolean getAssetExists(@PathVariable("title") String assetName, @PathVariable("type") String typeName) {
+	List<Asset> assetList = getAssetByTitle(assetName);
+	if (assetList.size() > 0) {
+		for (Asset i: assetList) {
+			if (i.getType().equalsIgnoreCase(typeName)) {
+				return true;
+			}
+		}
+	}
+	return false;
+  }
+  
   @GetMapping(path = "type/returnAttributes/{typeName}")
   public @ResponseBody List<String> getTypeAttributes(@PathVariable("typeName") String typeName) {
 	Optional<Type> optType = getTypeByName(typeName);
@@ -364,7 +382,7 @@ public class MainController {
   }
 
   /**
-   * This method allows for the deletion of individual types by referencing their id numbers in the
+   * This method allows for the deletion of individual types and corresponding assets by referencing their id numbers in the
    * url localhost:8080/type/delete/{id}.
    *
    * @param id of the type to be deleted
@@ -372,11 +390,27 @@ public class MainController {
    */
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String deleteType(@PathVariable("id") Integer id) {
-    typeRepository.deleteById(id);
-    addActionLog(null, id, "Deleted type"); // Adds an action record to the log
-    return "resultDeleteType";
+      Optional<Type> typeOptional = typeRepository.findById(id);
+      if (!typeOptional.isPresent()) {
+          // Handle case where type with the provided id doesn't exist
+          return "Type not found"; 
+      }
+      Type typeToDelete = typeOptional.get();
+      
+      // Find all assets with matching type name
+      List<Asset> assetsToDelete = assetRepository.findByType(typeToDelete.getTypeName());
+      for (Asset asset : assetsToDelete) {
+          // Delete each associated asset
+          assetRepository.delete(asset);
+          addActionLog(asset.getId(), null, "Deleted asset"); // Add an action record to the log for each deleted asset
+      }
+      
+      // Delete the type itself
+      typeRepository.deleteById(id);
+      addActionLog(null, id, "Deleted type"); // Add an action record to the log for the deleted type
+      
+      return "Type deleted";
   }
-
   //// End of Type functions. Start of Log functions.
 
   /**
@@ -389,12 +423,15 @@ public class MainController {
    */
   public @ResponseBody String addActionLog(@RequestParam Integer assetId, @RequestParam Integer typeId,
       @RequestParam String action) {
+    
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     ActionLog al = new ActionLog();
     al.setAssetId(assetId);
     al.setTypeId(typeId);
     al.setAction(action);
-    al.setTimestamp(LocalDateTime.now());
+    al.setTimestamp(now.format(formatter));
     actionLogRepository.save(al);
     return "Saved";
   }
@@ -451,19 +488,6 @@ public class MainController {
     }
   }
 
-  @PostMapping(path = "/user/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String password,
-      @RequestParam String role) {
-
-    User newUser = new User();
-    newUser.setName(name);
-    newUser.setPassword(password);
-    newUser.setRole(role);
-    userRepository.save(newUser);
-
-    return "Saved";
-  }
-
   /**
    * This method handles the submitted edit form and updates the type within the database.
    * 
@@ -479,72 +503,24 @@ public class MainController {
     typeRepository.save(updatedType);
     return "resultCreateType";
   }
-
-  @GetMapping(path = "/user/find/all")
-  public @ResponseBody Iterable<User> getAllUsers() {
-    return userRepository.findAll();
-  }
-
-  /**
-   * This method returns a user with an id matching the provided path variable value.
-   * 
-   * @param id the id value to be searched for in the database
-   * @return the User matching the provided id
-   */
-  @GetMapping(path = "/user/find/{id}")
-  public @ResponseBody Optional<User> getUserById(@PathVariable("id") Integer id) {
-    return userRepository.findById(id);
-  }
-
-  /**
-   * This method returns a user with a name matching the provided path variable value.
-   * 
-   * @param name the name of the user being searched for.
-   * @return the User matching the provided name.
-   */
-  @GetMapping(path = "/user/findName/{name}")
-  public @ResponseBody List<User> getUserByName(@PathVariable("name") String name) {
-    return userRepository.findByName(name);
-  }
-
+  
   /**
    * This method renders createUser.html with input forms for each attribute.
    * 
    * @param model an interface for holding attribute values for the user to be created.
    * @return the createUser webpage
    */
-  @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createUser
-  public String userForm(Model model) {
-    model.addAttribute("createUser", new User()); // Gives the form a user object to add
-                                                  // attributes to
-    return "createUser"; // renders createUser.html
-  }
-
-  /**
-   * This method occurs once the submit button on the createUser html page is pressed. Saves the
-   * created user to the database and renders the result page.
-   * 
-   * @param user the User created by assigning input form values in the userForm method.
-   * @param model an interface for holding attribute values for the user created.
-   * @return the resultCreateUser page which informs the user that the save was successful and
-   *         prompts them to create another.
-   */
-  @PostMapping("/user/createUser") // POST request : When you submit the form
-  public String userSubmit(@ModelAttribute User user, Model model) {
-    // for(Permissions perm: Permissions.values()) {
-    // if(perm.toString().equalsIgnoreCase(user.getRole().toString())) {
-    // Commented out as role was changed to String to meet sprint 2 demo deadline
-    // Will be re-implemented next sprint
-    userRepository.save(user);
-
-    return "resultCreateUser"; // renders resultCreateUser.html
-  }
-
+   @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createUser
+   public String userForm(Model model) {
+     model.addAttribute("createUser", new User()); // Gives the form a user object to add
+                                                   // attributes to
+     return "createUser"; // renders createUser.html
+   }
+  
   /**
    * This method is a query function to request the details of assets by their title in the url
    * localhost:8080/asset/findTitle/{title}.
    *
-   * @param title of asset user wants
    * @return asset list that has assets of the same title as the searched title
    */
   @GetMapping(path = "/asset/findTitle/{title}")
@@ -607,17 +583,17 @@ public class MainController {
    * @param progLang of asset that user wants
    * @return asset that has same programming language as the searched link
    */
-  @GetMapping(path = "/asset/findProgLang/{progLang}")
-  public @ResponseBody List<Asset> getAssetByLang(@PathVariable("progLang") String progLang) {
-    List<Asset> assetsWithLang = new ArrayList<>();
+  @GetMapping(path = "/asset/findAuthor/{author}")
+  public @ResponseBody List<Asset> getAssetByAuthor(@PathVariable("author") String author) {
+    List<Asset> assetsWithAuthor = new ArrayList<>();
 
     Iterable<Asset> allAssets = assetRepository.findAll();
     for (Asset asset : allAssets) {
-      if (asset.getProgLang().equals(progLang)) {
-        assetsWithLang.add(asset);
+      if (asset.getAuthor().equals(author)) {
+        assetsWithAuthor.add(asset);
       }
     }
-    return assetsWithLang;
+    return assetsWithAuthor;
   }
 
 

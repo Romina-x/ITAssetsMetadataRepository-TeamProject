@@ -1,11 +1,11 @@
 const api = "http://localhost:8080";
-let token = localStorage.token;
+let token = sessionStorage.token;
 
-if (!token) token = localStorage.token = Math.random().toString(36).substr(-8);
+if (!token) token = sessionStorage.token = Math.random().toString(36).substr(-8);
 
 const headers = {
   Accept: "application/json",
-  Authorization: token,
+  Authorization: `Bearer ${token}`,
 };
 
 export const get = (typeId) =>
@@ -13,6 +13,9 @@ export const get = (typeId) =>
 
 export const getAll = () =>
   fetch(`${api}/type/find/all`, { headers }).then((res) => res.json());
+
+export const getTypeExists = (typeName) =>
+  fetch(`${api}/type/getTypeExists/${typeName}`, { headers }).then((res) => res.json()).then(data => data);
 
 export const update = (type) =>
   fetch(`${api}/type/${type.id}`, {
@@ -29,6 +32,7 @@ export const deleteById = async (id) => {
     const response = await fetch(`${api}/type/delete/${id}`, {
       method: "DELETE",
       headers: {
+        ...headers,
         "Content-Type": "application/json",
       },
     });
@@ -44,6 +48,7 @@ export const addType = async (typeData) => {
     const response = await fetch(`${api}/type/add`, {
       method: 'POST',
       headers: {
+        ...headers,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(typeData),

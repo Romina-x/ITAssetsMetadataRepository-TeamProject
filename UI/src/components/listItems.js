@@ -13,6 +13,7 @@ import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
 import ViewListTwoToneIcon from '@mui/icons-material/ViewListTwoTone';
+import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
 export const adminListItems = (
   <React.Fragment>
@@ -56,20 +57,12 @@ export const adminListItems = (
         <ListItemText primary="Find Type" />
       </ListItemButton>
     </Link>
-    <Link to="/asset/view" className={styles.link}>
+    <Link to="/user/find" className={styles.link}>
       <ListItemButton>
         <ListItemIcon>
-          <ViewListIcon />
+          <FindInPageTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary="View Assets" />
-      </ListItemButton>
-    </Link>
-    <Link to="/type/view" className={styles.link}>
-      <ListItemButton>
-        <ListItemIcon>
-          <ViewListOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="View Types" />
+        <ListItemText primary="Find User" />
       </ListItemButton>
     </Link>
     <Link to="/log/view" className={styles.link}>

@@ -1,11 +1,11 @@
 const api = "http://localhost:8080";
-let token = localStorage.token;
+let token = sessionStorage.token;
 
-if (!token) token = localStorage.token = Math.random().toString(36).substr(-8);
+if (!token) token = sessionStorage.token = Math.random().toString(36).substr(-8);
 
 const headers = {
   Accept: "application/json",
-  Authorization: token,
+  Authorization: `Bearer ${token}`,
 };
 
 export const get = (commentId) =>
@@ -26,3 +26,24 @@ fetch(`${api}/comment/${comment.id}`, {
       body: JSON.stringify({ comment }),
     })
     .then((res) => res.json());
+
+export const addComment = async (commentData) => {
+  try {
+    const response = await fetch(`${api}/comment/add`, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...commentData,
+        visibleComment: commentData.visibleComment, 
+      }),
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error('Failed to add Comment:', error);
+  }
+};
+

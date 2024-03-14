@@ -24,9 +24,7 @@ public class Asset {
 
   private String link;
 
-  private Integer lineNum;
-
-  private String progLang;
+  private String author;
 
   private String customAttribute1;
 
@@ -55,7 +53,7 @@ public class Asset {
 
   public Asset() {}
 
-  public Asset(Integer id, String type, String title, String link, Integer lineNum, String progLang,
+  public Asset(Integer id, String type, String title, String link, String author,
       String customAttribute1, String customAttribute2, String customAttribute3,
       String customAttribute4, String association1, String association2, String association3,
       String association4, String associationRelation1, String associationRelation2,
@@ -65,8 +63,7 @@ public class Asset {
     this.type = type;
     this.title = title;
     this.link = link;
-    this.lineNum = lineNum;
-    this.progLang = progLang;
+    this.author = author;
     this.customAttribute1 = customAttribute1;
     this.customAttribute2 = customAttribute2;
     this.customAttribute3 = customAttribute3;
@@ -113,20 +110,12 @@ public class Asset {
     this.link = link;
   }
 
-  public Integer getLineNum() {
-    return lineNum;
+  public String getAuthor() {
+    return author;
   }
 
-  public void setLineNum(Integer lineNum) {
-    this.lineNum = lineNum;
-  }
-
-  public String getProgLang() {
-    return progLang;
-  }
-
-  public void setProgLang(String progLang) {
-    this.progLang = progLang;
+  public void setAuthor(String author) {
+    this.author = author;
   }
 
   public String getCustomAttribute1() {

@@ -1,10 +1,9 @@
 package application;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-// This will be AUTO IMPLEMENTED by Spring into a Bean called assetRepository
-// CRUD refers Create, Read, Update, Delete
 
 /**
  * This interface holds the asset records and is automatically implemented.
@@ -15,5 +14,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 
 public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {
-
-  boolean existsByTitle(String title);}
+  List<Asset> findByType(String type);
+}

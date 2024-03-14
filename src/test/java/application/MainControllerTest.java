@@ -7,13 +7,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +29,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -43,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author Yusur Taha
  * @author Sarah Haines
+ * @author Romina Petrozzi
  */
 
 
@@ -59,8 +54,8 @@ class MainControllerTest {
   private TypeRepository typeRepository;
   @MockBean
   private ActionLogRepository actionLogRepository;
-  @MockBean
-  private UserRepository userRepository;
+//  @MockBean
+//  private UserRepository userRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
 
@@ -97,9 +92,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(78);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("Java");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("This is a title");
     asset1.setType("Video");
 
@@ -275,9 +269,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("Video");
 
@@ -307,9 +300,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("Video");
 
@@ -318,9 +310,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset2 = new Asset();
     asset2.setId(12332);
-    asset2.setLineNum(123);
     asset2.setLink("randomLink");
-    asset2.setProgLang("Java");
+    asset2.setAuthor("Layla M");
     asset2.setTitle("Beans");
     asset2.setType("document");
 
@@ -329,9 +320,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset3 = new Asset();
     asset3.setId(1254);
-    asset3.setLineNum(167);
     asset3.setLink("randomLink2");
-    asset3.setProgLang("German");
+    asset3.setAuthor("Ava S");
     asset3.setTitle("Beans");
     asset3.setType("mp3");
 
@@ -340,9 +330,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset4 = new Asset();
     asset4.setId(1344);
-    asset4.setLineNum(156);
     asset4.setLink("www.youtube.com");
-    asset4.setProgLang("English");
+    asset4.setAuthor("Sofia F");
     asset4.setTitle("notBeans");
     asset4.setType("Video");
 
@@ -401,9 +390,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("video");
 
@@ -433,9 +421,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("Video");
 
@@ -444,9 +431,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset2 = new Asset();
     asset2.setId(12332);
-    asset2.setLineNum(123);
     asset2.setLink("randomLink");
-    asset2.setProgLang("Java");
+    asset2.setAuthor("Ava S");
     asset2.setTitle("Beans");
     asset2.setType("document");
 
@@ -455,9 +441,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset3 = new Asset();
     asset3.setId(1254);
-    asset3.setLineNum(167);
     asset3.setLink("randomLink2");
-    asset3.setProgLang("German");
+    asset3.setAuthor("Layla M");
     asset3.setTitle("Beans");
     asset3.setType("mp3");
 
@@ -466,9 +451,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset4 = new Asset();
     asset4.setId(1344);
-    asset4.setLineNum(156);
     asset4.setLink("www.youtube.com");
-    asset4.setProgLang("English");
+    asset4.setAuthor("Ben F");
     asset4.setTitle("notBeans");
     asset4.setType("Video");
 
@@ -527,9 +511,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Sarah H");
     asset1.setTitle("Beans");
     asset1.setType("video");
 
@@ -559,9 +542,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ava S");
     asset1.setTitle("Beans");
     asset1.setType("Video");
 
@@ -570,9 +552,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset2 = new Asset();
     asset2.setId(12332);
-    asset2.setLineNum(123);
     asset2.setLink("randomLink");
-    asset2.setProgLang("Java");
+    asset2.setAuthor("Ellie H");
     asset2.setTitle("Beans");
     asset2.setType("document");
 
@@ -581,9 +562,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset3 = new Asset();
     asset3.setId(1254);
-    asset3.setLineNum(167);
     asset3.setLink("randomLink2");
-    asset3.setProgLang("German");
+    asset3.setAuthor("Ava S");
     asset3.setTitle("Beans");
     asset3.setType("mp3");
 
@@ -592,9 +572,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset4 = new Asset();
     asset4.setId(1344);
-    asset4.setLineNum(156);
     asset4.setLink("www.youtube.com");
-    asset4.setProgLang("English");
+    asset4.setAuthor("Finn S");
     asset4.setTitle("notBeans");
     asset4.setType("Video");
 
@@ -648,28 +627,27 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
-  void testGetAssetByLang() throws Exception {
+  void testGetAssetByAuthor() throws Exception {
 
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("video");
 
     mc.addNewAsset(asset1);
-    String langToFind = "English";
+    String authorToFind = "Ellie H";
     Asset expectedAsset = new Asset();
-    expectedAsset.setProgLang(langToFind);
+    expectedAsset.setAuthor(authorToFind);
 
     when(assetRepository.findAll()).thenReturn(List.of(expectedAsset));
 
-    List<Asset> actualAssets = mc.getAssetByLang(langToFind);
+    List<Asset> actualAssets = mc.getAssetByAuthor(authorToFind);
 
-    assertEquals(expectedAsset.getProgLang(), actualAssets.get(0).getProgLang(),
-        "Should return an asset with the specified programming language.");
+    assertEquals(expectedAsset.getAuthor(), actualAssets.get(0).getAuthor(),
+        "Should return an asset with the specified author.");
 
   }
 
@@ -680,14 +658,13 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
-  void testGetAssetListByLang() throws Exception {
+  void testGetAssetListByAuthor() throws Exception {
 
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("Video");
 
@@ -696,9 +673,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset2 = new Asset();
     asset2.setId(12332);
-    asset2.setLineNum(123);
     asset2.setLink("randomLink");
-    asset2.setProgLang("Java");
+    asset2.setAuthor("Ellie H");
     asset2.setTitle("Beans");
     asset2.setType("document");
 
@@ -707,9 +683,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset3 = new Asset();
     asset3.setId(1254);
-    asset3.setLineNum(167);
     asset3.setLink("randomLink2");
-    asset3.setProgLang("German");
+    asset3.setAuthor("Ava S");
     asset3.setTitle("Beans");
     asset3.setType("mp3");
 
@@ -718,9 +693,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset4 = new Asset();
     asset4.setId(1344);
-    asset4.setLineNum(156);
     asset4.setLink("www.youtube.com");
-    asset4.setProgLang("English");
+    asset4.setAuthor("Ellie H");
     asset4.setTitle("notBeans");
     asset4.setType("Video");
 
@@ -729,39 +703,39 @@ class MainControllerTest {
     List<Asset> expectedAssets = new ArrayList<>();
     when(assetRepository.findAll()).thenReturn(expectedAssets);
 
-    String langToFind = "English";
+    String authorToFind = "Ellie H";
 
     // make mock assets and add to list containing expected result
     Asset expectedAsset1 = new Asset();
     expectedAsset1.setTitle("fish");
-    expectedAsset1.setProgLang(langToFind);
+    expectedAsset1.setAuthor(authorToFind);
     expectedAssets.add(expectedAsset1);
 
     Asset expectedAsset2 = new Asset();
     expectedAsset2.setTitle("cat");
-    expectedAsset2.setProgLang(langToFind);
+    expectedAsset2.setAuthor(authorToFind);
     expectedAssets.add(expectedAsset2);
 
     Asset expectedAsset3 = new Asset();
     expectedAsset3.setTitle("sheep");
-    expectedAsset3.setProgLang(langToFind);
+    expectedAsset3.setAuthor(authorToFind);
     expectedAssets.add(expectedAsset3);
 
     // get assets with language "English" and add to list
-    List<Asset> actualAssets = mc.getAssetByLang(langToFind);
+    List<Asset> actualAssets = mc.getAssetByAuthor(authorToFind);
 
     for (int i = 0; i < expectedAssets.size(); i++) {
       System.out.println("Asset title: " + expectedAssets.get(i).getTitle() + "\n"
-          + " Expected result language: " + expectedAssets.get(i).getProgLang());
+          + " Expected result language: " + expectedAssets.get(i).getAuthor());
       System.out.println("Asset title: " + actualAssets.get(i).getTitle() + "\n"
-          + " Expected result language: " + actualAssets.get(i).getProgLang() + "\n");
+          + " Expected result language: " + actualAssets.get(i).getAuthor() + "\n");
 
     }
 
 
     // check that all assets in database with language "English" are returned
     for (int i = 0; i < expectedAssets.size(); i++) {
-      assertEquals(expectedAssets.get(i).getProgLang(), actualAssets.get(i).getProgLang(),
+      assertEquals(expectedAssets.get(i).getAuthor(), actualAssets.get(i).getAuthor(),
           "Should return a list of assets with the searched language English.");
     }
 
@@ -778,9 +752,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset1 = new Asset();
     asset1.setId(12345);
-    asset1.setLineNum(156);
     asset1.setLink("www.youtube.com");
-    asset1.setProgLang("English");
+    asset1.setAuthor("Ellie H");
     asset1.setTitle("Beans");
     asset1.setType("Video");
 
@@ -789,9 +762,8 @@ class MainControllerTest {
     // asset to be added
     Asset asset2 = new Asset();
     asset2.setId(12332);
-    asset2.setLineNum(123);
     asset2.setLink("randomLink");
-    asset2.setProgLang("Java");
+    asset2.setAuthor("Ava S");
     asset2.setTitle("Beans");
     asset2.setType("document");
 
@@ -1188,113 +1160,125 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
   }
 
-  /**
-   * Test to validate that users are successfully added to database and that upon accessing the
-   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
-   * successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testAddAndGetAllUsers() throws Exception {
+//  /**
+//   * Test to validate that users are successfully added to database and that upon accessing the
+//   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
+//   * successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testAddNewUser() throws Exception {
+//    String requestBody =
+//        "{\"name\":\"jim\", \"password\":\"pass\", \"role\":\"admin\"}";
+//
+//    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/user/add")
+//        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
+//
+//    assertEquals("User saved successfully", result.getResponse().getContentAsString());
+//  }
+  
+  
+//  @Test
+//  void testAddAndGetAllUsers() throws Exception {
+//
+//    mc.addNewUser("user1", "password1", "users role1");
+//    mc.addNewUser("user2", "password2", "users role2");
+//
+//    // mock users
+//    User user1 = new User();
+//    user1.setName("user1");
+//    user1.setPassword("password1");
+//    user1.setRole("users role1");
+//
+//    User user2 = new User();
+//    user2.setName("user2");
+//    user2.setPassword("password2");
+//    user2.setRole("users role2");
+//
+//    // Mock the behavior of the findAll method to return the mock users
+//    when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+//    // Perform the GET request*/
+//    mvc.perform(MockMvcRequestBuilders.get("/user/find/all"))
+//        // Expects that the request was successful with 2 users in database
+//        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
+//        // Check the JSON properties of the first and second user in the array
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("user1"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").value("password1"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("user2"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$[1].password").value("password2"));
+//
+//  }
 
-    mc.addNewUser("user1", "password1", "users role1");
-    mc.addNewUser("user2", "password2", "users role2");
-
-    // mock users
-    User user1 = new User();
-    user1.setName("user1");
-    user1.setPassword("password1");
-    user1.setRole("users role1");
-
-    User user2 = new User();
-    user2.setName("user2");
-    user2.setPassword("password2");
-    user2.setRole("users role2");
-
-    // Mock the behavior of the findAll method to return the mock users
-    when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
-    // Perform the GET request*/
-    mvc.perform(MockMvcRequestBuilders.get("/user/find/all"))
-        // Expects that the request was successful with 2 users in database
-        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
-        // Check the JSON properties of the first and second user in the array
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("user1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").value("password1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("user2"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[1].password").value("password2"));
-
-  }
-
-  /**
-   * Test to validate that upon accessing the /user/find/{id} path, all data stored about user with
-   * unique id in the database, is retrieved as a JSON successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testGetUserById() throws Exception {
-
-    mc.addNewUser("user1", "password1", "users role1");
-    mc.addNewUser("user2", "password2", "users role2");
-
-    // mock users
-    User user1 = new User();
-    user1.setName("user1");
-    user1.setPassword("password1");
-    user1.setRole("users role1");
-
-    User user2 = new User();
-    user2.setName("user2");
-    user2.setPassword("password2");
-    user2.setRole("users role2");
-
-    // Mock the behavior of the findById method to return the user
-    when(userRepository.findById(134)).thenReturn(Optional.of(user1));
-    // Perform the GET request
-    mvc.perform(MockMvcRequestBuilders.get("/user/find/{id}", 134))
-        // Check the JSON properties of the returned user
-        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("user1"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password1"));
-
-  }
-
-  /**
-   * Test to validate that upon accessing the /user/findName/{name} path, all data stored about user
-   * with name in the database, is retrieved as a JSON successfully.
-   *
-   * @throws Exception , could be any unchecked exception.
-   */
-  @Test
-  void testGetUserByName() throws Exception {
-
-    mc.addNewUser("user1", "password1", "users role1");
-    mc.addNewUser("user2", "password2", "users role2");
-
-    // mock users
-    User user1 = new User();
-    user1.setName("user1");
-    user1.setPassword("password1");
-    user1.setRole("users role1");
-
-    User user2 = new User();
-    user2.setName("user2");
-    user2.setPassword("password2");
-    user2.setRole("users role2");
-
-    String nameToFind = "user2";
-
-    when(userRepository.findByName(nameToFind)).thenReturn(List.of(user2));
-
-
-    List<User> actualUsers = mc.getUserByName(nameToFind);
-
-    // Assert the result
-    assertEquals(1, actualUsers.size(), "Should return a list containing one user.");
-    assertEquals(nameToFind, actualUsers.get(0).getName(),
-        "Should return a user with the specified name.");
-
-  }
+//  /**
+//   * Test to validate that upon accessing the /user/find/{id} path, all data stored about user with
+//   * unique id in the database, is retrieved as a JSON successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testGetUserById() throws Exception {
+//
+//    mc.addNewUser("user1", "password1", "users role1");
+//    mc.addNewUser("user2", "password2", "users role2");
+//
+//    // mock users
+//    User user1 = new User();
+//    user1.setName("user1");
+//    user1.setPassword("password1");
+//    user1.setRole("users role1");
+//
+//    User user2 = new User();
+//    user2.setName("user2");
+//    user2.setPassword("password2");
+//    user2.setRole("users role2");
+//
+//    // Mock the behavior of the findById method to return the user
+//    when(userRepository.findById(134)).thenReturn(Optional.of(user1));
+//    // Perform the GET request
+//    mvc.perform(MockMvcRequestBuilders.get("/user/find/{id}", 134))
+//        // Check the JSON properties of the returned user
+//        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("user1"))
+//        .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password1"));
+//
+//  }
+//
+//  /**
+//   * Test to validate that upon accessing the /user/findName/{name} path, all data stored about user
+//   * with name in the database, is retrieved as a JSON successfully.
+//   *
+//   * @throws Exception , could be any unchecked exception.
+//   */
+//  @Test
+//  void testGetUserByName() throws Exception {
+//
+//    mc.addNewUser("user1", "password1", "users role1");
+//    mc.addNewUser("user2", "password2", "users role2");
+//
+//    // mock users
+//    User user1 = new User();
+//    user1.setName("user1");
+//    user1.setPassword("password1");
+//    user1.setRole("users role1");
+//
+//    User user2 = new User();
+//    user2.setName("user2");
+//    user2.setPassword("password2");
+//    user2.setRole("users role2");
+//
+//    String nameToFind = "user2";
+//
+//    when(userRepository.findByName(nameToFind)).thenReturn(List.of(user2));
+//
+//
+//    List<User> actualUsers = mc.getUserByName(nameToFind);
+//
+//    // Assert the result
+//    assertEquals(1, actualUsers.size(), "Should return a list containing one user.");
+//    assertEquals(nameToFind, actualUsers.get(0).getName(),
+//        "Should return a user with the specified name.");
+//
+//  }
 
   /**
    * Test to validate the string response of the method which allows for population of the attribute

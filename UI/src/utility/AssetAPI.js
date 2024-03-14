@@ -1,11 +1,11 @@
 const api = "http://localhost:8080";
-let token = localStorage.token;
+let token = sessionStorage.token;
 
-if (!token) token = localStorage.token = Math.random().toString(36).substr(-8);
+if (!token) token = sessionStorage.token = Math.random().toString(36).substr(-8);
 
 const headers = {
   Accept: "application/json",
-  Authorization: token,
+  Authorization: `Bearer ${token}`,
 };
 
 export const get = (assetId) =>
@@ -13,6 +13,9 @@ export const get = (assetId) =>
 
 export const getAll = () =>
   fetch(`${api}/asset/find/all`, { headers }).then((res) => res.json());
+  
+export const getExists = (title, type) =>
+  fetch(`${api}/asset/getAssetExists/${title}/${type}`, { headers }).then((res) => res.json()).then(data => data);
 
 export const update = (asset) =>
   fetch(`${api}/asset/${asset.id}`, {
@@ -29,6 +32,7 @@ export const deleteById = async (id) => {
     const response = await fetch(`${api}/asset/delete/${id}`, {
       method: "DELETE",
       headers: {
+        ...headers,
         "Content-Type": "application/json",
       },
     });
@@ -44,6 +48,7 @@ export const addAsset = async (assetData) => {
     const response = await fetch(`${api}/asset/add`, {
       method: 'POST',
       headers: {
+        ...headers,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(assetData),

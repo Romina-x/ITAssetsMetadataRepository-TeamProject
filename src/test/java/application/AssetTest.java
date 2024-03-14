@@ -53,23 +53,13 @@ class AssetTest {
   }
   
   /**
-   * Test to verify the function of the Asset get/set LineNum
-   */
-  @Test
-  public void assetGetSetLineNum() {
-    Asset a = new Asset();
-    a.setLineNum(600);
-    assertEquals(a.getLineNum(), 600, "Test that the lineNum can be set and retrieved");
-  }
-  
-  /**
    * Test to verify the function of the Asset get/set ProgLang
    */
   @Test
-  public void assetGetSetProgLang() {
+  public void assetGetSetAuthor() {
     Asset a = new Asset();
-    a.setProgLang("Java");
-    assertEquals(a.getProgLang(), "Java", "Test that the ProgLang can be set and retrieved");
+    a.setAuthor("Ellie H");
+    assertEquals(a.getAuthor(), "Ellie H", "Test that the author can be set and retrieved");
   }
   
   /**
