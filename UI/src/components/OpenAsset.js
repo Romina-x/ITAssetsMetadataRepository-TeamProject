@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import SaveIcon from "@mui/icons-material/Save";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -7,8 +8,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from "@mui/material/TextField";
-import * as React from 'react';
-import { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import FormControlLabel from '@mui/material/FormControlLabel'; 
+import Checkbox from '@mui/material/Checkbox'; 
 import Title from './Title';
 import 'reactflow/dist/style.css';
 import { useParams } from "react-router-dom";
@@ -16,11 +18,9 @@ import ReactFlow, { Background, Controls } from 'reactflow';
 import * as AssetAPI from '../utility/AssetAPI';
 import * as CommentAPI from '../utility/CommentAPI';
 import * as LogAPI from '../utility/LogAPI';
-import Box from "@mui/material/Box";
 import * as TypeAPI from '../utility/TypeAPI';
 
-
-export default function OpenAsset() {
+const OpenAsset = () => {
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
   const currentDate = Date.now();
@@ -33,7 +33,8 @@ export default function OpenAsset() {
   const [comment, setAssetComment] = useState("");
   const [time, setTime] = useState("");
   const [itemId, setItemId] = useState("");
-
+  const [visibleComment, setVisibleComment] = useState(false); 
+  
   let { openAssetId } = useParams();
 
   React.useEffect(() => {
@@ -43,11 +44,9 @@ export default function OpenAsset() {
         LogAPI.getAll(),
         TypeAPI.getAll(),
         CommentAPI.getAll()
-
       ]);
       setAssets(assetData);
       setLogs(logData);
-      // Fetch type information and set it to state
       const typeData = allTypeData.find(type => type.typeName === assetData.type);
       setType(typeData);
       setComments(commentData);
@@ -56,61 +55,56 @@ export default function OpenAsset() {
     fetchData();
   }, []);
 
-//useEffect hook to handle changes after save button is clicked
-useEffect(() => {
-  if (save === "Saved") {
-    const timer = setTimeout(() => {
-      setSave("Save");
-    }, 2000); // Changes back to "Saved" after 2 seconds
-    return () => clearTimeout(timer);
-  }
-}, [save]);
+  useEffect(() => {
+    if (save === "Saved") {
+      const timer = setTimeout(() => {
+        setSave("Save");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [save]);
 
-//useEffect hook to handle changes after cancel button is clicked
-useEffect(() => {
-  if (cancel === "Cancelled") {
-    const timer = setTimeout(() => {
-      document.getElementById("cancel-button").style.backgroundColor = "white";
-      document.getElementById("cancel-button").style.color = "blue";
-      setCancel("Cancel");
-    }, 1500); // Changes back to "Cancel" after 1.5 seconds
-    return () => clearTimeout(timer);
-  }
+  useEffect(() => {
+    if (cancel === "Cancelled") {
+      const timer = setTimeout(() => {
+        document.getElementById("cancel-button").style.backgroundColor = "white";
+        document.getElementById("cancel-button").style.color = "blue";
+        setCancel("Cancel");
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [cancel]);
 
-}, [cancel]);
+  const handleSaveButtonClick = async (event) => {
+    event.preventDefault();
+    const currentTime = new Date().toISOString();
 
-//function to handle changes when save button is clicked
-const handleSaveButtonClick = async (event) => {
-  // logic for what happens when the asset is saved goes here
-  event.preventDefault();
-  const currentTime = new Date().toISOString();
-
-  try {
-    const response = await CommentAPI.addComment({
+    try {
+      const response = await CommentAPI.addComment({
         itemId: a.id,
         comment: comment,
-        timestamp: currentTime
-    });
-    
-    
-    if (!response.ok) {
-      throw new Error('Failed to add comment');
+        timestamp: currentTime,
+        publicComment: visibleComment
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to add comment');
+      }
+      resetValue()
+      console.log('Comment added successfully');
+      setComments(await CommentAPI.getAll());
+      setLogs(await LogAPI.getAll());
+      setSave("Saved");
+    } catch (error) {
+      console.error('Error adding comment:', error);
     }
-    resetValue()
-    console.log('Comment added successfully');
-    setComments(await CommentAPI.getAll());
-    setLogs(await LogAPI.getAll());
-    setSave("Saved");
-  } catch (error) {
-    console.error('Error adding comment:', error);
-  }
-};
+  };
 
-const resetValue = () => {
-  setItemId("");
-  setAssetComment("");
-  setTime("");
-}
+  const resetValue = () => {
+    setItemId("");
+    setAssetComment("");
+    setTime("");
+  }
 
   const edges = [{ id: '1-2', source: '1', target: '2', label: a.associationRelation1, type: 'straightedge' },
                   { id: '1-3', source: '1', target: '3', label: a.associationRelation2, type: 'straightedge' },
@@ -262,7 +256,10 @@ const resetValue = () => {
             onChange={(e) => setAssetComment(e.target.value)}
           />
         </Grid>
-
+        <FormControlLabel
+          control={<Checkbox checked={visibleComment} onChange={(e) => setVisibleComment(e.target.checked)} />}
+          label="Make it public"
+        />
         <Button
           variant="contained"
           endIcon={<SaveIcon />}
@@ -275,4 +272,6 @@ const resetValue = () => {
       </Box>
     </React.Fragment>
   );
-}
+};
+
+export default OpenAsset;
