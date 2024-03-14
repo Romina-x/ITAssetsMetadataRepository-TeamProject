@@ -26,11 +26,13 @@ function App(props) {
   React.useEffect(() => {
     const getTypes = async () => {
       const res = await TypeAPI.getAll();
-      setTypes(res);
-      setOriginalTypes(res);
-      const typeAttributes = Object.keys(res[0]);
-      setTypeAttributes(typeAttributes);
-      setSelectedTypeAttribute("typeName");
+      if (!res.length === 0) {
+	      setTypes(res);
+	      setOriginalTypes(res);
+	      const typeAttributes = Object.keys(res[0]);
+	      setTypeAttributes(typeAttributes);
+	      setSelectedTypeAttribute("typeName");
+	  }
     };
     getTypes();
   }, []);
