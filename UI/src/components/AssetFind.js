@@ -29,12 +29,15 @@ function App() {
       const res = await AssetAPI.getAll();
       setAssets(res);
       setOriginalAssets(res);
-      const assetAttributes = Object.keys(res[0]);
-      setAssetAttributes(assetAttributes);
-      setSelectedAssetAttribute("title"); 
+      if (res.length > 0) {
+        const assetAttributes = Object.keys(res[0]);
+        setAssetAttributes(assetAttributes);
+        setSelectedAssetAttribute("title"); 
+      }
     };
     getAssets();
   }, []);
+  
 
   const [assets, setAssets] = React.useState([])
   const [originalAssets, setOriginalAssets] = useState([]);
