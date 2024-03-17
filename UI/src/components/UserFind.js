@@ -21,6 +21,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import RoleConfirmationDialog from './RoleConfim';
 
 
 function App() {
@@ -37,7 +38,10 @@ function App() {
     getUsers();
   }, []);
 
-  const [users, setUsers] = React.useState([])
+  const [users, setUsers] = React.useState([]);
+  const [updatingUsername, setUpdatingUsername] = React.useState("");
+  const [updatingRole, setUpdatingRole] = React.useState("");
+  const [openRoleDialog, setOpenRoleDialog] = React.useState(false);
   const [originalUsers, setOriginalUsers] = useState([]);
 	const [searchVal, setSearchVal] = useState("");
   const [page, setPage] = React.useState(0);
@@ -100,37 +104,24 @@ function App() {
   };
 
 
-const handleRoleChange = async (event, newRole) => {
-  const userId = event.currentTarget.getAttribute('data-userid'); 
-  try {
-    const userData = {
-      id: userId,
-      role: newRole
-    };
+  const handleRoleClick = (username, role) => {
+    setUpdatingUsername(username);
+    setUpdatingRole(role)
+    setOpenRoleDialog(true)
+  };
 
-    const response = await UserAPI.updateRole(userData);
-  
-    if (response.ok) {
-      // Update the local state with the new role
-      setUsers(prevUsers => {
-        return prevUsers.map(user => {
-          if (user.id === userId) {
-            return { ...user, role: newRole }; 
-          }
-          return user;
-        });
-      });
+  const handleRoleChange = async () => {
+    const res = await UserAPI.updateRole({
+      updatingUsername,
+      updatingRole
+    });
+
+    if(res.ok) {
       const updatedUsers = await UserAPI.getAll();
       setUsers(updatedUsers);
-
-    } else {
-      console.error('Failed to update user role');
     }
-  } catch (error) {
-    console.error('Error updating user role:', error);
-  }
 };
-
+ 
 
 	return (
     <React.Fragment>
@@ -212,7 +203,7 @@ const handleRoleChange = async (event, newRole) => {
                 color="primary"
                 value={u.role}
                 exclusive
-                onChange={handleRoleChange}
+                onChange={(event, value) => handleRoleClick(u.username, value)}
               >
                 <ToggleButton value="READER" data-userid={u.id}>Reader</ToggleButton>
                 <ToggleButton value="USER" data-userid={u.id}>User</ToggleButton>
@@ -261,6 +252,15 @@ const handleRoleChange = async (event, newRole) => {
       }}
       typeId={deletingUserId}
     />
+    <RoleConfirmationDialog 
+    open ={openRoleDialog}
+    handleClose = {() => setOpenRoleDialog(false)}
+    handleConfirm={() => {
+      setOpenRoleDialog(false);
+      handleRoleChange();
+    }
+    }
+    userData ={{updatingUsername, updatingRole}}/>
     </React.Fragment>
 
 	);
