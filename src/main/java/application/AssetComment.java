@@ -1,10 +1,13 @@
 package application;
 
 import java.time.LocalDateTime;
+import application.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * This class creates an Entity model of an Asset Comment for storage into the database with a
@@ -25,6 +28,10 @@ public class AssetComment {
   private LocalDateTime timestamp;
 
   private boolean visibleComment;
+  
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user; 
 
 
   public Integer getId() {
@@ -65,6 +72,14 @@ public class AssetComment {
 
   public void setVisibleComment(boolean visibleComment) {
     this.visibleComment = visibleComment;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
 }

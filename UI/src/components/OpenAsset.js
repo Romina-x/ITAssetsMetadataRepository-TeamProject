@@ -214,25 +214,27 @@ const OpenAsset = () => {
       <Table size="small">
         <TableHead>
         <TableRow>
-            <TableCell>Comment ID</TableCell>
+            <TableCell>User</TableCell>
             <TableCell>Comment</TableCell>
             <TableCell align="right">Timestamp</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {comments.map((c) => {
-          if (c.itemId === a.id) {
-            return (
-              <TableRow key={c.id}>
-              <TableCell>{c.id}</TableCell>
-              <TableCell>{c.comment}</TableCell>
-              <TableCell align="right">{c.timestamp}</TableCell>
-            </TableRow>
-            );
-          } else {
-            return null; 
-          }
-        })}
+  if (c.itemId === a.id) {
+    console.log(c.user); // Log the user object to the console
+    return (
+      <TableRow key={c.id}>
+        <TableCell>{c.user ? c.user.username : 'Unknown'}</TableCell>
+        <TableCell>{c.comment}</TableCell>
+        <TableCell align="right">{c.timestamp}</TableCell>
+      </TableRow>
+    );
+  } else {
+    return null; 
+  }
+})}
+          
         </TableBody>
       </Table>
       <Box
