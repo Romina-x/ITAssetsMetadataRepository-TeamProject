@@ -35,7 +35,10 @@ export const addComment = async (commentData) => {
         ...headers,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(commentData),
+      body: JSON.stringify({
+        ...commentData,
+        visibleComment: commentData.visibleComment, 
+      }),
     });
 
     return response;
@@ -43,3 +46,4 @@ export const addComment = async (commentData) => {
     throw new Error('Failed to add Comment:', error);
   }
 };
+
