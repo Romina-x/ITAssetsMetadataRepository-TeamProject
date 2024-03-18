@@ -92,36 +92,6 @@ public class MainController {
 
 
   /**
-   * This method intitalises the model to allow for population of the attribute data for a specific
-   * asset. This is the GET request to localhost:8080/createAsset.
-   *
-   * @param model functions as a Java object to hold the assets attribute data
-   * @return the string of the next path to render
-   */
-  @GetMapping("/asset/createAsset") // GET request : When you go to localhost:8080/createAsset
-  public String assetForm(Model model) {
-    // Gives the form an asset object to add attributes to
-    model.addAttribute("createAsset", new Asset());
-    return "createAsset"; // renders createAsset.html
-  }
-
-  /**
-   * This method is the POST request to send the content of the form for submission to the database.
-   * It onward routes to the result.html page.
-   *
-   * @param asset
-   * @param model
-   * @return onward path routing for the result.html page
-   */
-  @PostMapping("/asset/createAsset") // POST request : When you submit the form
-  public String assetSubmit(@ModelAttribute Asset asset, Model model) {
-    Asset savedAsset = assetRepository.save(asset); // Add the asset object to the database
-    addActionLog(savedAsset.getId(), null, "Added asset"); // Adds an action record to the log
-    model.addAttribute("savedAsset", savedAsset); // Add savedAsset to the model
-    return "result"; // renders result.html
-  }
-
-  /**
    * This method fetches all the assets stored in the database and returns a JSON file of the
    * content to the web page.
    *
@@ -147,21 +117,6 @@ public class MainController {
   }
 
   /**
-   * This method manages the GET request and renders the delete asset page
-   * 
-   * @param model
-   * @return routing for the /deleteAsset page
-   */
-  @GetMapping("/asset/deleteAsset") // GET request : When you go to localhost:8080/type/deleteAsset
-  public String deleteAsset(Model model) {
-    model.addAttribute("deleteAsset", new Asset()); // Gives the form a Asset object to add
-                                                    // attributes
-    // to
-    return "deleteAsset"; // renders deleteAsset.html
-  }
-
-
-  /**
    * This method allows for the deletion of individual assets by referencing their id numbers in the
    * url localhost:8080/asset/delete/{id}.
    *
@@ -172,11 +127,10 @@ public class MainController {
   public String deleteAsset(@PathVariable("id") Integer id) {
     assetRepository.deleteById(id);
     addActionLog(id, null, "Deleted asset"); // Adds an action record to the log
-    return "resultDeleteAsset"; // renders resultDeleteAsset.html
+    return "resultDeleteAsset";
   }
 
   //// End of Asset functions. Start of Type functions.
-
 
 
   /**
@@ -214,44 +168,6 @@ public class MainController {
     return "Saved";
   }
   
-
-  /**
-   * This method renders the edit asset page depending on a given asset id.
-   * 
-   * @param id
-   * @param model
-   * @return edit asset page or error page
-   */
-  @GetMapping("/asset/editAsset/{id}")
-  public String editAssetForm(@PathVariable("id") Integer id, Model model) {
-    Optional<Asset> assetOptional = assetRepository.findById(id);
-    if (assetOptional.isPresent()) { // check if asset to edit is present
-      Asset asset = assetOptional.get();
-      model.addAttribute("asset", asset);
-      model.addAttribute("id", id);
-      return "editAsset";
-    } else {
-      // Handle asset not found
-      return "assetNotFound"; // Render error.html
-    }
-  }
-
-  /**
-   * This method handles the submitted edit form and updates the asset within the database.
-   * 
-   * @param id
-   * @param updatedAsset
-   * @return asset added page
-   */
-  @PostMapping("/asset/editAsset/{id}")
-  public String editAssetSubmit(@PathVariable("id") Integer id,
-      @ModelAttribute Asset updatedAsset) {
-    updatedAsset.setId(id);
-    addActionLog(updatedAsset.getId(), null, "Edited asset"); // Adds an action record to the log
-    assetRepository.save(updatedAsset);
-    return "result";
-  }
-
   /**
    * This method fetches all the types stored in the database and returns a JSON file of the content
    * to the web page.
@@ -262,35 +178,6 @@ public class MainController {
   public @ResponseBody Iterable<Type> getAllTypes() {
     // This returns a JSON or XML with the assets
     return typeRepository.findAll();
-  }
-
-  /**
-   * This method intitalises the model to allow for population of the attribute data for a specific
-   * type. This is the GET request to localhost:8080/createType.
-   *
-   * @param model functions as a Java object to hold the type attribute data
-   * @return the string of the next path to render
-   */
-  @GetMapping("/type/createType") // GET request : When you go to localhost:8080/type/createType
-  public String typeForm(Model model) {
-    // Gives the form a Type object to add attributes to
-    model.addAttribute("createType", new Type());
-    return "createType"; // renders createType.html
-  }
-
-  /**
-   * This method is the POST request to send the content of the type form for submission to the
-   * database. It onward routes to the resultCreateType.html page.
-   *
-   * @param type
-   * @param model
-   * @return onward path routing for the resultCreateType.html page
-   */
-  @PostMapping("/type/createType") // POST request : When you submit the form
-  public String typeSubmit(@ModelAttribute Type type, Model model) {
-    Type savedType = typeRepository.save(type); // Add the type object to the database
-    addActionLog(null, savedType.getId(), "Created type"); // Adds an action record to the log
-    return "resultCreateType"; // renders resultCreateType.html
   }
 
   /**
@@ -329,41 +216,6 @@ public class MainController {
 		}
 	}
 	return false;
-  }
-  
-  @GetMapping(path = "type/returnAttributes/{typeName}")
-  public @ResponseBody List<String> getTypeAttributes(@PathVariable("typeName") String typeName) {
-	Optional<Type> optType = getTypeByName(typeName);
-	Type type = new Type();
-	List<String> attributeList = new ArrayList<String>();
-	if (optType.isPresent()) {
-		type = optType.get();
-	}
-		if (!(type.getCustomAttribute1().equals(""))) {
-			attributeList.add(type.getCustomAttribute1());
-		} if (!(type.getCustomAttribute2().equals(""))) {
-			attributeList.add(type.getCustomAttribute2());
-		} if (!(type.getCustomAttribute3().equals(""))) {
-			attributeList.add(type.getCustomAttribute3());
-		} if (!(type.getCustomAttribute4().equals(""))) {
-			attributeList.add(type.getCustomAttribute4());
-		}
-		
-	return attributeList;
-		
-  }
-
-  /**
-   * This method manages the GET request and renders the delete type page
-   * 
-   * @param model
-   * @return routing for the /deleteType page
-   */
-  @GetMapping("/type/deleteType") // GET request : When you go to localhost:8080/type/deleteType
-  public String deleteType(Model model) {
-    // Gives the form a Type object to add attributes to
-    model.addAttribute("deleteType", new Type());
-    return "deleteType"; // renders deleteType.html
   }
 
   /**
@@ -469,39 +321,10 @@ public class MainController {
       return "editType";
     } else {
       // Handle type not found
-      return "typeNotFound"; // Render error.html
+      return "typeNotFound";
     }
   }
 
-  /**
-   * This method handles the submitted edit form and updates the type within the database.
-   * 
-   * @param id
-   * @param updatedType
-   * @return type added page This method displays all users currently stored in the database.
-   * @return a list of every user currently stored in the database and all their attributes.
-   */
-  @PostMapping("/type/editType/{id}")
-  public String editTypeSubmit(@PathVariable("id") Integer id, @ModelAttribute Type updatedType) {
-    updatedType.setId(id);
-    addActionLog(null, updatedType.getId(), "Edited type"); // Adds an action record to the log
-    typeRepository.save(updatedType);
-    return "resultCreateType";
-  }
-  
-  /**
-   * This method renders createUser.html with input forms for each attribute.
-   * 
-   * @param model an interface for holding attribute values for the user to be created.
-   * @return the createUser webpage
-   */
-   @GetMapping("/user/createUser") // GET request : When you go to localhost:8080/createUser
-   public String userForm(Model model) {
-     model.addAttribute("createUser", new User()); // Gives the form a user object to add
-                                                   // attributes to
-     return "createUser"; // renders createUser.html
-   }
-  
   /**
    * This method is a query function to request the details of assets by their title in the url
    * localhost:8080/asset/findTitle/{title}.
@@ -626,19 +449,4 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
     }
   }
-  
-
-  @GetMapping("/comment/createComment") // GET request
-  public String commentForm(Model model) {
-    model.addAttribute("createComment", new AssetComment());
-    return "createComment"; // renders 
-  }
-
-  @PostMapping("/comment/createComment") // POST request : When you submit the form
-  public String commentSubmit(@ModelAttribute AssetComment assetComment, Model model) {
-    AssetComment savedAssetComment = assetCommentRepository.save(assetComment); 
-    model.addAttribute("savedAssetComment", savedAssetComment); 
-    return "result"; // renders result.html
-  }
-
 }
