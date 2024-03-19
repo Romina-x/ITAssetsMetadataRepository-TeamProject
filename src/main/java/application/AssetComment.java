@@ -29,6 +29,8 @@ public class AssetComment {
 
   private boolean visibleComment;
   
+  private String commentUser;
+  
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user; 
@@ -80,6 +82,14 @@ public class AssetComment {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public String getCommentUser() {
+    return commentUser;
+  }
+
+  public void setCommentUser(String commentUser) {
+    this.commentUser = commentUser;
   }
 
 }

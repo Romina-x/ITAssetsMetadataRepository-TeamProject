@@ -225,7 +225,7 @@ const OpenAsset = () => {
     console.log(c.user); // Log the user object to the console
     return (
       <TableRow key={c.id}>
-        <TableCell>{c.user ? c.user.username : 'Unknown'}</TableCell>
+        <TableCell>{c.id}</TableCell>
         <TableCell>{c.comment}</TableCell>
         <TableCell align="right">{c.timestamp}</TableCell>
       </TableRow>
