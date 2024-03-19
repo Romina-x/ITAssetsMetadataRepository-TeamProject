@@ -23,6 +23,8 @@ public class AssetComment {
   private String comment;
   
   private LocalDateTime timestamp;
+
+  private boolean visibleComment;
   
 
   public Integer getId() {
@@ -56,5 +58,14 @@ public class AssetComment {
   public void setTimestamp(LocalDateTime timestamp) {
     this.timestamp = timestamp;
   }
+  
+  public boolean isVisibleComment() {
+    return visibleComment;
+  }
+
+  public void setVisibleComment(boolean visibleComment) {
+    this.visibleComment = visibleComment;
+  }
+
   
 }
