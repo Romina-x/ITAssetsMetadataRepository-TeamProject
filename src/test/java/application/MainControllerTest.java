@@ -28,6 +28,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
+import application.repository.TokenRepository;
+import application.repository.UserRepository;
 
 
 
@@ -53,8 +55,10 @@ class MainControllerTest {
   private TypeRepository typeRepository;
   @MockBean
   private ActionLogRepository actionLogRepository;
-//  @MockBean
-//  private UserRepository userRepository;
+  @MockBean
+  private UserRepository userRepository;
+  @MockBean
+  private TokenRepository tokenRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
  
