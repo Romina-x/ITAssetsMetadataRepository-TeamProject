@@ -27,17 +27,21 @@ function App() {
   React.useEffect(() => {
     const getAssets = async () => {
       const res = await AssetAPI.getAll();
-      setAssets(res);
-      setOriginalAssets(res);
-      if (res.length > 0) {
-        const assetAttributes = Object.keys(res[0]);
-        setAssetAttributes(assetAttributes);
-        setSelectedAssetAttribute("title"); 
-      }
+      if (res && res.length > 0) {
+	      setAssets(res);
+	      setOriginalAssets(res);
+	      const assetAttributes = Object.keys(res[0]);
+	      setAssetAttributes(assetAttributes);
+	      setSelectedAssetAttribute("title"); 
+	  } else {
+		  setAssets([]);
+	      setOriginalAssets([]);
+	      setAssetAttributes([]);
+	      setSelectedAssetAttribute("");  
+	  }
     };
     getAssets();
   }, []);
-  
 
   const [assets, setAssets] = React.useState([])
   const [originalAssets, setOriginalAssets] = useState([]);
