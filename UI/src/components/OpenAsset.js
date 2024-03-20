@@ -34,6 +34,7 @@ const OpenAsset = () => {
   const [comment, setAssetComment] = useState("");
   const [time, setTime] = useState("");
   const [itemId, setItemId] = useState("");
+  const [commentUser, setCommentUser] = useState("");
   const [visibleComment, setVisibleComment] = useState(false); 
   
   let { openAssetId } = useParams();
@@ -86,7 +87,7 @@ const OpenAsset = () => {
         comment: comment,
         timestamp: currentTime,
         publicComment: visibleComment,
-        username: username
+        username: commentUser
       });
       
       if (!response.ok) {
@@ -224,10 +225,10 @@ const OpenAsset = () => {
         <TableBody>
           {comments.map((c) => {
   if (c.itemId === a.id) {
-    console.log(c.user); // Log the user object to the console
+    console.log(username); // Log the user object to the console
     return (
       <TableRow key={c.id}>
-        <TableCell>{c.id}</TableCell>
+        <TableCell>{username}</TableCell>
         <TableCell>{c.comment}</TableCell>
         <TableCell align="right">{c.timestamp}</TableCell>
       </TableRow>

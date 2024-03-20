@@ -37,7 +37,8 @@ export const addComment = async (commentData) => {
       },
       body: JSON.stringify({
         ...commentData,
-        visibleComment: commentData.visibleComment, 
+        visibleComment: commentData.visibleComment,
+        commentUser: commentData.commentUser, 
       }),
     });
 
