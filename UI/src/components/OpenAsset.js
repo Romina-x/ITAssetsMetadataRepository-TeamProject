@@ -21,6 +21,7 @@ import * as LogAPI from '../utility/LogAPI';
 import * as TypeAPI from '../utility/TypeAPI';
 
 const OpenAsset = () => {
+  const username = sessionStorage.getItem('username');
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
   const currentDate = Date.now();
@@ -84,7 +85,8 @@ const OpenAsset = () => {
         itemId: a.id,
         comment: comment,
         timestamp: currentTime,
-        publicComment: visibleComment
+        publicComment: visibleComment,
+        username: username
       });
       
       if (!response.ok) {

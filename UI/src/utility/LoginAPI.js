@@ -15,6 +15,7 @@ export const login = async (userData) => {
             if (data.token) {
                 sessionStorage.setItem('token', data.token);
                 sessionStorage.setItem('role', data.role);
+                sessionStorage.setItem('username', data.username)
             }
             return data;
         } else {
