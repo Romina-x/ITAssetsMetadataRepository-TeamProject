@@ -21,6 +21,7 @@ import * as LogAPI from '../utility/LogAPI';
 import * as TypeAPI from '../utility/TypeAPI';
 
 const OpenAsset = () => {
+  const username = sessionStorage.getItem('username');
   const [save, setSave] = useState("Save");
   const [cancel, setCancel] = useState("Cancel");
   const currentDate = Date.now();
@@ -84,7 +85,8 @@ const OpenAsset = () => {
         itemId: a.id,
         comment: comment,
         timestamp: currentTime,
-        publicComment: visibleComment
+        publicComment: visibleComment,
+        username: username
       });
       
       if (!response.ok) {
@@ -214,7 +216,7 @@ const OpenAsset = () => {
       <Table size="small">
         <TableHead>
         <TableRow>
-            <TableCell>Comment ID</TableCell>
+            <TableCell>User</TableCell>
             <TableCell>Comment</TableCell>
             <TableCell align="right">Timestamp</TableCell>
           </TableRow>
@@ -224,7 +226,7 @@ const OpenAsset = () => {
           if (c.itemId === a.id) {
             return (
               <TableRow key={c.id}>
-              <TableCell>{c.id}</TableCell>
+              <TableCell>{c.username}</TableCell>
               <TableCell>{c.comment}</TableCell>
               <TableCell align="right">{c.timestamp}</TableCell>
             </TableRow>
