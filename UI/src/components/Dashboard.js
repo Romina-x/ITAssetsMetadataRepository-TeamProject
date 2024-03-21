@@ -31,6 +31,7 @@ import EditAsset from './AssetEdit';
 import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
 import WelcomePage from './WelcomePage';
+import Login from "./Login";
 
 
 function Copyright(props) {
@@ -100,7 +101,6 @@ const Drawer = styled(MuiDrawer, {
   
 }));
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
@@ -145,6 +145,7 @@ export default function Dashboard(props) {
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("user") && <p>Search Users</p>}
+              {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>
             <IconButton color="inherit">
@@ -207,6 +208,7 @@ export default function Dashboard(props) {
                 {props.page === "type/edit" && <TypeEdit />}
                 {props.page === "user/find" && <UserFind />}
                 {props.page === "welcome" && <WelcomePage />}
+                {props.page === "login" && <Login />}
 
 
               </Grid>
