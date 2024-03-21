@@ -30,6 +30,7 @@ import TypeFind from './TypeFind';
 import EditAsset from './EditAsset';
 import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
+import WelcomePage from './WelcomePage';
 
 
 function Copyright(props) {
@@ -205,7 +206,7 @@ export default function Dashboard(props) {
                 {props.page === "type/find" && ( <TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
                 {props.page === "user/find" && <UserFind />}
-
+                {props.page === "welcome" && <WelcomePage />}
 
 
               </Grid>
