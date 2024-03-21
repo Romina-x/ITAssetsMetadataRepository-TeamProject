@@ -3,8 +3,7 @@ describe("Login Component", () => {
     cy.visit("http://localhost:3000/"); // Visit the login page
   });
 
-  it("should display login form elements", () => {
-    
+  it("should display login form elements", () => {    
     cy.contains("Username").should("exist");
     cy.contains("Password").should("exist");
     cy.contains("Login").should("exist");
@@ -13,7 +12,7 @@ describe("Login Component", () => {
 
   it("should display error message for invalid login", () => {
     cy.contains("Login").click();
-    cy.contains("An error occurred, please try again later").should("exist");
+    cy.contains("Invalid username or password, attempts remaining: 2").should("exist");
   });
 
   it('should redirect to asset/find page on successful login', () => {
@@ -27,7 +26,7 @@ describe("Login Component", () => {
     // Ensure the login request has been made
     cy.wait('@loginRequest').then((interception) => {
       // Assert that the URL has changed to '/asset/find'
-      cy.url().should('include', '/asset/find');
+      cy.url().should('include', 'http://localhost:3000/asset/find');
     });
   });
 });
