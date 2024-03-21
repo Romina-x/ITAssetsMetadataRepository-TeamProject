@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,6 +22,7 @@ export default function FormPropsTextFields() {
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [responseData, setResponseData] = useState([]);
+  const navigate = useNavigate(); 
 
     
   //state variables for form fields
@@ -168,6 +170,11 @@ export default function FormPropsTextFields() {
       }
       resetValue()
       console.log('Asset added successfully');
+      const assets = await AssetAPI.getAll();
+        const addedAsset = assets.find(asset => asset.title === title);
+        if (addedAsset) {
+          navigate(`/asset/open/${addedAsset.id}`);
+        }
     } catch (error) {
       console.error('Error adding asset:', error);
     }
