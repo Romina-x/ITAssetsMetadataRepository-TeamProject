@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Grid, TextField, Typography, Button } from "@mui/material";
 import * as SignUpAPI from "../utility/SignUpAPI";
+import { styled } from "@mui/material/styles";
+import MuiAppBar from "@mui/material/AppBar";
+
 
 export default function SignUp() {
   const [firstName, setFirstname] = React.useState("");
@@ -40,7 +43,31 @@ export default function SignUp() {
       setError("Password not match !");
     }
   };
+
+  const AppBar = styled(MuiAppBar)(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: "black",
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  }));
+
   return (
+    <>
+    <AppBar position="absolute">
+      <Typography
+        component="h1"
+        variant="h4"
+        color="inherit"
+        noWrap
+        sx={{ flexGrow: 1, fontFamily: "Calibri", 
+          paddingLeft: "100px", 
+        }}
+      >
+        <p>Sign Up</p>
+      </Typography>      
+    </AppBar>    
     <Grid
       container
       spacing={5}
@@ -56,8 +83,8 @@ export default function SignUp() {
         justifyContent="center"
         textAlign="center"
       >
-        <Typography variant="h4" style={{ paddingBottom: "5%" }}>
-          Create Your Account Here
+        <Typography variant="h4" style={{ paddingBottom: "5%", whiteSpace: "nowrap" }}>
+          Create A Repository Account
         </Typography>
         {success === false ? (
           <p style={{ color: "red" }}>{error}</p>
@@ -110,13 +137,12 @@ export default function SignUp() {
           color="primary"
           onClick={handleSignUp}
           fullWidth
-          style={{ marginTop: "5%", marginBottom: "5%" }}
+          style={{  background: "black", marginTop: "5%",marginBottom: "5%" }}
         >
           SignUp
         </Button>
         <Button
           variant="contained"
-          color="secondary"
           fullWidth
           onClick={handleReturn}
         >
@@ -124,5 +150,6 @@ export default function SignUp() {
         </Button>
       </Grid>
     </Grid>
+    </>
   );
 }

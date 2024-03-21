@@ -3,6 +3,8 @@ import { TextField, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import * as LoginAPI from "../utility/LoginAPI";
+import { styled } from "@mui/material/styles";
+import MuiAppBar from "@mui/material/AppBar";
 let attempts = 1;
 
 export default function Login() {
@@ -38,7 +40,30 @@ export default function Login() {
 		}
   };
 
+  const AppBar = styled(MuiAppBar)(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: "black",
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  }));
+
   return (
+    <>
+    <AppBar position="absolute">
+      <Typography
+        component="h1"
+        variant="h4"
+        color="inherit"
+        noWrap
+        sx={{ flexGrow: 1, fontFamily: "Calibri", 
+          paddingLeft: "100px", 
+        }}
+      >
+        <p>Log In</p>
+      </Typography>      
+    </AppBar>
     <Grid
       container
       spacing={5}
@@ -67,10 +92,9 @@ export default function Login() {
         <div></div>
         <Button
           variant="contained"
-          color="primary"
           onClick={handleLogin}
           fullWidth
-          style={{ marginTop: "5%",marginBottom: "5%" }}
+          style={{  background: "black", marginTop: "5%",marginBottom: "5%" }}
         >
           {loading ? "Logging in ..." : "Login"}
         </Button>
@@ -79,5 +103,6 @@ export default function Login() {
         </Link>
       </Grid>
     </Grid>
+    </>
   );
 }
