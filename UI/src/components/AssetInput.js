@@ -11,8 +11,6 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI";
-import AddIcon from '@mui/icons-material/Add';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 export default function FormPropsTextFields() {
