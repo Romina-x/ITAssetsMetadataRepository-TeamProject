@@ -5,7 +5,7 @@ import Link from "@mui/material/Link";
 import * as LoginAPI from "../utility/LoginAPI";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
-let attempts = 1;
+let attempts = 0;
 
 export default function Login() {
   const [username, setUsername] = React.useState("");
@@ -30,7 +30,7 @@ export default function Login() {
 	    } catch (error) {
 	      console.log(error);
 	      attempts++;
-	      setError("Invalid username or password, attempts remaining: " + (4 - attempts));
+	      setError("Invalid username or password, attempts remaining: " + (3 - attempts));
 	    } finally {
 	      setLoading(false);
 	    }
