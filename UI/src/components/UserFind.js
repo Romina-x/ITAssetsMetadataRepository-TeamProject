@@ -31,12 +31,15 @@ function App() {
       const res = await UserAPI.getAll();
       setUsers(res);
       setOriginalUsers(res);
-      const userAttributes = Object.keys(res[0]);
-      setUserAttributes(userAttributes);
-      setSelectedUserAttribute("name");
+      if (res.length > 0) {
+        const userAttributes = Object.keys(res[0]);
+        setUserAttributes(userAttributes);
+        setSelectedUserAttribute("name");
+      }
     };
     getUsers();
   }, []);
+  
 
   const [users, setUsers] = React.useState([]);
   const [updatingUsername, setUpdatingUsername] = React.useState("");
@@ -247,7 +250,6 @@ function App() {
       handleClose={() => setOpenDeleteDialog(false)}
       handleConfirm={() => {
         setOpenDeleteDialog(false);
-        // Call handleDeleteType function to delete the type
         handleDeleteUser(deletingUserId);
       }}
       typeId={deletingUserId}
