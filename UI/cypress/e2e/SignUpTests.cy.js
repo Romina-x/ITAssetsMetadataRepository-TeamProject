@@ -11,7 +11,7 @@ describe("Sign Up", () => {
     cy.contains("Retype Password").should("exist");
     cy.contains("SignUp").should("exist");
     cy.contains("Return to login").should("exist");
-  });
+  }); 
 
   it('displays "Create new user success" when passwords do not match', () => {
     cy.contains("SignUp").click();
