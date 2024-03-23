@@ -63,7 +63,7 @@ function App() {
 
   const handleEditAsset = () => {
     setOpenEditConfirmation(false);
-    // Navigate to the oter page
+    // Navigate to the other page
   };
 
   // Function to handle type selection from dropdown
