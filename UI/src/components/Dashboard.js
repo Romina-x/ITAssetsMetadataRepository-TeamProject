@@ -203,7 +203,7 @@ export default function Dashboard(props) {
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
-                {props.page === "asset/find" && <AssetFind />}
+                {props.page === "asset/find" && ( <AssetFind role={role} />)}
                 {props.page === "type/find" && ( <TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
                 {props.page === "user/find" && <UserFind />}
