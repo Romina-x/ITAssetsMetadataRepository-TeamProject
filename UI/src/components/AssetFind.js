@@ -217,7 +217,7 @@ function App() {
               No assets found.
             </TableCell>
           </TableRow>
-          )}
+         )}
       </TableBody>
     </Table>
     <TablePagination
