@@ -211,6 +211,13 @@ function App() {
             </TableCell>
           </TableRow>
         ))}
+        {assets.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={6} align="center">
+              No assets found.
+            </TableCell>
+          </TableRow>
+          )}
       </TableBody>
     </Table>
     <TablePagination
