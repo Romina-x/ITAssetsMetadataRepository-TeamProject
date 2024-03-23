@@ -217,6 +217,13 @@ function App(props) {
             </TableCell>
           </TableRow>
         ))}
+        {types.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={6} align="center">
+              No types found.
+            </TableCell>
+          </TableRow>
+         )}
       </TableBody>
     </Table>
     <TablePagination
