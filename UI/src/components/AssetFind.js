@@ -22,7 +22,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import EditConfirmationDialog from './AssetEditConfirm'; 
 
-function App() {
+function App(props) {
 
   React.useEffect(() => {
     const getAssets = async () => {
@@ -55,6 +55,7 @@ function App() {
 
   const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
   const [editingAssetId, setEditingAssetId] = React.useState(null);
+  const { role } = props;
 
   const handleEditConfirmation = (id) => {
     setEditingAssetId(id);
@@ -199,6 +200,8 @@ function App() {
                 <VisibilityIcon />
             </Link>
             </IconButton>
+            {(role === 'ADMIN' || role === 'USER') && (
+            <>
               <IconButton className={styles.link}>
                 <EditIcon onClick={() => handleEditConfirmation(a.id)} />
               </IconButton>              
@@ -208,6 +211,8 @@ function App() {
               >
                 <DeleteIcon />
               </IconButton>
+            </>
+            )}
             </TableCell>
           </TableRow>
         ))}
