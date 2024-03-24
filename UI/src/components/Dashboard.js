@@ -148,16 +148,7 @@ export default function Dashboard(props) {
               {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit" onClick={{}}>
-              <Badge badgeContent={8} color="secondary">
-                <AccountCircleIcon />
-              </Badge>
-            </IconButton>
+
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
