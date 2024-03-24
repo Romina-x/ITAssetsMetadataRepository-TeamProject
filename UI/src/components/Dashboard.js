@@ -148,7 +148,9 @@ export default function Dashboard(props) {
               {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>
-
+            <IconButton color="inherit" onClick={{}}>
+                <AccountCircleIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
