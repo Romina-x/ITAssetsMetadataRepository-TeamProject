@@ -146,6 +146,7 @@ export default function Dashboard(props) {
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("user") && <p>Search Users</p>}
+              {props.page.toLowerCase().includes("welcome") && <p>Dashboard</p>}
               {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>

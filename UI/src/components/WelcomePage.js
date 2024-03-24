@@ -1,16 +1,20 @@
 import React from "react";
 import { Avatar, Typography, Grid, Card, CardContent } from "@mui/material";
 import AssetPieChart from "./Pie"; // Import the AssetPieChart component
+import * as UserApi from "../utility/UserAPI"
 
 import styles from "../style/Dashboard.module.css"; // Import the CSS module file
 
 export default function Dashboard() {
-  const user = {
-    // Example user data
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "https://via.placeholder.com/150",
-  };
+  const [user, setUser] = React.useState({})
+
+  React.useEffect (() => {
+    const getUser = async () =>{
+      const res = await UserApi.get(sessionStorage.getItem("username"));
+      setUser(res);
+    }
+    getUser();
+  },[]);
 
   return (
     <div className={styles.root}>
@@ -20,22 +24,50 @@ export default function Dashboard() {
             <Typography variant="h4" gutterBottom>
               User Infomation
             </Typography>
-            <Avatar alt={user.name} src={user.avatar} />
-            <Typography variant="h6">{user.name}</Typography>
+            <Avatar alt={user.firstname} src="https://via.placeholder.com/150" />
+            <Typography variant="h6">{user.firstname + " " + user.lastname}</Typography>
+            {user.role === "ADMIN" && 
+            <Typography variant="body2">
+              You have an ADMIN role which allow you to operate any action in this application.
+            </Typography>
+            }
+            {user.role === "USER" && 
+            <Typography variant="body2">
+              You have an USER role which allow you to view, add, edit and comment Asset in this application.
+            </Typography>
+            }
+            {user.role === "READER" && 
+            <Typography variant="body2">
+              You have an READER role which only allow you to view Asset in this application.
+            </Typography>
+            }
+            
             <Typography variant="body2" color="textSecondary">
-              {user.email}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h4" gutterBottom>
               Asset Distribution
             </Typography>
-            {/* Description of the app */}
             <Typography variant="body1" gutterBottom>
               This dashboard displays the distribution of assets by type.
             </Typography>
-            {/* AssetPieChart component */}
             <AssetPieChart />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h4" gutterBottom>
+              Application Description
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Our project aims to create a fantastic website for any company, 
+              not just software ones, to manage all their important stuff in one place. 
+              Instead of just handling code, this website will organize everything, from documents to videos, 
+              making it easy to find and use. You can save different types of assets, like documents or videos, 
+              along with their details. Plus, you can connect them to show how they're related. 
+              There will be three roles: Readers who can view, Users who can add or edit, and Admins who can do everything. 
+              The website will have a powerful search tool and keep track of changes made, ensuring everyone stays informed. 
+              Later on, we might even add more cool features!
+            </Typography>
           </Grid>
         </Grid>
       </main>

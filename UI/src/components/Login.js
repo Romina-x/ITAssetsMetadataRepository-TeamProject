@@ -50,20 +50,6 @@ export default function Login() {
   }));
 
   return (
-    <>
-    <AppBar position="absolute">
-      <Typography
-        component="h1"
-        variant="h4"
-        color="inherit"
-        noWrap
-        sx={{ flexGrow: 1, fontFamily: "Calibri", 
-          paddingLeft: "100px", 
-        }}
-      >
-        <p>Log In</p>
-      </Typography>      
-    </AppBar>
     <Grid
       container
       spacing={5}
@@ -103,6 +89,5 @@ export default function Login() {
         </Link>
       </Grid>
     </Grid>
-    </>
   );
 }
