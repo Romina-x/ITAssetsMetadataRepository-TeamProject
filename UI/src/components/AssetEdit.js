@@ -48,6 +48,13 @@ export default function FormPropsTextFields() {
 
       setLink(res.link || "");
       setType(res.type || "");
+      setSelectedType({
+        typeName: res.type || "",
+        customAttribute1: res.customAttribute1 || "",
+        customAttribute2: res.customAttribute2 || "",
+        customAttribute3: res.customAttribute3 || "",
+        customAttribute4: res.customAttribute4 || ""
+      });
       setTitle(res.title || "");
       setAuthor(res.author || "");
       setCustomAttribute1(res.customAttribute1 || "");
@@ -76,8 +83,6 @@ export default function FormPropsTextFields() {
         // Extract only the typeName from each type object
         const typeNames = data.map((type) => type.typeName);
         setTypes(typeNames); // Set the types state with an array of type names
-        setType(typeNames[0]); //Set initial selected type to the first
-        setSelectedType(data[0]);
       })
       .catch((error) => {
         console.error("Error fetching types:", error);

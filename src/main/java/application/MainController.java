@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import application.model.User;
 
 /**
  * This program handles HTTP requests to the application, specifically POST and GET.
@@ -199,13 +197,13 @@ public class MainController {
     return typeRepository.findByTypeName(typeName);
   }
   
-  @GetMapping(path = "type/getTypeExists/{typeName}")
+  @GetMapping(path = "/type/getTypeExists/{typeName}")
   public @ResponseBody Boolean getTypeExists(@PathVariable("typeName") String typeName) {
 	Optional<Type> optType = getTypeByName(typeName);
 	return (optType.isPresent());
   }
   
-  @GetMapping(path = "asset/getAssetExists/{title}/{type}")
+  @GetMapping(path = "/asset/getAssetExists/{title}/{type}")
   public @ResponseBody Boolean getAssetExists(@PathVariable("title") String assetName, @PathVariable("type") String typeName) {
 	List<Asset> assetList = getAssetByTitle(assetName);
 	if (assetList.size() > 0) {

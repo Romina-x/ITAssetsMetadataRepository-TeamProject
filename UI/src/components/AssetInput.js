@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,8 +11,6 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI";
-import AddIcon from '@mui/icons-material/Add';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 export default function FormPropsTextFields() {
@@ -21,6 +20,7 @@ export default function FormPropsTextFields() {
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [responseData, setResponseData] = useState([]);
+  const navigate = useNavigate(); 
 
     
   //state variables for form fields
@@ -96,9 +96,7 @@ export default function FormPropsTextFields() {
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
     event.preventDefault();
-    const compAsset = await AssetAPI.getExists(title, type);
-	if (!compAsset) {
-		setSave("Saved");
+
 
     
     const newAlertMessage = {};
@@ -141,6 +139,10 @@ export default function FormPropsTextFields() {
     
     setAlertMessage("");
     
+    const compAsset = await AssetAPI.getExists(title, type);
+    if (!compAsset) {
+        setSave("Saved");
+    
     try {    
       
       const response = await AssetAPI.addAsset({
@@ -168,6 +170,11 @@ export default function FormPropsTextFields() {
       }
       resetValue()
       console.log('Asset added successfully');
+      const assets = await AssetAPI.getAll();
+        const addedAsset = assets.find(asset => asset.title === title);
+        if (addedAsset) {
+          navigate(`/asset/open/${addedAsset.id}`);
+        }
     } catch (error) {
       console.error('Error adding asset:', error);
     }
@@ -256,7 +263,6 @@ export default function FormPropsTextFields() {
         >
           <TextField
             id="outlined-select-type"
-            required
             select
             label="Type"
             value={type}
@@ -275,7 +281,6 @@ export default function FormPropsTextFields() {
             label= "Title"
             placeholder= "Project1"
             multiline
-            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -286,7 +291,6 @@ export default function FormPropsTextFields() {
             label="Link"
             placeholder="google.com"
             multiline
-            required
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />
@@ -297,7 +301,6 @@ export default function FormPropsTextFields() {
             label="Author"
             placeholder="Jane D"
             multiline
-            required
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
           />
@@ -315,7 +318,6 @@ export default function FormPropsTextFields() {
             label={selectedType ? selectedType.customAttribute1 : "Custom Attribute 1"}
             placeholder=""
             multiline
-            required
             value={customAttribute1}
             onChange={(e) => setCustomAttribute1(e.target.value)}
             style={{ display: selectedType && selectedType.customAttribute1 === "" ? "none" : "grid" }}
@@ -328,7 +330,6 @@ export default function FormPropsTextFields() {
             label={selectedType ? selectedType.customAttribute2 : "Custom Attribute 2"}
             placeholder=""
             multiline
-            required
             value={customAttribute2}
             onChange={(e) => setCustomAttribute2(e.target.value)}
             style={{ display: selectedType && selectedType.customAttribute2 === "" ? "none" : "grid" }}
@@ -340,7 +341,6 @@ export default function FormPropsTextFields() {
             label={selectedType ? selectedType.customAttribute3 : "Custom Attribute 3"}
             placeholder=""
             multiline
-            required
             value={customAttribute3}
             onChange={(e) => setCustomAttribute3(e.target.value)}
             style={{ display: selectedType && selectedType.customAttribute3 === "" ? "none" : "grid" }}
@@ -352,7 +352,6 @@ export default function FormPropsTextFields() {
 	            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
 	            placeholder=""
 	            multiline
-              required
 	            value={customAttribute4}
 	            onChange={(e) => setCustomAttribute4(e.target.value)}
 	            style={{ display: selectedType && selectedType.customAttribute4 === "" ? "none" : "grid" }}

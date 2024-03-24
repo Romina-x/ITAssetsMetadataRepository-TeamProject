@@ -1,10 +1,6 @@
 package application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import java.time.LocalDateTime;
@@ -27,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.ui.Model;
 import application.repository.TokenRepository;
 import application.repository.UserRepository;
 
@@ -173,36 +168,7 @@ class MainControllerTest {
 //   *
 //   * @throws Exception , could be any checked exception.
 //   */
-//  @Test
-//  // test 3
-//  void testAssetSubmit() throws Exception {
-//    // Create mocks for Asset, Model, AssetRepository, and ActionLogRepository
-//    Asset asset = new Asset();
-//    Model model = mock(Model.class);
-//    AssetRepository assetRepository = mock(AssetRepository.class);
-//    ActionLogRepository actionLogRepository = mock(ActionLogRepository.class);
-//
-//    // Create an instance of MainController with mocks
-//    MainController controller = new MainController(assetRepository, actionLogRepository);
-//
-//    // Mock the behaviour of assetRepository.save(asset) to return the asset
-//    when(assetRepository.save(asset)).thenReturn(asset);
-//
-//    String result = "";
-//    // Call the controller method
-//    result = controller.assetSubmit(asset, model);
-//    verify(assetRepository).save(asset); // Verify interactions on mock objects
-//
-//    // Verifies that actionLogRepository.save() is called with any ActionLog object
-//    verify(actionLogRepository).save(any(ActionLog.class));
-//
-//    // Verifies that model.addAttribute() is called with "savedAsset" as attribute name
-//    // And any asset as its value
-//    verify(model).addAttribute(eq("savedAsset"), any(Asset.class));
-//
-//    assertEquals("result", result);
-//
-//  }
+
 
   /**
    * Test to validate that upon searching for a specific title, the asset with the same title is
@@ -1107,125 +1073,6 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.view().name("typeNotFound"));
   }
 
-//  /**
-//   * Test to validate that users are successfully added to database and that upon accessing the
-//   * /user/find/all, all data stored about users in the database, is retrieved as a JSON
-//   * successfully.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  @Test
-//  void testAddNewUser() throws Exception {
-//    String requestBody =
-//        "{\"name\":\"jim\", \"password\":\"pass\", \"role\":\"admin\"}";
-//
-//    MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/user/add")
-//        .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
-//
-//    assertEquals("User saved successfully", result.getResponse().getContentAsString());
-//  }
-  
-  
-//  @Test
-//  void testAddAndGetAllUsers() throws Exception {
-//
-//    mc.addNewUser("user1", "password1", "users role1");
-//    mc.addNewUser("user2", "password2", "users role2");
-//
-//    // mock users
-//    User user1 = new User();
-//    user1.setName("user1");
-//    user1.setPassword("password1");
-//    user1.setRole("users role1");
-//
-//    User user2 = new User();
-//    user2.setName("user2");
-//    user2.setPassword("password2");
-//    user2.setRole("users role2");
-//
-//    // Mock the behavior of the findAll method to return the mock users
-//    when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
-//    // Perform the GET request*/
-//    mvc.perform(MockMvcRequestBuilders.get("/user/find/all"))
-//        // Expects that the request was successful with 2 users in database
-//        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.length()").value(2))
-//        // Check the JSON properties of the first and second user in the array
-//        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("user1"))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$[0].password").value("password1"))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("user2"))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$[1].password").value("password2"));
-//
-//  }
-
-//  /**
-//   * Test to validate that upon accessing the /user/find/{id} path, all data stored about user with
-//   * unique id in the database, is retrieved as a JSON successfully.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  @Test
-//  void testGetUserById() throws Exception {
-//
-//    mc.addNewUser("user1", "password1", "users role1");
-//    mc.addNewUser("user2", "password2", "users role2");
-//
-//    // mock users
-//    User user1 = new User();
-//    user1.setName("user1");
-//    user1.setPassword("password1");
-//    user1.setRole("users role1");
-//
-//    User user2 = new User();
-//    user2.setName("user2");
-//    user2.setPassword("password2");
-//    user2.setRole("users role2");
-//
-//    // Mock the behavior of the findById method to return the user
-//    when(userRepository.findById(134)).thenReturn(Optional.of(user1));
-//    // Perform the GET request
-//    mvc.perform(MockMvcRequestBuilders.get("/user/find/{id}", 134))
-//        // Check the JSON properties of the returned user
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("user1"))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.password").value("password1"));
-//
-//  }
-//
-//  /**
-//   * Test to validate that upon accessing the /user/findName/{name} path, all data stored about user
-//   * with name in the database, is retrieved as a JSON successfully.
-//   *
-//   * @throws Exception , could be any unchecked exception.
-//   */
-//  @Test
-//  void testGetUserByName() throws Exception {
-//
-//    mc.addNewUser("user1", "password1", "users role1");
-//    mc.addNewUser("user2", "password2", "users role2");
-//
-//    // mock users
-//    User user1 = new User();
-//    user1.setName("user1");
-//    user1.setPassword("password1");
-//    user1.setRole("users role1");
-//
-//    User user2 = new User();
-//    user2.setName("user2");
-//    user2.setPassword("password2");
-//    user2.setRole("users role2");
-//
-//    String nameToFind = "user2";
-//
-//    when(userRepository.findByName(nameToFind)).thenReturn(List.of(user2));
-//
-//
-//    List<User> actualUsers = mc.getUserByName(nameToFind);
-//
-//    // Assert the result
-//    assertEquals(1, actualUsers.size(), "Should return a list containing one user.");
-//    assertEquals(nameToFind, actualUsers.get(0).getName(),
-//        "Should return a user with the specified name.");
-//
-//  }
 
   /**
    * Test to validate the string response of the method which allows for population of the attribute

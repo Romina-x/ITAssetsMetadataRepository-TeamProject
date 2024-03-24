@@ -23,14 +23,15 @@ import TypeInput from './TypeInput';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
-import OpenAsset from './OpenAsset';
-import OpenType from './OpenType';
+import OpenAsset from './AssetOpen';
+import OpenType from './TypeOpen';
 import AssetFind from './AssetFind';
 import TypeFind from './TypeFind';
-import EditAsset from './EditAsset';
+import EditAsset from './AssetEdit';
 import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
 import WelcomePage from './WelcomePage';
+import Login from "./Login";
 
 
 function Copyright(props) {
@@ -100,11 +101,11 @@ const Drawer = styled(MuiDrawer, {
   
 }));
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
   const role = sessionStorage.role;
+  const username = sessionStorage.username;
   console.log(role);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -145,17 +146,11 @@ export default function Dashboard(props) {
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("user") && <p>Search Users</p>}
+              {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton color="inherit" onClick={{}}>
-              <Badge badgeContent={8} color="secondary">
                 <AccountCircleIcon />
-              </Badge>
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -202,11 +197,12 @@ export default function Dashboard(props) {
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
-                {props.page === "asset/find" && <AssetFind />}
+                {props.page === "asset/find" && ( <AssetFind role={role} />)}
                 {props.page === "type/find" && ( <TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
-                {props.page === "user/find" && <UserFind />}
+                {props.page === "user/find" && ( <UserFind username={username} />)}
                 {props.page === "welcome" && <WelcomePage />}
+                {props.page === "login" && <Login />}
 
 
               </Grid>
