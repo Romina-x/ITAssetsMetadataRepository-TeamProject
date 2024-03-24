@@ -13,7 +13,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { readerListItems, userListItems, adminListItems } from "./listItems";
 import AssetInput from "./AssetInput";
@@ -147,8 +147,8 @@ export default function Dashboard(props) {
               {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>
-            <IconButton color="inherit" onClick={{}}>
-                <AccountCircleIcon />
+            <IconButton color="inherit" onClick={() => window.location.href = "/welcome"}>
+                <HomeIcon />
             </IconButton>
           </Toolbar>
         </AppBar>

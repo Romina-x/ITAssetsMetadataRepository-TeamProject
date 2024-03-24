@@ -28,17 +28,17 @@ export default function Dashboard() {
             <Typography variant="h6">{user.firstname + " " + user.lastname}</Typography>
             {user.role === "ADMIN" && 
             <Typography variant="body2">
-              You have an ADMIN role which allow you to operate any action in this application.
+              You have an ADMIN role which gives you access to all available actions within this application.
             </Typography>
             }
             {user.role === "USER" && 
             <Typography variant="body2">
-              You have an USER role which allow you to view, add, edit and comment Asset in this application.
+              You have an USER role gives you permission to search, add, edit and comment on Assets as well as to search for Types within this application.
             </Typography>
             }
             {user.role === "READER" && 
             <Typography variant="body2">
-              You have an READER role which only allow you to view Asset in this application.
+              You have an READER role gives you limited permission to search for Assets and Types in this application.
             </Typography>
             }
             
