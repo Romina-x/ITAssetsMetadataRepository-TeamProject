@@ -23,6 +23,7 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate(); 
 
   
@@ -52,6 +53,17 @@ export default function FormPropsTextFields() {
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
     event.preventDefault();
+    
+    let newAlertMessage = "";
+    if (!typeName || !customAttribute1) {
+      newAlertMessage = "Please fill in all mandatory fields";
+    }
+     
+    if (newAlertMessage) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if invalid input
+    }
+    setAlertMessage("");
     const compType = await TypeAPI.getTypeExists(typeName);
     if (!compType) {
       try {
@@ -121,19 +133,29 @@ export default function FormPropsTextFields() {
         alignItems="center"
         sx={{
           paddingBottom: 5,
-
         }}
       >
         <Grid item xs={5}>
-          <TextField
-            id="outlined-textarea"
-            label="Type Name"
-            placeholder="Document"
-            multiline
-            required
-            value = {typeName}
-            onChange={ (e) => setTypeName(e.target.value)}
-          />
+          <Grid container spacing={3} direction="column">
+            <Grid item>
+            {/* Alert for mandatory boxes */}
+            {alertMessage && (
+                <div style={{ color: "red", marginBottom: "10px" }}>
+                    {alertMessage}
+                </div>
+             )}
+    
+              <TextField
+                id="outlined-textarea"
+                label="Type Name"
+                placeholder="Document"
+                multiline
+                required
+                value={typeName}
+                onChange={(e) => setTypeName(e.target.value)}
+              />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={5}>
           <TextField
@@ -142,8 +164,8 @@ export default function FormPropsTextFields() {
             placeholder="Author"
             multiline
             required
-            value = {customAttribute1}
-            onChange={ (e) => setCustomAttribute1(e.target.value)}
+            value={customAttribute1}
+            onChange={(e) => setCustomAttribute1(e.target.value)}
           />
         </Grid>
         <Grid item xs={5}>
@@ -152,9 +174,8 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 2"
             placeholder="Security Rating"
             multiline
-            value = {customAttribute2}
-            onChange={ (e) => setCustomAttribute2(e.target.value)}
-            
+            value={customAttribute2}
+            onChange={(e) => setCustomAttribute2(e.target.value)}
           />
         </Grid>
         <Grid item xs={5}>
@@ -163,8 +184,8 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 3"
             placeholder="Location"
             multiline
-            value = {customAttribute3}
-            onChange={ (e) => setCustomAttribute3(e.target.value)}
+            value={customAttribute3}
+            onChange={(e) => setCustomAttribute3(e.target.value)}
           />
         </Grid>
         <Grid item xs={5}>
@@ -173,12 +194,12 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 4"
             placeholder="Project Name"
             multiline
-            value = {customAttribute4}
-            onChange={ (e) => setCustomAttribute4(e.target.value)}
+            value={customAttribute4}
+            onChange={(e) => setCustomAttribute4(e.target.value)}
           />
         </Grid>
       </Grid>
-
+    
       <Stack direction="row" spacing={2}>
         <Button
           variant="contained"
@@ -198,5 +219,6 @@ export default function FormPropsTextFields() {
         </Button>
       </Stack>
     </Box>
+
   );
 }
