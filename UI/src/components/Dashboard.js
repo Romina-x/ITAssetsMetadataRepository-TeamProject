@@ -105,6 +105,7 @@ const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
   const role = sessionStorage.role;
+  const username = sessionStorage.username;
   console.log(role);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -199,7 +200,7 @@ export default function Dashboard(props) {
                 {props.page === "asset/find" && ( <AssetFind role={role} />)}
                 {props.page === "type/find" && ( <TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
-                {props.page === "user/find" && <UserFind />}
+                {props.page === "user/find" && ( <UserFind username={username} />)}
                 {props.page === "welcome" && <WelcomePage />}
                 {props.page === "login" && <Login />}
 
