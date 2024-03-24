@@ -236,14 +236,11 @@ function App(props) {
     />
 
     <Stack direction="row" spacing={2}>
-      <Button
-        id="cancel-button"
-        variant="outlined"
-        endIcon={<UndoIcon />}
-        onClick={{}}
-      >
+    <Link to="/welcome">
+      <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
         Back To Dashboard
       </Button>
+    </Link>
     </Stack>
     <EditConfirmationDialog
         open={openEditConfirmation}
