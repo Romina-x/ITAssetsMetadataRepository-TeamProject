@@ -13,6 +13,20 @@ users = [
         "username": "admin_acct",
         "password": "pass",
         "role": "ADMIN"
+    },
+    {
+        "firstName": "User",
+        "lastName": "Userson",
+        "username": "user_acct",
+        "password": "pass",
+        "role": "USER"
+    },
+    {
+        "firstName": "Reader",
+        "lastName": "Readerson",
+        "username": "reader_acct",
+        "password": "pass",
+        "role": "READER"
     }
 ]
 
