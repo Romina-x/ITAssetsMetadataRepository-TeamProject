@@ -25,7 +25,7 @@ export default function Login() {
 	      });
 	      if (response.message.toLowerCase().includes("successful")) {
 	        localStorage.setItem("token", response.token);
-	        window.location.href = "asset/find";
+	        window.location.href = "welcome";
 	      } 
 	    } catch (error) {
 	      console.log(error);

@@ -9,14 +9,12 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { readerListItems, userListItems, adminListItems } from "./listItems";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
@@ -31,7 +29,6 @@ import EditAsset from './AssetEdit';
 import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
 import WelcomePage from './WelcomePage';
-import Login from "./Login";
 
 
 function Copyright(props) {
@@ -114,7 +111,7 @@ export default function Dashboard(props) {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
@@ -203,15 +200,12 @@ export default function Dashboard(props) {
                 {props.page === "type/edit" && <TypeEdit />}
                 {props.page === "user/find" && ( <UserFind username={username} />)}
                 {props.page === "welcome" && <WelcomePage />}
-                {props.page === "login" && <Login />}
-
-
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
-      </Grid>
+      </Box>
     </ThemeProvider>
   );
 }

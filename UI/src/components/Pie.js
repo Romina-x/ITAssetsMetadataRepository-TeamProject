@@ -1,20 +1,17 @@
-import React from 'react';
-import { PieChart } from '@mui/x-charts/PieChart';
-import * as AssetAPI from '../utility/AssetAPI';
+import React from "react";
+import { PieChart } from "@mui/x-charts/PieChart";
+import * as AssetAPI from "../utility/AssetAPI";
 
 export default function AssetPieChart() {
-    const [assets, setAssets] = React.useState([]);
+  const [assets, setAssets] = React.useState([]);
 
-    React.useEffect(() => {
-        const getAssets = async () => {
-          const res = await AssetAPI.getAll();
-          setAssets(res);
-        };
-        getAssets();
-      }, []);
-
-
-
+  React.useEffect(() => {
+    const getAssets = async () => {
+      const res = await AssetAPI.getAll();
+      setAssets(res);
+    };
+    getAssets();
+  }, []);
 
   // Count occurrences of each asset type
   const assetCounts = assets.reduce((counts, asset) => {
@@ -30,14 +27,15 @@ export default function AssetPieChart() {
   }));
 
   return (
-    <PieChart
-      series={[
-        {
-          data: seriesData,
-        },
-      ]}
-      width={1000}
-      height={200}
-    />
+    <div style={{ width: "100%", overflow: "hidden" }}>
+      <PieChart
+        series={[
+          {
+            data: seriesData,
+          },
+        ]}
+        height={200} // Set the desired height
+      />
+    </div>
   );
 }
