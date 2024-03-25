@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,7 +12,6 @@ import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI";
 
-
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");
@@ -20,9 +19,8 @@ export default function FormPropsTextFields() {
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [responseData, setResponseData] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-    
   //state variables for form fields
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
@@ -32,16 +30,15 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
-  const [association1, setAssociation1] = useState(""); 
-  const [association2, setAssociation2] = useState(""); 
-  const [association3, setAssociation3] = useState(""); 
-  const [association4, setAssociation4] = useState(""); 
+  const [association1, setAssociation1] = useState("");
+  const [association2, setAssociation2] = useState("");
+  const [association3, setAssociation3] = useState("");
+  const [association4, setAssociation4] = useState("");
   const [associationRelation1, setAssociationRelation1] = useState("");
   const [associationRelation2, setAssociationRelation2] = useState("");
   const [associationRelation3, setAssociationRelation3] = useState("");
   const [associationRelation4, setAssociationRelation4] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
-
 
   //useEffect hook to fetch type names to populate the dropdown with
   useEffect(() => {
@@ -57,9 +54,7 @@ export default function FormPropsTextFields() {
       .catch((error) => {
         console.error("Error fetching types:", error);
       });
-  }, []); 
-  
-
+  }, []);
 
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
@@ -75,20 +70,20 @@ export default function FormPropsTextFields() {
   useEffect(() => {
     if (cancel === "Cancelled") {
       const timer = setTimeout(() => {
-        document.getElementById("cancel-button").style.backgroundColor = "white";
+        document.getElementById("cancel-button").style.backgroundColor =
+          "white";
         document.getElementById("cancel-button").style.color = "blue";
         setCancel("Cancel");
       }, 1500); // Changes back to "Cancel" after 1.5 seconds
       return () => clearTimeout(timer);
     }
-
   }, [cancel]);
-  
+
   useEffect(() => {
     if (selectedType) {
-      setCustomAttribute1(""); 
-      setCustomAttribute2(""); 
-      setCustomAttribute3(""); 
+      setCustomAttribute1("");
+      setCustomAttribute2("");
+      setCustomAttribute3("");
       setCustomAttribute4("");
     }
   }, [selectedType]);
@@ -96,11 +91,7 @@ export default function FormPropsTextFields() {
   //function to handle changes when save button is clicked
   const handleSaveButtonClick = async (event) => {
     event.preventDefault();
-    const compAsset = await AssetAPI.getExists(title, type);
-	if (!compAsset) {
-		setSave("Saved");
 
-    
     const newAlertMessage = {};
 
     //Validate mandatory inputs
@@ -109,17 +100,27 @@ export default function FormPropsTextFields() {
     }
 
     // Validate associations
-    const associationFields = [association1, association2, association3, association4];
+    const associationFields = [
+      association1,
+      association2,
+      association3,
+      association4,
+    ];
     for (let i = 0; i < associationFields.length; i++) {
       if (associationFields[i] && !validateInteger(associationFields[i])) {
         newAlertMessage.associations = `Asset ids must be integers`;
         break;
       }
     }
-    
+
     // Validate custom attributes based on the selected type
     if (selectedType) {
-      const customAttributes = [customAttribute1, customAttribute2, customAttribute3, customAttribute4];
+      const customAttributes = [
+        customAttribute1,
+        customAttribute2,
+        customAttribute3,
+        customAttribute4,
+      ];
       for (let i = 0; i < customAttributes.length; i++) {
         const attributeName = `customAttribute${i + 1}`;
         // Check if the custom attribute exists and is required
@@ -129,21 +130,24 @@ export default function FormPropsTextFields() {
         }
       }
     }
-    
+
     // Check if any error message exists and set it
     if (newAlertMessage.associations) {
       setAlertMessage(newAlertMessage);
       return; // Return early if association validation fails
-    }else if (newAlertMessage.mandatory || newAlertMessage.customAttributes) {
+    } else if (newAlertMessage.mandatory || newAlertMessage.customAttributes) {
       setAlertMessage(newAlertMessage);
       return; // Return early if mandatory or custom attribute validation fails
-    } 
-    
+    }
+
     setAlertMessage("");
-    
-    try {    
-      
-      const response = await AssetAPI.addAsset({
+
+    const compAsset = await AssetAPI.getExists(title, type);
+    if (!compAsset) {
+      setSave("Saved");
+
+      try {
+        const response = await AssetAPI.addAsset({
           type: selectedType.typeName,
           title,
           link,
@@ -159,28 +163,27 @@ export default function FormPropsTextFields() {
           associationRelation1,
           associationRelation2,
           associationRelation3,
-          associationRelation4
-      });
-      
-      
-      if (!response.ok) {
-        throw new Error('Failed to add asset');
-      }
-      resetValue()
-      console.log('Asset added successfully');
-      const assets = await AssetAPI.getAll();
-        const addedAsset = assets.find(asset => asset.title === title);
+          associationRelation4,
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to add asset");
+        }
+        resetValue();
+        console.log("Asset added successfully");
+        const assets = await AssetAPI.getAll();
+        const addedAsset = assets.find((asset) => asset.title === title);
         if (addedAsset) {
           navigate(`/asset/open/${addedAsset.id}`);
         }
-    } catch (error) {
-      console.error('Error adding asset:', error);
+      } catch (error) {
+        console.error("Error adding asset:", error);
+      }
+    } else {
+      alert("Asset of this type with the same name already exists");
     }
-  } else {
-	alert("Asset of this type with the same name already exists");
-  }  
   };
-  
+
   // Function to validate if a value is an integer
   const validateInteger = (value) => {
     return /^\d+$/.test(value);
@@ -204,11 +207,12 @@ export default function FormPropsTextFields() {
     setAssociationRelation4("");
   };
 
-  
   // Function to handle type selection from dropdown
   const handleTypeChange = (event) => {
     const typeName = event.target.value;
-    const selectedType = responseData.find((type) => type.typeName === typeName);
+    const selectedType = responseData.find(
+      (type) => type.typeName === typeName
+    );
     setSelectedType(selectedType);
     setType(typeName); // Update the type state variable
   };
@@ -219,9 +223,8 @@ export default function FormPropsTextFields() {
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
-    resetValue()
+    resetValue();
   };
-
 
   return (
     <Box
@@ -245,130 +248,159 @@ export default function FormPropsTextFields() {
         sx={{
           paddingBottom: 5,
           paddingLeft: 5,
-
         }}
       >
-        <Grid item xs={6}
-        alignItems="center"
-        >
-        <label>Mandatory Attributes: </label>
-        {/* Alert for mandatory boxes */}
-        {alertMessage.mandatory && (
-           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.mandatory}</div>
-        )}
-        <Grid item xs={6}
-        alignItems="center"
-        >
-          <TextField
-            id="outlined-select-type"
-            required
-            select
-            label="Type"
-            value={type}
-            onChange={handleTypeChange}
-          >
-            {types.map((typeName) => (
-              <MenuItem key={typeName} value={typeName}>
-                {typeName}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label= "Title"
-            placeholder= "Project1"
-            multiline
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Link"
-            placeholder="google.com"
-            multiline
-            required
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label="Author"
-            placeholder="Jane D"
-            multiline
-            required
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-        </Grid>
-        </Grid>
-        <Grid item xs={6}>
-        <label>Type Specific Attributes:</label>
-        {/* Alert for mandatory boxes */}
-        {alertMessage.customAttributes && (
-           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.customAttributes}</div>
-        )}
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute1 : "Custom Attribute 1"}
-            placeholder=""
-            multiline
-            required
-            value={customAttribute1}
-            onChange={(e) => setCustomAttribute1(e.target.value)}
-            style={{ display: selectedType && selectedType.customAttribute1 === "" ? "none" : "grid" }}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute2 : "Custom Attribute 2"}
-            placeholder=""
-            multiline
-            required
-            value={customAttribute2}
-            onChange={(e) => setCustomAttribute2(e.target.value)}
-            style={{ display: selectedType && selectedType.customAttribute2 === "" ? "none" : "grid" }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-textarea"
-            label={selectedType ? selectedType.customAttribute3 : "Custom Attribute 3"}
-            placeholder=""
-            multiline
-            required
-            value={customAttribute3}
-            onChange={(e) => setCustomAttribute3(e.target.value)}
-            style={{ display: selectedType && selectedType.customAttribute3 === "" ? "none" : "grid" }}
-          />
-        </Grid>
-	        <Grid item xs={6}>
-	          <TextField
-	            id="outlined-textarea"
-	            label={selectedType ? selectedType.customAttribute4 : "Custom Attribute 4"}
-	            placeholder=""
-	            multiline
-              required
-	            value={customAttribute4}
-	            onChange={(e) => setCustomAttribute4(e.target.value)}
-	            style={{ display: selectedType && selectedType.customAttribute4 === "" ? "none" : "grid" }}
-	          />
-	        </Grid> 
+        <Grid item xs={12} md={6} alignItems="center">
+          <label>Mandatory Attributes: </label>
+          {/* Alert for mandatory boxes */}
+          {alertMessage.mandatory && (
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              {alertMessage.mandatory}
+            </div>
+          )}
+          <Grid item xs={6} alignItems="center">
+            <TextField
+              id="outlined-select-type"
+              select
+              label="Type"
+              value={type}
+              onChange={handleTypeChange}
+            >
+              {types.map((typeName) => (
+                <MenuItem key={typeName} value={typeName}>
+                  {typeName}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label="Title"
+              placeholder="Project1"
+              multiline
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label="Link"
+              placeholder="google.com"
+              multiline
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label="Author"
+              placeholder="Jane D"
+              multiline
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <label>Type Specific Attributes:</label>
+          {/* Alert for mandatory boxes */}
+          {alertMessage.customAttributes && (
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              {alertMessage.customAttributes}
+            </div>
+          )}
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label={
+                selectedType
+                  ? selectedType.customAttribute1
+                  : "Custom Attribute 1"
+              }
+              placeholder=""
+              multiline
+              value={customAttribute1}
+              onChange={(e) => setCustomAttribute1(e.target.value)}
+              style={{
+                display:
+                  selectedType && selectedType.customAttribute1 === ""
+                    ? "none"
+                    : "grid",
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label={
+                selectedType
+                  ? selectedType.customAttribute2
+                  : "Custom Attribute 2"
+              }
+              placeholder=""
+              multiline
+              value={customAttribute2}
+              onChange={(e) => setCustomAttribute2(e.target.value)}
+              style={{
+                display:
+                  selectedType && selectedType.customAttribute2 === ""
+                    ? "none"
+                    : "grid",
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label={
+                selectedType
+                  ? selectedType.customAttribute3
+                  : "Custom Attribute 3"
+              }
+              placeholder=""
+              multiline
+              value={customAttribute3}
+              onChange={(e) => setCustomAttribute3(e.target.value)}
+              style={{
+                display:
+                  selectedType && selectedType.customAttribute3 === ""
+                    ? "none"
+                    : "grid",
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="outlined-textarea"
+              label={
+                selectedType
+                  ? selectedType.customAttribute4
+                  : "Custom Attribute 4"
+              }
+              placeholder=""
+              multiline
+              value={customAttribute4}
+              onChange={(e) => setCustomAttribute4(e.target.value)}
+              style={{
+                display:
+                  selectedType && selectedType.customAttribute4 === ""
+                    ? "none"
+                    : "grid",
+              }}
+            />
+          </Grid>
+        </Grid>
         <Grid>
           <label>Association(s) (Optional)</label>
           {/* Alert for association IDs */}
           {alertMessage.associations && (
-           <div style={{ color: "red", marginBottom: "10px" }}>{alertMessage.associations}</div>
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              {alertMessage.associations}
+            </div>
           )}
           <div className="first-division">
             <TextField
@@ -389,7 +421,7 @@ export default function FormPropsTextFields() {
               value={association1}
               onChange={(e) => setAssociation1(e.target.value)}
             />
-            <br/>
+            <br />
             <TextField
               name="associationRelation"
               type="text"
@@ -408,7 +440,7 @@ export default function FormPropsTextFields() {
               value={association2}
               onChange={(e) => setAssociation2(e.target.value)}
             />
-            <br/>
+            <br />
             <TextField
               name="associationRelation"
               type="text"
@@ -427,7 +459,7 @@ export default function FormPropsTextFields() {
               value={association3}
               onChange={(e) => setAssociation3(e.target.value)}
             />
-            <br/>
+            <br />
             <TextField
               name="associationRelation"
               type="text"
@@ -464,12 +496,10 @@ export default function FormPropsTextFields() {
           variant="outlined"
           startIcon={<CancelIcon />}
           onClick={handleCancelButtonClick}
-          
         >
           {cancel}
         </Button>
       </Stack>
     </Box>
   );
-  
 }

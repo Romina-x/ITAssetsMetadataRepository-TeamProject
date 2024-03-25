@@ -22,8 +22,7 @@ describe("Login Component", () => {
     }).as('loginRequest');
   
     cy.get('button').click();
-  
-    // Ensure the login request has been made
+    
     cy.wait('@loginRequest').then((interception) => {
       // Assert that the URL has changed to '/asset/find'
       cy.url().should('include', 'http://localhost:3000/asset/find');

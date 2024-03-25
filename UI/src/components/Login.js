@@ -25,7 +25,7 @@ export default function Login() {
 	      });
 	      if (response.message.toLowerCase().includes("successful")) {
 	        localStorage.setItem("token", response.token);
-	        window.location.href = "asset/find";
+	        window.location.href = "welcome";
 	      } 
 	    } catch (error) {
 	      console.log(error);
@@ -50,20 +50,6 @@ export default function Login() {
   }));
 
   return (
-    <>
-    <AppBar position="absolute">
-      <Typography
-        component="h1"
-        variant="h4"
-        color="inherit"
-        noWrap
-        sx={{ flexGrow: 1, fontFamily: "Calibri", 
-          paddingLeft: "100px", 
-        }}
-      >
-        <p>Log In</p>
-      </Typography>      
-    </AppBar>
     <Grid
       container
       spacing={5}
@@ -103,6 +89,5 @@ export default function Login() {
         </Link>
       </Grid>
     </Grid>
-    </>
   );
 }
