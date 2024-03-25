@@ -217,6 +217,13 @@ function App(props) {
             </TableCell>
           </TableRow>
         ))}
+        {types.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={6} align="center">
+              No types found.
+            </TableCell>
+          </TableRow>
+         )}
       </TableBody>
     </Table>
     <TablePagination
@@ -230,14 +237,11 @@ function App(props) {
     />
 
     <Stack direction="row" spacing={2}>
-      <Button
-        id="cancel-button"
-        variant="outlined"
-        endIcon={<UndoIcon />}
-        onClick={{}}
-      >
+    <Link to="/welcome">
+      <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
         Back To Dashboard
       </Button>
+    </Link>
     </Stack>
 
     <EditConfirmationDialog

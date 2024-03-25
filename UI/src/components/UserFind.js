@@ -24,19 +24,22 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RoleConfirmationDialog from './RoleConfim';
 
 
-function App() {
+function App(props) {
 
   React.useEffect(() => {
     const getUsers = async () => {
       const res = await UserAPI.getAll();
       setUsers(res);
       setOriginalUsers(res);
-      const userAttributes = Object.keys(res[0]);
-      setUserAttributes(userAttributes);
-      setSelectedUserAttribute("name");
+      if (res.length > 0) {
+        const userAttributes = Object.keys(res[0]);
+        setUserAttributes(userAttributes);
+        setSelectedUserAttribute("name");
+      }
     };
     getUsers();
   }, []);
+  
 
   const [users, setUsers] = React.useState([]);
   const [updatingUsername, setUpdatingUsername] = React.useState("");
@@ -52,7 +55,7 @@ function App() {
   const [selectedUserAttribute, setSelectedUserAttribute] = useState("");
   const filteredUserAttributes = userAttributes.filter(attributeName => attributeName !== 'password');
   const [role, setRole] = React.useState('READER');
-
+  const { username } = props;
 
 
   // Function to handle type selection from dropdown
@@ -204,6 +207,7 @@ function App() {
                 value={u.role}
                 exclusive
                 onChange={(event, value) => handleRoleClick(u.username, value)}
+                disabled={u.username === username}
               >
                 <ToggleButton value="READER" data-userid={u.id}>Reader</ToggleButton>
                 <ToggleButton value="USER" data-userid={u.id}>User</ToggleButton>
@@ -233,21 +237,17 @@ function App() {
     />
 
     <Stack direction="row" spacing={2}>
-      <Button
-        id="cancel-button"
-        variant="outlined"
-        endIcon={<UndoIcon />}
-        onClick={{}}
-      >
+    <Link to="/welcome">
+      <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
         Back To Dashboard
       </Button>
+    </Link>
     </Stack>
     <DeleteConfirmationDialog
       open={openDeleteDialog}
       handleClose={() => setOpenDeleteDialog(false)}
       handleConfirm={() => {
         setOpenDeleteDialog(false);
-        // Call handleDeleteType function to delete the type
         handleDeleteUser(deletingUserId);
       }}
       typeId={deletingUserId}

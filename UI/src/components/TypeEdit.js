@@ -23,7 +23,7 @@ export default function FormPropsTextFields() {
   const [customAttribute2, setCustomAttribute2] = useState("");
   const [customAttribute3, setCustomAttribute3] = useState("");
   const [customAttribute4, setCustomAttribute4] = useState("");
-  
+  const [alertMessage, setAlertMessage] = useState("");
   const [type, setType] = useState([]);
   
   React.useEffect(() => {
@@ -69,6 +69,17 @@ export default function FormPropsTextFields() {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
+    
+    let newAlertMessage = "";
+    if (!typeName || !customAttribute1) {
+      newAlertMessage = "Please fill in all mandatory fields";
+    }
+     
+    if (newAlertMessage) {
+      setAlertMessage(newAlertMessage);
+      return; // Return early if invalid input
+    }
+    setAlertMessage("");
 
     try {
       const response = await TypeAPI.addType({
@@ -134,6 +145,12 @@ export default function FormPropsTextFields() {
         }}
       >
         <Grid item xs={5}>
+          {/* Alert for mandatory boxes */}
+          {alertMessage && (
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              {alertMessage}
+            </div>
+          )}
           <TextField
             id="outlined-textarea"
             label="Type Name"
@@ -150,6 +167,7 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 1"
             placeholder="Author"
             multiline
+            required
             value = {customAttribute1}
             onChange={ (e) => setCustomAttribute1(e.target.value)}
           />

@@ -8,8 +8,8 @@ const headers = {
   Authorization: `Bearer ${token}`,
 };
 
-export const get = (userId) =>
-  fetch(`${api}/user/find/${userId}`, { headers }).then((res) => res.json());
+export const get = (username) =>
+  fetch(`${api}/user/${username}`, { headers }).then((res) => res.json());
 
 export const getAll = () =>
   fetch(`${api}/user/find/all`, { headers }).then((res) => res.json());

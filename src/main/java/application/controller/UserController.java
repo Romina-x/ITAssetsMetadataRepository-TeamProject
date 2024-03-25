@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -48,5 +49,22 @@ public class UserController {
         userService.updateRole(username, role);
         UserDetails updatedUser = userService.loadUserByUsername(username);
         return ResponseEntity.ok(updatedUser.getAuthorities().toString());
+    }
+
+    @GetMapping("user/{username}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setID(user.getId());
+            userDTO.setFirstname(user.getFirstName());
+            userDTO.setLastname(user.getLastName());
+            userDTO.setUsername(user.getUsername());
+            userDTO.setRole(user.getRole());
+            return ResponseEntity.ok(userDTO);
+        } else {
+            return ResponseEntity.notFound().build(); // User not found
+        }
     }
 }

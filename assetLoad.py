@@ -1,75 +1,93 @@
 import requests
 import json
 
-# Basic python script to populate the Database
-base_url = 'http://localhost:8080'
+# Function to authenticate the user and obtain an authentication token
+def authenticate_user(username, password):
+    login_url = 'http://localhost:8080/login'
+    login_data = {'username': username, 'password': password}
+    response = requests.post(login_url, json=login_data)
+    if response.status_code == 200:
+        return response.json().get('token')  
+    else:
+        print(f"Failed to authenticate user: {response.status_code}")
+        return None
 
+base_url = 'http://localhost:8080'
 add_asset_endpoint = '/asset/add'
+
+username = input("Enter your username: ")
+password = input("Enter your password: ")
+
+token = authenticate_user(username, password)
+if not token:
+    exit()
 
 assets = [
     {
         'type': 'Document',
         'title': 'Customer Requirements',
         'link': 'http://example.com/asset1',
-        'lineNum': 100,
-        'progLang': 'Java',
+        'author': 'Tony Giles',
+        'association1': 1,
+        'association2': 2,
+        'association3': 3,
+        'association4': 4,
+        'associationRelation1': 'Is Documented In',
+        'associationRelation2': 'Is Part Of',
+        'associationRelation3': 'Is Preceded By',
+        'associationRelation4': 'Is Parent Of',
         'customAttribute1': 'Jim Prince',
         'customAttribute2': 'Official Sensitive',
         'customAttribute3': 'Local',
-        'customAttribute4': 'Prometheus',
-        'association1': '1',
-        'association2': '2',
-        'association3': '3',
-        'association4': '4',
-        'associationRelation1': 'Depends on',
-        'associationRelation2': 'Obseleced by',
-        'associationRelation3': 'Replaces',
-        'associationRelation4': 'Suceeded by',
+        'customAttribute4': 'Prometheus'
     },
     {
         'type': 'Project Report',
         'title': 'Monthly Project Update',
         'link': 'www.prince2.com',
-        'lineNum': 200,
-        'progLang': 'English',
+        'author': 'Tony Giles',
+        'association1': 1,
+        'association2': 2,
+        'association3': 3,
+        'association4': 4,
+        'associationRelation1': 'Is Documented In',
+        'associationRelation2': 'Is Part Of',
+        'associationRelation3': 'Is Preceded By',
+        'associationRelation4': 'Is Parent Of',
         'customAttribute1': 'Artemis',
         'customAttribute2': 'Q1',
         'customAttribute3': 'Alan Cooper',
-        'customAttribute4': 'Delivery',
-        'association1': '55',
-        'association2': '66',
-        'associationRelation1': 'Depends on',
-        'associationRelation2': 'Obseleced by'
+        'customAttribute4': 'Delivery'
     },
     {
         'type': 'Document',
         'title': 'Initial Specification',
         'link': 'http://example.com/asset3',
-        'lineNum': 200,
-        'progLang': 'Python',
+        'author': 'Tony Giles',
+        'association1': 1,
+        'association2': 2,
+        'association3': 3,
+        'association4': 4,
+        'associationRelation1': 'Is Documented In',
+        'associationRelation2': 'Is Part Of',
+        'associationRelation3': 'Is Preceded By',
+        'associationRelation4': 'Is Parent Of',
         'customAttribute1': 'Tom Clancy',
         'customAttribute2': 'Unclassified',
         'customAttribute3': 'Cloud',
-        'customAttribute4': 'Flame',
-        'association1': '6',
-        'association2': '2',
-        'association3': '8',
-        'association4': '4',
-        'associationRelation1': 'Depends on',
-        'associationRelation2': 'Part of',
-        'associationRelation3': 'Replaces',
-        'associationRelation4': 'Suceeded by'
+        'customAttribute4': 'Flame'
     }
 ]
 
-# Loop through the list of assets and make POST requests to add them to the database
-for asset in assets:
+for asset_data in assets:
     url = base_url + add_asset_endpoint
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, data=json.dumps(asset), headers=headers)
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}' 
+    }
+    response = requests.post(url, json=asset_data, headers=headers)
 
-    # Check the response status code
     if response.status_code == 200:
-        print(f"Asset added successfully: {asset['title']}")
+        print(f"Asset added successfully: {asset_data['title']}")
     else:
-        print(f"Failed to add asset: {asset['title']}. Status code: {response.status_code}")
+        print(f"Failed to add type: {asset_data['title']}. Status code: {response.status_code}")
