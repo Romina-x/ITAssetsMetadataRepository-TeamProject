@@ -17,6 +17,9 @@ export const getAll = () =>
 export const getExists = (title, type) =>
   fetch(`${api}/asset/getAssetExists/${title}/${type}`, { headers }).then((res) => res.json()).then(data => data);
 
+export const getExistsId = async (id) =>
+  fetch(`${api}/asset/getAssetExistsId/${id}`, { headers }).then((res) => res.json()).then(data => data);
+
 export const update = (asset) =>
   fetch(`${api}/asset/${asset.id}`, {
     method: "PUT",

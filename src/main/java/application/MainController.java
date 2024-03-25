@@ -215,7 +215,19 @@ public class MainController {
 	}
 	return false;
   }
+  
+  @GetMapping(path = "/asset/getAssetExistsId/{id}")
+  public @ResponseBody Boolean getAssetExistsId(@PathVariable("id") String id) {
+	try {
+		int intId = Integer.valueOf(id);
+		Optional<Asset> optAsset = getAssetById(intId);
+		return (optAsset.isPresent());
+	} catch (NumberFormatException e) {
+		return false;
+	}
+  }
 
+  
   /**
    * This method allows for the deletion of individual types and corresponding assets by referencing their id numbers in the
    * url localhost:8080/type/delete/{id}.

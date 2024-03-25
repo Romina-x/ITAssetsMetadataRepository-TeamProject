@@ -37,9 +37,16 @@ const OpenAsset = () => {
   const [visibleComment, setVisibleComment] = useState(false); 
   
   let { openAssetId } = useParams();
+  
+  console.log(openAssetId);
 
   React.useEffect(() => {
+	  console.log("here");
     const fetchData = async () => {
+		console.log("here2");
+	  const assetExists = await AssetAPI.getExistsId(openAssetId);
+	  console.log(assetExists);
+      if (assetExists) {
       const [assetData, logData, allTypeData, commentData] = await Promise.all([
         AssetAPI.get(openAssetId),
         LogAPI.getAll(),
@@ -51,6 +58,9 @@ const OpenAsset = () => {
       const typeData = allTypeData.find(type => type.typeName === assetData.type);
       setType(typeData);
       setComments(commentData);
+      } else {
+		  console.log("fail");
+	  }
     };
 
     fetchData();
