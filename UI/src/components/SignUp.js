@@ -21,12 +21,6 @@ export default function SignUp() {
 
   const handleSignUp =  async () => {
     if (retypePassword === password) {
-      setSuccess(true);
-      setError("");
-      setUsername("");
-      setPassword("");
-      setRetypePassword("");
-
       const res = await SignUpAPI.register({
         username,
         password,
@@ -35,7 +29,19 @@ export default function SignUp() {
         role
       })
 
-      console.log(res)
+      if(res.message.toLowerCase().includes("already exist")){
+        setSuccess(false);
+        setError("User already exist please try Sign In");
+        setUsername("");
+        setPassword("");
+        setRetypePassword("");
+      } else {
+        setSuccess(true)
+        setError("");
+        setUsername("");
+        setPassword("");
+        setRetypePassword("");
+      }
     } else {
       setSuccess(false);
       setPassword("");
