@@ -9,25 +9,23 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { readerListItems, userListItems, adminListItems } from "./listItems";
 import AssetInput from "./AssetInput";
 import TypeInput from './TypeInput';
 import ViewLogs from './ViewLogs';
 import AssetDelete from './AssetDelete';
 import TypeDelete from './TypeDelete';
-import OpenAsset from './OpenAsset';
-import OpenType from './OpenType';
+import OpenAsset from './AssetOpen';
+import OpenType from './TypeOpen';
 import AssetFind from './AssetFind';
 import TypeFind from './TypeFind';
-import EditAsset from './EditAsset';
+import EditAsset from './AssetEdit';
 import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
 import WelcomePage from './WelcomePage';
@@ -100,11 +98,11 @@ const Drawer = styled(MuiDrawer, {
   
 }));
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
   const role = sessionStorage.role;
+  const username = sessionStorage.username;
   console.log(role);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -113,7 +111,7 @@ export default function Dashboard(props) {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
@@ -145,17 +143,12 @@ export default function Dashboard(props) {
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("user") && <p>Search Users</p>}
+              {props.page.toLowerCase().includes("welcome") && <p>Dashboard</p>}
+              {props.page.toLowerCase() === "" && <p>Log in</p>}
 
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit" onClick={{}}>
-              <Badge badgeContent={8} color="secondary">
-                <AccountCircleIcon />
-              </Badge>
+            <IconButton color="inherit" onClick={() => window.location.href = "/welcome"}>
+                <HomeIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -202,19 +195,17 @@ export default function Dashboard(props) {
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
-                {props.page === "asset/find" && <AssetFind />}
+                {props.page === "asset/find" && ( <AssetFind role={role} />)}
                 {props.page === "type/find" && ( <TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
-                {props.page === "user/find" && <UserFind />}
+                {props.page === "user/find" && ( <UserFind username={username} />)}
                 {props.page === "welcome" && <WelcomePage />}
-
-
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
-      </Grid>
+      </Box>
     </ThemeProvider>
   );
 }

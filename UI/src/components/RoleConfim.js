@@ -8,11 +8,11 @@ import Button from "@mui/material/Button";
 export default function RoleConfirmationDialog({ open, handleClose, handleConfirm, userData }) {
     return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>You are changing role</DialogTitle>
+        <DialogTitle>You are changing the role</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You are change role to this user : {userData.updatingUsername}? <br/>
-            New Role gonna be {userData.updatingRole}
+            You are change the role of user: {userData.updatingUsername}? <br/>
+            New role will be {userData.updatingRole}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

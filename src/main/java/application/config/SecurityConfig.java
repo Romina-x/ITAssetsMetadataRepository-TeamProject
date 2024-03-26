@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req->req.requestMatchers("/login/**","/register/**")
                                 .permitAll()
+                                .requestMatchers("/asset/find/**", "/type/find/**", "/comment/**", "/log/**","user/{username}").hasAnyAuthority("USER", "ADMIN", "READER")
                                 .requestMatchers("/type/find/**","/asset/**","/comment/**","log/**").hasAnyAuthority("USER","ADMIN")
                                 .requestMatchers("/type/**","user/**").hasAuthority("ADMIN")
                                 .anyRequest()
