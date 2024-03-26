@@ -49,7 +49,7 @@ export const updateRole = async (userData) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "role" : userData.updatingRole
+        "role": userData.updatingRole
       }),
     });
 
