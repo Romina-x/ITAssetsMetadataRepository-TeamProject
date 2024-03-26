@@ -87,7 +87,7 @@ const OpenAsset = () => {
         comment: comment,
         timestamp: currentTime,
         publicComment: visibleComment,
-        username: commentUser
+        username: username
       });
       
       if (!response.ok) {
@@ -228,7 +228,7 @@ const OpenAsset = () => {
     console.log(username); // Log the user object to the console
     return (
       <TableRow key={c.id}>
-        <TableCell>{username}</TableCell>
+        <TableCell>{c.username}</TableCell>
         <TableCell>{c.comment}</TableCell>
         <TableCell align="right">{c.timestamp}</TableCell>
       </TableRow>
