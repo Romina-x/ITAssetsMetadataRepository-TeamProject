@@ -61,8 +61,8 @@ class AssetCommentTest {
   @Test
   public void assetCommentGetSetCommentUser() {
     AssetComment ac = new AssetComment();
-    ac.setCommentUser("user1");
-    assertEquals(ac.getCommentUser(), "user1",
+    ac.setComment("user1");
+    assertEquals(ac.getComment(), "user1",
         "Test that the commentor username can be set and retrieved");
   }
 
