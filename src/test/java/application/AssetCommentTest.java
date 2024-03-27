@@ -22,7 +22,7 @@ class AssetCommentTest {
     ac.setId(6);
     assertEquals(ac.getId(), 6, "Test that the comment id can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the asset comments get/set asset ID
    */
@@ -32,6 +32,7 @@ class AssetCommentTest {
     ac.setItemId(2);
     assertEquals(ac.getItemId(), 2, "Test that the comment item ids can be set and retrieved");
   }
+
   /**
    * Test to verify the function of the asset comments get/set type ID
    */
@@ -39,9 +40,10 @@ class AssetCommentTest {
   public void assetCommentGetSetComment() {
     AssetComment ac = new AssetComment();
     ac.setComment("I'm a comment");
-    assertEquals(ac.getComment(), "I'm a comment", "Test that the comments can be set and retrieved");
+    assertEquals(ac.getComment(), "I'm a comment",
+        "Test that the comments can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the asset comments get/set timestamp
    */
@@ -52,5 +54,16 @@ class AssetCommentTest {
     ac.setTimestamp(time);
     assertEquals(ac.getTimestamp(), time, "Test that the timestamp can be set and retrieved");
   }
-  
+
+
+  /**
+   * Test to verify the function of the asset comments get/set username
+   */
+  @Test
+  public void assetCommentGetSetUsername() {
+    AssetComment ac = new AssetComment();
+    ac.setUsername("username");
+    assertEquals(ac.getUsername(), "username", "Test that the usernames can be set and retrieved");
+  }
+
 }
