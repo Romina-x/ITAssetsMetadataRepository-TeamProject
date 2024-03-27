@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import React from "react";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route exact path="/asset/find" element={<Dashboard page="asset/find" />} />
         <Route exact path="/type/find" element={<Dashboard page="type/find" />} />
         <Route exact path="/user/find" element={<Dashboard page="user/find" />} />
+        <Route exact path="/PageNotFound" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

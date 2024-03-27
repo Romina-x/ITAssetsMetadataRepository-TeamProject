@@ -19,6 +19,7 @@ import * as AssetAPI from '../utility/AssetAPI';
 import * as CommentAPI from '../utility/CommentAPI';
 import * as LogAPI from '../utility/LogAPI';
 import * as TypeAPI from '../utility/TypeAPI';
+import PageNotFound from './PageNotFound';
 
 const OpenAsset = () => {
   const username = sessionStorage.getItem('username');
@@ -59,7 +60,7 @@ const OpenAsset = () => {
       setType(typeData);
       setComments(commentData);
       } else {
-		  console.log("fail");
+		  return <PageNotFound />;
 	  }
     };
 
