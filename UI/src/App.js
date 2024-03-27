@@ -25,7 +25,7 @@ function App() {
         <Route exact path="/asset/find" element={<Dashboard page="asset/find" />} />
         <Route exact path="/type/find" element={<Dashboard page="type/find" />} />
         <Route exact path="/user/find" element={<Dashboard page="user/find" />} />
-        <Route exact path="/PageNotFound" element={<PageNotFound />} />
+        <Route exact path="/404" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );

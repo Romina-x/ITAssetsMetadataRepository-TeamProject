@@ -60,7 +60,7 @@ const OpenAsset = () => {
       setType(typeData);
       setComments(commentData);
       } else {
-		  return <PageNotFound />;
+		 window.location.href= "/404";
 	  }
     };
 
