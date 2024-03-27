@@ -1,9 +1,10 @@
+//These are the UI Tests for Login page
 describe("Login Component", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/"); // Visit the login page
   });
 
-  it("should display login form elements", () => {    
+  it("should display login form elements", () => {
     cy.contains("Username").should("exist");
     cy.contains("Password").should("exist");
     cy.contains("Login").should("exist");
@@ -20,9 +21,9 @@ describe("Login Component", () => {
       statusCode: 200,
       body: { message: 'Login successful', token: 'fakeToken' }
     }).as('loginRequest');
-  
+
     cy.get('button').click();
-    
+
     cy.wait('@loginRequest').then((interception) => {
       // Assert that the URL has changed to '/asset/find'
       cy.url().should('include', 'http://localhost:3000/asset/find');

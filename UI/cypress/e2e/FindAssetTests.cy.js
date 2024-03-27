@@ -1,6 +1,7 @@
+//These are the UI Tests for the Find Asset page
 describe("Find Asset Page", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/asset/find"); 
+    cy.visit("http://localhost:3000/asset/find");
   });
 
   it("should display the table with assets", () => {
@@ -13,7 +14,7 @@ describe("Find Asset Page", () => {
     cy.get("thead").contains("Actions").should("exist");
   });
 
-it('renders table with asset data', () => {
+  it('renders table with asset data', () => {
     cy.get('table').should('exist');
     cy.get('tbody').find('tr').should('have.length.above', 0);
   });
