@@ -387,7 +387,7 @@ public class MainController {
    * in the url localhost:8080/asset/findAuthor/{author}.
    *
    * @param author of asset that user wants
-   * @return asset that has same author as the searched link
+   * @return asset that has same author as the searched author
    */
   @GetMapping(path = "/asset/findAuthor/{author}")
   public @ResponseBody List<Asset> getAssetByAuthor(@PathVariable("author") String author) {
