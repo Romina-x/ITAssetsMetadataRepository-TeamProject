@@ -383,11 +383,11 @@ public class MainController {
   }
 
   /**
-   * This method is a query function to request the details of assets by their programming language
-   * in the url localhost:8080/asset/findProgLang/{progLang}.
+   * This method is a query function to request the details of assets by their author
+   * in the url localhost:8080/asset/findAuthor/{author}.
    *
-   * @param progLang of asset that user wants
-   * @return asset that has same programming language as the searched link
+   * @param author of asset that user wants
+   * @return asset that has same author as the searched link
    */
   @GetMapping(path = "/asset/findAuthor/{author}")
   public @ResponseBody List<Asset> getAssetByAuthor(@PathVariable("author") String author) {
