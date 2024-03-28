@@ -67,13 +67,10 @@ class MainControllerTest {
   @MockBean
   private AssetCommentRepository assetCommentRepository;
 
-<<<<<<< HEAD
   @Autowired
   private JwtService jwtService;
 
   private String jwtToken;
-=======
->>>>>>> 1ed45d00655d1beb05162f47b037b050b5de7f3d
   @Autowired
   private MainController mc;
 
