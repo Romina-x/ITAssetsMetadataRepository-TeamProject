@@ -9,16 +9,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import application.config.SecurityConfig;
+import application.model.Role;
+import application.model.User;
+import application.service.AuthenticationService;
+import application.service.JwtService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -39,6 +48,7 @@ import application.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(MainController.class)
+@ImportAutoConfiguration(exclude = SecurityConfig.class)
 class MainControllerTest {
 
   @Autowired
@@ -56,11 +66,29 @@ class MainControllerTest {
   private TokenRepository tokenRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
- 
+
+  @Autowired
+  private JwtService jwtService;
+
+  private String jwtToken;
   @Autowired
   private MainController mc;
 
 
+  @BeforeEach
+  void beforeEach() {
+    User user = new User();
+    user.setUsername("wkis088");
+    user.setPassword("123");
+    user.setRole(Role.ADMIN);
+    user.setFirstName("Hien");
+    user.setLastName("Phan");
+    userRepository.save(user);
+
+    jwtService = new JwtService(tokenRepository);
+    jwtToken = jwtService.generateToken(user);
+    System.out.println(jwtToken);
+  }
   /**
    * Test successful string response of method which runs the map for the post request of create new
    * asset.
@@ -68,6 +96,7 @@ class MainControllerTest {
    * @throws Exception , could be any checked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testAddNewAsset() throws Exception {
     String requestBody =
         "{\"type\":\"document\", \"title\":\"This is a test document\", \"link\":\"file:///Users/yusur/Downloads/wk1a-combined.pdf\", \"lineNum\":120, \"progLang\":\"Java\", \"isDocumentedIn\":1, \"dependsOn\":2, \"succeededBy\":4, \"customAttribute1\":\"Project1\", \"customAttribute2\":\"Author\", \"customAttribute3\":\"Language\", \"customAttribute4\":\"Subject\"}";
@@ -113,6 +142,7 @@ class MainControllerTest {
    * @throws Exception , could be any checked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testAddNewType() throws Exception {
     String requestBody =
         "{\"typeName\":\"document\", \"customAttribute1\":\"Size\", \"customAttribute2\":\"Security Level\", \"customAttribute3\":\"Revision\", \"customAttribute4\":\"Author\"}";
@@ -154,6 +184,7 @@ class MainControllerTest {
    * @throws Exception , could be any checked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   // test 2
   void testAssetForm() throws Exception {
     mvc.perform(MockMvcRequestBuilders.get("/asset/createAsset"))
@@ -661,6 +692,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetAllAssets() throws Exception {
     // asset to be added
     Asset asset1 = new Asset();
@@ -738,6 +770,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testDeleteAssetModel() throws Exception {
 
     // asset to be added
@@ -763,6 +796,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testDeleteAssetById() throws Exception {
 
     // asset to be added
@@ -789,6 +823,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testEditAssetForm() throws Exception {
     // asset to be added
     Asset asset1 = new Asset();
@@ -818,6 +853,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testEditAssetForm_Exception() throws Exception {
 
     Mockito.when(assetRepository.findById(123)).thenReturn(Optional.empty());
@@ -835,6 +871,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetAllTypes() throws Exception {
     // type to be added
     Type type1 = new Type();
@@ -871,6 +908,7 @@ class MainControllerTest {
    * @throws Exception , could be any checked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testTypeForm() throws Exception {
     mvc.perform(MockMvcRequestBuilders.get("/type/createType"))
         .andExpect(MockMvcResultMatchers.status().isOk())
@@ -885,6 +923,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetTypeById() throws Exception {
 
     // type to be added
@@ -944,6 +983,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testDeleteTypeById() throws Exception {
 
     // asset to be added
@@ -971,6 +1011,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testAddAndGetAllLog() throws Exception {
 
     mc.addActionLog(134, null, "this is an action");
@@ -1005,6 +1046,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetLogById() throws Exception {
 
     // create mock logs
@@ -1036,6 +1078,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testEditTypeForm() throws Exception {
     // asset to be added
     Type type1 = new Type();
@@ -1064,6 +1107,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testEditTypeForm_Exception() throws Exception {
 
     Mockito.when(typeRepository.findById(123)).thenReturn(Optional.empty());
@@ -1081,6 +1125,7 @@ class MainControllerTest {
    * @throws Exception , could be any checked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testUserForm() throws Exception {
     mvc.perform(MockMvcRequestBuilders.get("/user/createUser"))
         .andExpect(MockMvcResultMatchers.status().isOk())
@@ -1095,6 +1140,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetAllComments() throws Exception {
     // comment to be added
     AssetComment comment1 = new AssetComment();
@@ -1138,6 +1184,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetCommentById() throws Exception {
     
     // comment to be added
@@ -1176,6 +1223,7 @@ class MainControllerTest {
    * @throws Exception , could be any checked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testAddNewComment() throws Exception {
     String requestBody =
         "{\"itemid\":1, \"comment\":\"Comment\"}";
