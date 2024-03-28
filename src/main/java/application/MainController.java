@@ -127,7 +127,7 @@ public class MainController {
    * @return onward path routing for the resultDeleteAsset.html page
    */
   @RequestMapping(value = "/asset/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String deleteAsset(@PathVariable("id") Integer id) {
+  public @ResponseBody String deleteAsset(@PathVariable("id") Integer id) {
     assetRepository.deleteById(id);
     addActionLog(id, null, "Deleted asset"); // Adds an action record to the log
     return "resultDeleteAsset";
@@ -342,7 +342,7 @@ public class MainController {
    * @return confirmation string
    */
   @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String deleteType(@PathVariable("id") Integer id) {
+  public @ResponseBody String deleteType(@PathVariable("id") Integer id) {
     Optional<Type> typeOptional = typeRepository.findById(id);
     if (!typeOptional.isPresent()) {
       // Handle case where type with the provided id doesn't exist
