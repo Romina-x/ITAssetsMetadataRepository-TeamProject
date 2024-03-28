@@ -11,6 +11,7 @@ import * as TypeAPI from "../utility/TypeAPI"
 import { useParams } from "react-router-dom";
 
 
+//function cretes a form to edit an asset data type
 export default function FormPropsTextFields() {
   let { editTypeId } = useParams();
   //state variables for save and cancel buttons

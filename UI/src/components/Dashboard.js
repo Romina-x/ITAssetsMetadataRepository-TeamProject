@@ -30,7 +30,7 @@ import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
 import WelcomePage from './WelcomePage';
 
-
+// function is what helps render the dashboard layout of the web application
 function Copyright(props) {
   return (
     <Typography

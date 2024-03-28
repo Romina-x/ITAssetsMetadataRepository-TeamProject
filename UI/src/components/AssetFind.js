@@ -22,6 +22,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import EditConfirmationDialog from './AssetEditConfirm'; 
 
+// function which manages the state and functionality of handling assets
 function App(props) {
 
   React.useEffect(() => {

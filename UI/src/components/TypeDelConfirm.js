@@ -5,6 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+// function shows a dialog boc to confirm feleyion of an asset data type
 export default function DeleteConfirmationDialog({ open, handleClose, handleConfirm, typeId }) {
     return (
       <Dialog open={open} onClose={handleClose}>

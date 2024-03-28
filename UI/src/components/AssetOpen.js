@@ -20,6 +20,7 @@ import * as CommentAPI from '../utility/CommentAPI';
 import * as LogAPI from '../utility/LogAPI';
 import * as TypeAPI from '../utility/TypeAPI';
 
+// function to open an asset add comments and associations
 const OpenAsset = () => {
   const username = sessionStorage.getItem('username');
   const [save, setSave] = useState("Save");

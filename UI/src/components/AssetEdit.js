@@ -12,7 +12,7 @@ import { getAll } from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI"
 import { useParams } from "react-router-dom";
 
-
+// function that manages a form to edit asset details
 export default function FormPropsTextFields() {
   let {editAssetId} = useParams();
   

@@ -2,6 +2,7 @@ import React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import * as AssetAPI from "../utility/AssetAPI";
 
+// function renders a pie chart of the frequency of asset data types
 export default function AssetPieChart() {
   const [assets, setAssets] = React.useState([]);
 

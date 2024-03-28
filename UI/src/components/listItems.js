@@ -13,7 +13,7 @@ import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import ViewListTwoToneIcon from "@mui/icons-material/ViewListTwoTone";
 import FindInPageTwoToneIcon from "@mui/icons-material/FindInPageTwoTone";
 
-
+//Function to handle logout by clearing sessionStorage and logging out the user
 function handleLogout() {
   sessionStorage.clear();
   console.log(sessionStorage.role)

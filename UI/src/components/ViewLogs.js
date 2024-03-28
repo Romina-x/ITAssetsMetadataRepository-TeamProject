@@ -7,6 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import * as LogAPI from '../utility/LogAPI';
 
+// function to show the action logs and displays them in a table
 export default function ViewLogs() {
   React.useEffect(() => {
     const getLogs = async () => {

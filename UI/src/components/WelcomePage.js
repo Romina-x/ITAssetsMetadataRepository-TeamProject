@@ -5,6 +5,7 @@ import * as UserApi from "../utility/UserAPI"
 
 import styles from "../style/Dashboard.module.css"; // Import the CSS module file
 
+// function which handles displaying the main dashboard of the web application, showing information and some asset details and a description of the web application
 export default function Dashboard() {
   const [user, setUser] = React.useState({})
 

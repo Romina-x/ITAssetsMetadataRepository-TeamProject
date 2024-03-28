@@ -21,6 +21,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import EditConfirmationDialog from './TypeEditConfirm'; 
 
+//  function to handle types and allow for searching and filtering
 function App(props) {
 
   React.useEffect(() => {

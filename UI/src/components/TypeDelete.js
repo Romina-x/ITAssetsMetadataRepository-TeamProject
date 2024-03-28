@@ -8,7 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 
-
+//function cretes a form to delete an asset data type
 export default function FormPropsTextFields() {
   return (
     <Box

@@ -4,7 +4,7 @@ import * as SignUpAPI from "../utility/SignUpAPI";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 
-
+// function gives a sign up form for new users
 export default function SignUp() {
   const [firstName, setFirstname] = React.useState("");
   const [lastName, setLastname] = React.useState("");

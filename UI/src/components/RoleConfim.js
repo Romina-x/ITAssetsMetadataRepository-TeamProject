@@ -4,7 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-
+// function shows a dialog box to confirm when changing the role of a user
 export default function RoleConfirmationDialog({ open, handleClose, handleConfirm, userData }) {
     return (
       <Dialog open={open} onClose={handleClose}>

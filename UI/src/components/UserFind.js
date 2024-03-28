@@ -23,7 +23,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RoleConfirmationDialog from './RoleConfim';
 
-
+//function that handles user data and allows for searching and filtering
 function App(props) {
 
   React.useEffect(() => {

@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { Link } from 'react-router-dom';
 
+// function that shows a dialog box for confirming the edit of an asset or cancel it
 export default function EditConfirmationDialog({ open, handleClose,  assetId }) {
   const handleEdit = () => {
     // Navigate to the edit page when the "Edit" button is clicked in the popup

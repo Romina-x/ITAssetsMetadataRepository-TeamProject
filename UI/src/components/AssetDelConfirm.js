@@ -5,6 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+// Functions shows a dialog box to confirm deletion of an asset
 export default function DeleteConfirmationDialog({ open, handleClose, handleConfirm, assetId }) {
     return (
       <Dialog open={open} onClose={handleClose}>
