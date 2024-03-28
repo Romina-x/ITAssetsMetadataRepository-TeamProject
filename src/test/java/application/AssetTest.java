@@ -31,7 +31,7 @@ class AssetTest {
     a.setType("Document");
     assertEquals(a.getType(), "Document", "Test that the type can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set Title
    */
@@ -41,7 +41,7 @@ class AssetTest {
     a.setTitle("I am a document");
     assertEquals(a.getTitle(), "I am a document", "Test that the title can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set Link
    */
@@ -51,7 +51,7 @@ class AssetTest {
     a.setLink("www.google.com");
     assertEquals(a.getLink(), "www.google.com", "Test that the link can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set ProgLang
    */
@@ -61,7 +61,7 @@ class AssetTest {
     a.setAuthor("Ellie H");
     assertEquals(a.getAuthor(), "Ellie H", "Test that the author can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set CustomAttribute1
    */
@@ -69,7 +69,8 @@ class AssetTest {
   public void assetGetSetCustomAttribute1() {
     Asset a = new Asset();
     a.setCustomAttribute1("one");
-    assertEquals(a.getCustomAttribute1(), "one", "Test that the CustomAttribute1 can be set and retrieved");
+    assertEquals(a.getCustomAttribute1(), "one",
+        "Test that the CustomAttribute1 can be set and retrieved");
   }
 
   /**
@@ -79,9 +80,10 @@ class AssetTest {
   public void assetGetSetCustomAttribute2() {
     Asset a = new Asset();
     a.setCustomAttribute2("two");
-    assertEquals(a.getCustomAttribute2(), "two", "Test that the CustomAttribute2 can be set and retrieved");
+    assertEquals(a.getCustomAttribute2(), "two",
+        "Test that the CustomAttribute2 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set CustomAttribute3
    */
@@ -89,9 +91,10 @@ class AssetTest {
   public void assetGetSetCustomAttribute3() {
     Asset a = new Asset();
     a.setCustomAttribute3("three");
-    assertEquals(a.getCustomAttribute3(), "three", "Test that the CustomAttribute3 can be set and retrieved");
+    assertEquals(a.getCustomAttribute3(), "three",
+        "Test that the CustomAttribute3 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set CustomAttribute4
    */
@@ -99,9 +102,10 @@ class AssetTest {
   public void assetGetSetCustomAttribute4() {
     Asset a = new Asset();
     a.setCustomAttribute4("four");
-    assertEquals(a.getCustomAttribute4(), "four", "Test that the CustomAttribute4 can be set and retrieved");
+    assertEquals(a.getCustomAttribute4(), "four",
+        "Test that the CustomAttribute4 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set Association1
    */
@@ -121,7 +125,7 @@ class AssetTest {
     a.setAssociation2("two");
     assertEquals(a.getAssociation2(), "two", "Test that the Association2 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set Association3
    */
@@ -129,9 +133,10 @@ class AssetTest {
   public void assetGetSetAssociation3() {
     Asset a = new Asset();
     a.setAssociation3("three");
-    assertEquals(a.getAssociation3(), "three", "Test that the Association3 can be set and retrieved");
+    assertEquals(a.getAssociation3(), "three",
+        "Test that the Association3 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set Association4
    */
@@ -139,8 +144,10 @@ class AssetTest {
   public void assetGetSetAssociation4() {
     Asset a = new Asset();
     a.setAssociation4("four");
-    assertEquals(a.getAssociation4(), "four", "Test that the Association4 can be set and retrieved");
+    assertEquals(a.getAssociation4(), "four",
+        "Test that the Association4 can be set and retrieved");
   }
+
   /**
    * Test to verify the function of the Asset get/set AssociationRelation1
    */
@@ -148,7 +155,8 @@ class AssetTest {
   public void assetGetSetAssociationRelation1() {
     Asset a = new Asset();
     a.setAssociationRelation1("one");
-    assertEquals(a.getAssociationRelation1(), "one", "Test that the AssociationRelation1 can be set and retrieved");
+    assertEquals(a.getAssociationRelation1(), "one",
+        "Test that the AssociationRelation1 can be set and retrieved");
   }
 
   /**
@@ -158,9 +166,10 @@ class AssetTest {
   public void assetGetSetAssociationRelation2() {
     Asset a = new Asset();
     a.setAssociationRelation2("two");
-    assertEquals(a.getAssociationRelation2(), "two", "Test that the AssociationRelation2 can be set and retrieved");
+    assertEquals(a.getAssociationRelation2(), "two",
+        "Test that the AssociationRelation2 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set AssociationRelation3
    */
@@ -168,9 +177,10 @@ class AssetTest {
   public void assetGetSetAssociationRelation3() {
     Asset a = new Asset();
     a.setAssociationRelation3("three");
-    assertEquals(a.getAssociationRelation3(), "three", "Test that the AssociationRelation3 can be set and retrieved");
+    assertEquals(a.getAssociationRelation3(), "three",
+        "Test that the AssociationRelation3 can be set and retrieved");
   }
-  
+
   /**
    * Test to verify the function of the Asset get/set AssociationRelation4
    */
@@ -178,8 +188,34 @@ class AssetTest {
   public void assetGetSetAssociationRelation4() {
     Asset a = new Asset();
     a.setAssociationRelation4("four");
-    assertEquals(a.getAssociationRelation4(), "four", "Test that the AssociationRelation4 can be set and retrieved");
+    assertEquals(a.getAssociationRelation4(), "four",
+        "Test that the AssociationRelation4 can be set and retrieved");
   }
-  
+
+  /**
+   * Test to verify the function of the constructor with a full set of variables
+   */
+  @Test
+  public void assetMultiConstructorTest() {
+    Asset a = new Asset(1, "imatype", "imatitle", "imalink", "imaauthor", "cust1", "cust2", "cust3",
+        "cust4", "assos1", "assos2", "assos3", "assos4", "rel1", "rel2", "rel3", "rel4");
+    assertEquals(a.getType(), "imatype");
+    assertEquals(a.getTitle(), "imatitle");
+    assertEquals(a.getLink(), "imalink");
+    assertEquals(a.getAuthor(), "imaauthor");
+    assertEquals(a.getCustomAttribute1(), "cust1");
+    assertEquals(a.getCustomAttribute2(), "cust2");
+    assertEquals(a.getCustomAttribute3(), "cust3");
+    assertEquals(a.getCustomAttribute4(), "cust4");
+    assertEquals(a.getAssociation1(), "assos1");
+    assertEquals(a.getAssociation2(), "assos2");
+    assertEquals(a.getAssociation3(), "assos3");
+    assertEquals(a.getAssociation4(), "assos4");
+    assertEquals(a.getAssociationRelation1(), "rel1");
+    assertEquals(a.getAssociationRelation2(), "rel2");
+    assertEquals(a.getAssociationRelation3(), "rel3");
+    assertEquals(a.getAssociationRelation4(), "rel4");
+
+  }
 
 }
