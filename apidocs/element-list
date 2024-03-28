@@ -1,0 +1,8 @@
+application
+application.config
+application.controller
+application.DTO
+application.filter
+application.model
+application.repository
+application.service
