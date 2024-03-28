@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * This interface holds the asset records and is automatically implemented.
- *
  */
-
-public interface AssetRepository extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {
+public interface AssetRepository
+    extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {
   List<Asset> findByType(String type);
 }

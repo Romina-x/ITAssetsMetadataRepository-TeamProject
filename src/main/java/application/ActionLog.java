@@ -18,13 +18,13 @@ public class ActionLog {
   private Integer id;
 
   private Integer assetId;
-  
+
   private Integer typeId;
-  
+
   private String action;
-  
+
   private String timestamp;
-  
+
 
   public Integer getId() {
     return id;
@@ -49,7 +49,7 @@ public class ActionLog {
   public void setTypeId(Integer typeId) {
     this.typeId = typeId;
   }
-  
+
   public String getAction() {
     return action;
   }
@@ -57,13 +57,13 @@ public class ActionLog {
   public void setAction(String action) {
     this.action = action;
   }
-  
+
   public String getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp (String timestamp) {
+  public void setTimestamp(String timestamp) {
     this.timestamp = timestamp;
   }
-  
+
 }
