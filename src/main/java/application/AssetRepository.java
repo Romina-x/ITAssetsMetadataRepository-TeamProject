@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface AssetRepository
     extends JpaRepository<Asset, Integer>, JpaSpecificationExecutor<Asset> {
   List<Asset> findByType(String type);
+  boolean existsByTitle(String title);
 }

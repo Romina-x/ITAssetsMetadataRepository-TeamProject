@@ -56,7 +56,7 @@ class MainControllerTest {
   private TokenRepository tokenRepository;
   @MockBean
   private AssetCommentRepository assetCommentRepository;
- 
+
   @Autowired
   private MainController mc;
 
@@ -163,11 +163,9 @@ class MainControllerTest {
   }
 
   /**
-//   * Test to validate the string response of method which populates database with asset attributes
-//   * data.
-//   *
-//   * @throws Exception , could be any checked exception.
-//   */
+   * // * Test to validate the string response of method which populates database with asset
+   * attributes // * data. // * // * @throws Exception , could be any checked exception. //
+   */
 
 
   /**
@@ -1089,8 +1087,8 @@ class MainControllerTest {
   }
 
   /**
-   * Test to validate that upon accessing the /comment/find/all path, all data stored about comments in
-   * the database, is retrieved as a JSON successfully.
+   * Test to validate that upon accessing the /comment/find/all path, all data stored about comments
+   * in the database, is retrieved as a JSON successfully.
    *
    * @throws Exception , could be any unchecked exception.
    */
@@ -1101,7 +1099,7 @@ class MainControllerTest {
     comment1.setId(11);
     comment1.setItemId(2);
     comment1.setComment("Comment");
-    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30, 00));
 
     assetCommentRepository.save(comment1);
 
@@ -1110,7 +1108,7 @@ class MainControllerTest {
     comment2.setId(12);
     comment2.setItemId(4);
     comment2.setComment("Comment2");
-    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30,00));
+    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30, 00));
 
     assetCommentRepository.save(comment2);
 
@@ -1124,13 +1122,15 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(11))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].itemId").value(2))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].comment").value("Comment"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].timestamp").value(comment1.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].timestamp")
+            .value(comment1.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(12))
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].itemId").value(4))
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].comment").value("Comment2"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[1].timestamp").value(comment2.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+        .andExpect(MockMvcResultMatchers.jsonPath("$[1].timestamp")
+            .value(comment2.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
   }
-  
+
   /**
    * Test to validate that upon accessing the /comment/find/{id} path, all data stored about comment
    * with unique id in the database, is retrieved as a JSON successfully.
@@ -1139,13 +1139,13 @@ class MainControllerTest {
    */
   @Test
   void testGetCommentById() throws Exception {
-    
+
     // comment to be added
     AssetComment comment1 = new AssetComment();
     comment1.setId(11);
     comment1.setItemId(2);
     comment1.setComment("Comment");
-    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30, 00));
 
     assetCommentRepository.save(comment1);
 
@@ -1154,7 +1154,7 @@ class MainControllerTest {
     comment2.setId(12);
     comment2.setItemId(4);
     comment2.setComment("Comment2");
-    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30,00));
+    comment2.setTimestamp(LocalDateTime.of(2024, 3, 5, 11, 30, 00));
 
     assetCommentRepository.save(comment2);
 
@@ -1168,7 +1168,7 @@ class MainControllerTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$.comment").value("Comment"));
 
   }
-  
+
   /**
    * Test successful string response of method which runs the map for the post request of create new
    * comment.
@@ -1177,15 +1177,14 @@ class MainControllerTest {
    */
   @Test
   void testAddNewComment() throws Exception {
-    String requestBody =
-        "{\"itemid\":1, \"comment\":\"Comment\"}";
+    String requestBody = "{\"itemid\":1, \"comment\":\"Comment\"}";
 
     MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/comment/add")
         .contentType(MediaType.APPLICATION_JSON).content(requestBody)).andReturn();
 
     assertEquals("Comment saved successfully", result.getResponse().getContentAsString());
   }
-  
+
   /**
    * Test error string response of method which runs the map for the post request of create new
    * comment.
@@ -1200,7 +1199,7 @@ class MainControllerTest {
     comment1.setId(11);
     comment1.setItemId(2);
     comment1.setComment("Comment");
-    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30,00));
+    comment1.setTimestamp(LocalDateTime.of(2024, 3, 5, 10, 30, 00));
 
 
     // Mock the behaviour of assetRepository.save() to throw an exception
@@ -1214,4 +1213,33 @@ class MainControllerTest {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     assertEquals("Error: This is a made up exception", response.getBody());
   }
+
+  /**
+   * Test to make sure a conflict error message is produced when user chooses an asset title which
+   * already exists in the database.
+   *
+   * @throws Exception , could be any checked exception.
+   */
+  @Test
+  void testAddAsset_ConflictingTitles() {
+    // Duplicate titled assets to be added
+    Asset asset1 = new Asset();
+    asset1.setTitle("Duplicate title asset");
+
+    mc.addNewAsset(asset1);
+
+    // Mock the behavior of assetRepository.existsByTitle() to return true, indicating the title
+    // already exists
+    when(assetRepository.existsByTitle(asset1.getTitle())).thenReturn(true);
+
+    Asset asset2 = new Asset();
+    asset2.setTitle("Duplicate title asset");
+
+    ResponseEntity<String> response = mc.addNewAsset(asset2);
+
+    assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    assertEquals("An asset with the same title already exists", response.getBody());
+
+  }
+
 }
