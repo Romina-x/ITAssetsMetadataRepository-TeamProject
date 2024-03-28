@@ -5,6 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+// function to show a dialog box to confirm when deleting a user
 export default function DeleteConfirmationDialog({ open, handleClose, handleConfirm, userId }) {
     return (
       <Dialog open={open} onClose={handleClose}>

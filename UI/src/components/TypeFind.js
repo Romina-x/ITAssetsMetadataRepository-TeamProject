@@ -19,25 +19,26 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import EditConfirmationDialog from './TypeEditConfirm'; 
+import EditConfirmationDialog from './TypeEditConfirm';
 
+//function that allows for searching and filtering through all Types
 function App(props) {
 
   React.useEffect(() => {
     const getTypes = async () => {
       const res = await TypeAPI.getAll();
       if (res && res.length > 0) {
-	      setTypes(res);
-	      setOriginalTypes(res);
-	      const typeAttributes = Object.keys(res[0]);
-	      setTypeAttributes(typeAttributes);
-	      setSelectedTypeAttribute("typeName");
-	  } else {
-		  setTypes([]);
-	      setOriginalTypes([]);
-	      setTypeAttributes([]);
-	      setSelectedTypeAttribute("");
-	  }
+        setTypes(res);
+        setOriginalTypes(res);
+        const typeAttributes = Object.keys(res[0]);
+        setTypeAttributes(typeAttributes);
+        setSelectedTypeAttribute("typeName");
+      } else {
+        setTypes([]);
+        setOriginalTypes([]);
+        setTypeAttributes([]);
+        setSelectedTypeAttribute("");
+      }
     };
     getTypes();
   }, []);
@@ -53,7 +54,7 @@ function App(props) {
   const [selectedTypeAttribute, setSelectedTypeAttribute] = useState("");
   const { role } = props;
 
-  const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false); 
+  const [openEditConfirmation, setOpenEditConfirmation] = React.useState(false);
   const [editingTypeId, setEditingTypeId] = React.useState(null);
 
   const handleEditConfirmation = (id) => {
@@ -115,139 +116,139 @@ function App(props) {
     setTypes(filteredTypes);
   };
 
-	return (
+  return (
     <React.Fragment>
       <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { m: 1, width: "40ch" },
-        background: "white",
-        width: "100%",
-        maxWidth: "100%",
-        margin: 0,
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <Grid
-        container
-        spacing={3}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
+        component="form"
         sx={{
-          paddingBottom: 5,
+          "& .MuiTextField-root": { m: 1, width: "40ch" },
+          background: "white",
+          width: "100%",
+          maxWidth: "100%",
+          margin: 0,
         }}
+        noValidate
+        autoComplete="off"
       >
-      <Grid item xs={6}
-      alignItems="center"
-      >
-        <TextField
-          id="outlined-select-currency"
-          select
-          label="Type Attribute"
-          value={selectedTypeAttribute}
-          onChange={handleTypeAttributeChange}
+        <Grid
+          container
+          spacing={3}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            paddingBottom: 5,
+          }}
         >
-          {typeAttributes.map((attributeName) => (
-            <MenuItem key={attributeName} value={attributeName}>
-              {attributeName}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Grid>  
-      <Grid item xs={6}
-      alignItems="center"
-      >
-        <TextField
-          id="outlined-textarea"
-          placeholder="Enter a search term"
-          multiline
-          value={searchVal}
-          onChange={handleSearchChange}
-        />
-      </Grid>
-      </Grid>
+          <Grid item xs={6}
+            alignItems="center"
+          >
+            <TextField
+              id="outlined-select-currency"
+              select
+              label="Type Attribute"
+              value={selectedTypeAttribute}
+              onChange={handleTypeAttributeChange}
+            >
+              {typeAttributes.map((attributeName) => (
+                <MenuItem key={attributeName} value={attributeName}>
+                  {attributeName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={6}
+            alignItems="center"
+          >
+            <TextField
+              id="outlined-textarea"
+              placeholder="Enter a search term"
+              multiline
+              value={searchVal}
+              onChange={handleSearchChange}
+            />
+          </Grid>
+        </Grid>
 
       </Box>
 
-    
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell>Type Name</TableCell>
-          <TableCell>Custom Attribute 1</TableCell>
-          <TableCell>Custom Attribute 2</TableCell>
-          <TableCell>Custom Attribute 3</TableCell>
-          <TableCell align="right">Custom Attribute 4</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {(rowsPerPage > 0
-          ? types.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          : types
-        ).map((t) => (
-          <TableRow key={t.id}>
-            <TableCell>{t.id}</TableCell>
-            <TableCell>{t.typeName}</TableCell>
-            <TableCell>{t.customAttribute1}</TableCell>
-            <TableCell>{t.customAttribute2}</TableCell>
-            <TableCell>{t.customAttribute3}</TableCell>
-            <TableCell align="right">{t.customAttribute4}</TableCell>
-            <TableCell align="right">
-            <IconButton className={styles.link}>
-            <Link to={`/type/open/${t.id}`} className={styles.link}>
-                <VisibilityIcon />
-            </Link>
-            </IconButton>
-            {role === 'ADMIN' && (
-            <>
-              <IconButton className={styles.link}>
-                <EditIcon onClick={() => handleEditConfirmation(t.id)} />
-              </IconButton>
-              <IconButton
-                className={styles.link}
-                onClick={() => handleDelete(t.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </>
-            )}
-            </TableCell>
-          </TableRow>
-        ))}
-        {types.length === 0 && (
+
+      <Table size="small">
+        <TableHead>
           <TableRow>
-            <TableCell colSpan={6} align="center">
-              No types found.
-            </TableCell>
+            <TableCell>ID</TableCell>
+            <TableCell>Type Name</TableCell>
+            <TableCell>Custom Attribute 1</TableCell>
+            <TableCell>Custom Attribute 2</TableCell>
+            <TableCell>Custom Attribute 3</TableCell>
+            <TableCell align="right">Custom Attribute 4</TableCell>
           </TableRow>
-         )}
-      </TableBody>
-    </Table>
-    <TablePagination
-      rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-      component="div"
-      count={types.length}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
-    />
+        </TableHead>
+        <TableBody>
+          {(rowsPerPage > 0
+            ? types.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : types
+          ).map((t) => (
+            <TableRow key={t.id}>
+              <TableCell>{t.id}</TableCell>
+              <TableCell>{t.typeName}</TableCell>
+              <TableCell>{t.customAttribute1}</TableCell>
+              <TableCell>{t.customAttribute2}</TableCell>
+              <TableCell>{t.customAttribute3}</TableCell>
+              <TableCell align="right">{t.customAttribute4}</TableCell>
+              <TableCell align="right">
+                <IconButton className={styles.link}>
+                  <Link to={`/type/open/${t.id}`} className={styles.link}>
+                    <VisibilityIcon />
+                  </Link>
+                </IconButton>
+                {role === 'ADMIN' && (
+                  <>
+                    <IconButton className={styles.link}>
+                      <EditIcon onClick={() => handleEditConfirmation(t.id)} />
+                    </IconButton>
+                    <IconButton
+                      className={styles.link}
+                      onClick={() => handleDelete(t.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+          {types.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={6} align="center">
+                No types found.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+        component="div"
+        count={types.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
 
-    <Stack direction="row" spacing={2}>
-    <Link to="/welcome">
-      <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
-        Back To Dashboard
-      </Button>
-    </Link>
-    </Stack>
+      <Stack direction="row" spacing={2}>
+        <Link to="/welcome">
+          <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
+            Back To Dashboard
+          </Button>
+        </Link>
+      </Stack>
 
-    <EditConfirmationDialog
+      <EditConfirmationDialog
         open={openEditConfirmation}
         handleClose={() => setOpenEditConfirmation(false)}
-       
+
         handleConfirm={() => {
           setOpenEditConfirmation(false);
           handleEditType(editingTypeId);
@@ -255,19 +256,19 @@ function App(props) {
         typeId={editingTypeId}
       />
 
-    <DeleteConfirmationDialog
-      open={openDeleteDialog}
-      handleClose={() => setOpenDeleteDialog(false)}
-      handleConfirm={() => {
-        setOpenDeleteDialog(false);
-        // Call handleDeleteType function to delete the type
-        handleDeleteType(deletingTypeId);
-      }}
-      typeId={deletingTypeId}
-    />
+      <DeleteConfirmationDialog
+        open={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
+        handleConfirm={() => {
+          setOpenDeleteDialog(false);
+          // Call handleDeleteType function to delete the type
+          handleDeleteType(deletingTypeId);
+        }}
+        typeId={deletingTypeId}
+      />
     </React.Fragment>
 
-	);
+  );
 }
 
 export default App;

@@ -30,7 +30,7 @@ import TypeEdit from './TypeEdit';
 import UserFind from './UserFind';
 import WelcomePage from './WelcomePage';
 
-
+//function is what helps render the dashboard layout of the web application
 function Copyright(props) {
   return (
     <Typography
@@ -95,7 +95,7 @@ const Drawer = styled(MuiDrawer, {
       },
     }),
   },
-  
+
 }));
 
 const defaultTheme = createTheme();
@@ -138,7 +138,7 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1, fontFamily: "Calibri" }}
             >
-              {props.page.toLowerCase().includes("asset")&& !props.page.toLowerCase().includes("find") && <p>Asset</p>}
+              {props.page.toLowerCase().includes("asset") && !props.page.toLowerCase().includes("find") && <p>Asset</p>}
               {props.page.toLowerCase().includes("type") && !props.page.toLowerCase().includes("find") && <p>Type</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("asset") && <p>Search Assets</p>}
               {props.page.toLowerCase().includes("find") && props.page.toLowerCase().includes("type") && <p>Search Types</p>}
@@ -148,7 +148,7 @@ export default function Dashboard(props) {
 
             </Typography>
             <IconButton color="inherit" onClick={() => window.location.href = "/welcome"}>
-                <HomeIcon />
+              <HomeIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -195,10 +195,10 @@ export default function Dashboard(props) {
                 {props.page === "type/delete" && <TypeDelete />}
                 {props.page === "asset/open" && <OpenAsset />}
                 {props.page === "type/open" && <OpenType />}
-                {props.page === "asset/find" && ( <AssetFind role={role} />)}
-                {props.page === "type/find" && ( <TypeFind role={role} />)}
+                {props.page === "asset/find" && (<AssetFind role={role} />)}
+                {props.page === "type/find" && (<TypeFind role={role} />)}
                 {props.page === "type/edit" && <TypeEdit />}
-                {props.page === "user/find" && ( <UserFind username={username} />)}
+                {props.page === "user/find" && (<UserFind username={username} />)}
                 {props.page === "welcome" && <WelcomePage />}
               </Grid>
             </Grid>

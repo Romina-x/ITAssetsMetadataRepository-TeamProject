@@ -9,7 +9,7 @@ import * as TypeAPI from '../utility/TypeAPI';
 import * as LogAPI from '../utility/LogAPI';
 import { useParams } from "react-router-dom";
 
-
+// function to display the details of a particular type
 export default function OpenType() {
   let { openTypeId } = useParams();
 

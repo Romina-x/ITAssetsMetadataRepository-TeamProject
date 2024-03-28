@@ -23,7 +23,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import RoleConfirmationDialog from './RoleConfim';
 
-
+//function that handles user data and allows for searching and filtering between the Users
 function App(props) {
 
   React.useEffect(() => {
@@ -39,14 +39,14 @@ function App(props) {
     };
     getUsers();
   }, []);
-  
+
 
   const [users, setUsers] = React.useState([]);
   const [updatingUsername, setUpdatingUsername] = React.useState("");
   const [updatingRole, setUpdatingRole] = React.useState("");
   const [openRoleDialog, setOpenRoleDialog] = React.useState(false);
   const [originalUsers, setOriginalUsers] = useState([]);
-	const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
@@ -119,151 +119,151 @@ function App(props) {
       updatingRole
     });
 
-    if(res.ok) {
+    if (res.ok) {
       const updatedUsers = await UserAPI.getAll();
       setUsers(updatedUsers);
     }
-};
- 
+  };
 
-	return (
+
+  return (
     <React.Fragment>
       <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { m: 1, width: "40ch" },
-        background: "white",
-        width: "100%",
-        maxWidth: "100%",
-        margin: 0,
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <Grid
-        container
-        spacing={3}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
+        component="form"
         sx={{
-          paddingBottom: 5,
+          "& .MuiTextField-root": { m: 1, width: "40ch" },
+          background: "white",
+          width: "100%",
+          maxWidth: "100%",
+          margin: 0,
         }}
+        noValidate
+        autoComplete="off"
       >
-      <Grid item xs={6}
-      alignItems="center"
-      >
-        <TextField
-          id="outlined-select-currency"
-          select
-          label="User Attribute"
-          value={selectedUserAttribute}
-          onChange={handleUserAttributeChange}
+        <Grid
+          container
+          spacing={3}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            paddingBottom: 5,
+          }}
         >
-          {filteredUserAttributes.map((attributeName) => (
-            <MenuItem key={attributeName} value={attributeName}>
-              {attributeName}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Grid>  
-      <Grid item xs={6}
-      alignItems="center"
-      >
-        <TextField
-          id="outlined-textarea"
-          placeholder="Enter a search term"
-          multiline
-          value={searchVal}
-          onChange={handleSearchChange}
-        />
-      </Grid>
-      </Grid>
+          <Grid item xs={6}
+            alignItems="center"
+          >
+            <TextField
+              id="outlined-select-currency"
+              select
+              label="User Attribute"
+              value={selectedUserAttribute}
+              onChange={handleUserAttributeChange}
+            >
+              {filteredUserAttributes.map((attributeName) => (
+                <MenuItem key={attributeName} value={attributeName}>
+                  {attributeName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={6}
+            alignItems="center"
+          >
+            <TextField
+              id="outlined-textarea"
+              placeholder="Enter a search term"
+              multiline
+              value={searchVal}
+              onChange={handleSearchChange}
+            />
+          </Grid>
+        </Grid>
 
       </Box>
 
-    
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Username</TableCell>
-          <TableCell align="right">User Permissions</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {(rowsPerPage > 0
-          ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          : users
-        ).map((u) => (
-          <TableRow key={u.id}>
-            <TableCell>{u.id}</TableCell>
-            <TableCell>{`${u.firstname} ${u.lastname}`}</TableCell>
-            <TableCell>{u.username}</TableCell>
-            <TableCell align="right">
-              <ToggleButtonGroup
-                color="primary"
-                value={u.role}
-                exclusive
-                onChange={(event, value) => handleRoleClick(u.username, value)}
-                disabled={u.username === username}
-              >
-                <ToggleButton value="READER" data-userid={u.id}>Reader</ToggleButton>
-                <ToggleButton value="USER" data-userid={u.id}>User</ToggleButton>
-                <ToggleButton value="ADMIN" data-userid={u.id}>Admin</ToggleButton>
-              </ToggleButtonGroup>
-              </TableCell>
-            <TableCell align="right">
-              <IconButton
-                className={styles.link}
-                onClick={() => handleDelete(u.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-    <TablePagination
-      rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-      component="div"
-      count={users.length}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
-    />
 
-    <Stack direction="row" spacing={2}>
-    <Link to="/welcome">
-      <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
-        Back To Dashboard
-      </Button>
-    </Link>
-    </Stack>
-    <DeleteConfirmationDialog
-      open={openDeleteDialog}
-      handleClose={() => setOpenDeleteDialog(false)}
-      handleConfirm={() => {
-        setOpenDeleteDialog(false);
-        handleDeleteUser(deletingUserId);
-      }}
-      typeId={deletingUserId}
-    />
-    <RoleConfirmationDialog 
-    open ={openRoleDialog}
-    handleClose = {() => setOpenRoleDialog(false)}
-    handleConfirm={() => {
-      setOpenRoleDialog(false);
-      handleRoleChange();
-    }
-    }
-    userData ={{updatingUsername, updatingRole}}/>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Username</TableCell>
+            <TableCell align="right">User Permissions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {(rowsPerPage > 0
+            ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : users
+          ).map((u) => (
+            <TableRow key={u.id}>
+              <TableCell>{u.id}</TableCell>
+              <TableCell>{`${u.firstname} ${u.lastname}`}</TableCell>
+              <TableCell>{u.username}</TableCell>
+              <TableCell align="right">
+                <ToggleButtonGroup
+                  color="primary"
+                  value={u.role}
+                  exclusive
+                  onChange={(event, value) => handleRoleClick(u.username, value)}
+                  disabled={u.username === username}
+                >
+                  <ToggleButton value="READER" data-userid={u.id}>Reader</ToggleButton>
+                  <ToggleButton value="USER" data-userid={u.id}>User</ToggleButton>
+                  <ToggleButton value="ADMIN" data-userid={u.id}>Admin</ToggleButton>
+                </ToggleButtonGroup>
+              </TableCell>
+              <TableCell align="right">
+                <IconButton
+                  className={styles.link}
+                  onClick={() => handleDelete(u.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+        component="div"
+        count={users.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+
+      <Stack direction="row" spacing={2}>
+        <Link to="/welcome">
+          <Button id="cancel-button" variant="outlined" endIcon={<UndoIcon />}>
+            Back To Dashboard
+          </Button>
+        </Link>
+      </Stack>
+      <DeleteConfirmationDialog
+        open={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
+        handleConfirm={() => {
+          setOpenDeleteDialog(false);
+          handleDeleteUser(deletingUserId);
+        }}
+        typeId={deletingUserId}
+      />
+      <RoleConfirmationDialog
+        open={openRoleDialog}
+        handleClose={() => setOpenRoleDialog(false)}
+        handleConfirm={() => {
+          setOpenRoleDialog(false);
+          handleRoleChange();
+        }
+        }
+        userData={{ updatingUsername, updatingRole }} />
     </React.Fragment>
 
-	);
+  );
 }
 
 export default App;

@@ -5,22 +5,23 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+//function displays a dialog box to confirm when changing the role of a user
 export default function RoleConfirmationDialog({ open, handleClose, handleConfirm, userData }) {
-    return (
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>You are changing the role</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            You are change the role of user: {userData.updatingUsername}? <br/>
-            New role will be {userData.updatingRole}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleConfirm} autoFocus>
-            Confirm
-          </Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>You are changing the role</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          You are change the role of user: {userData.updatingUsername}? <br />
+          New role will be {userData.updatingRole}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleConfirm} autoFocus>
+          Confirm
+        </Button>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}

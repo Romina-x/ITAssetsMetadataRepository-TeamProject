@@ -11,7 +11,7 @@ import * as TypeAPI from "../utility/TypeAPI"
 import { useNavigate } from "react-router-dom"; 
 
 
-
+// function which gives a form to add a new type to the database
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");

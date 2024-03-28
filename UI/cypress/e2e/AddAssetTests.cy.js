@@ -1,6 +1,7 @@
+//These are the UI Tests for the Create Asset page
 describe("Create Asset Page", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/asset/add"); 
+    cy.visit("http://localhost:3000/asset/add");
   });
 
   it("displays mandatory attribute elements correctly", () => {
@@ -8,31 +9,31 @@ describe("Create Asset Page", () => {
     cy.contains("Title").should("exist");
     cy.contains("Link").should("exist");
     cy.contains("Author").should("exist");
-  }); 
+  });
 
   it("displays custom attribute elements correctly", () => {
     cy.contains("Custom Attribute 1").should("exist");
     cy.contains("Custom Attribute 2").should("exist");
     cy.contains("Custom Attribute 3").should("exist");
-    cy.contains("Custom Attribute 4").should("exist");   
-  }); 
+    cy.contains("Custom Attribute 4").should("exist");
+  });
 
   it("displays association options correctly", () => {
     cy.contains("Relation 1:").should("exist");
     cy.contains("Relation 2:").should("exist");
     cy.contains("Relation 3:").should("exist");
-    cy.contains("Relation 4:").should("exist");   
+    cy.contains("Relation 4:").should("exist");
 
     cy.contains("Asset Id 1:").should("exist");
     cy.contains("Asset Id 2:").should("exist");
     cy.contains("Asset Id 3:").should("exist");
     cy.contains("Asset Id 4:").should("exist");
-  }); 
+  });
 
-  it("displays button elements correctly", () => {    
+  it("displays button elements correctly", () => {
     cy.contains("Save").should("exist");
     cy.contains("Cancel").should("exist");
-  }); 
+  });
 
   it("should reset fields when cancel is clicked", () => {
 
@@ -57,7 +58,7 @@ describe("Create Asset Page", () => {
 
     cy.get("button").contains("Save").click();
     cy.wait("@addAssetRequest").then((xhr) => {
-      expect(xhr.response.statusCode).to.equal(200); 
+      expect(xhr.response.statusCode).to.equal(200);
     });
 
     cy.url().should("include", "http://localhost:3000/asset/find/");
