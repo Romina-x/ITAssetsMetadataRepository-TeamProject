@@ -718,6 +718,7 @@ class MainControllerTest {
    * @throws Exception , could be any unchecked exception.
    */
   @Test
+  @WithMockUser(username = "testUser", authorities = {"ADMIN"})
   void testGetAssetById() throws Exception {
 
     // asset to be added
@@ -736,12 +737,12 @@ class MainControllerTest {
 
 
     // Mock the behaviour of the findById method to return the asset
-    when(assetRepository.findById(12332)).thenReturn(Optional.of(asset2));
+    when(assetRepository.findById(12345)).thenReturn(Optional.of(asset1));
     // Perform the GET request
-    mvc.perform(MockMvcRequestBuilders.get("/asset/find/{id}", 12332))
+    mvc.perform(MockMvcRequestBuilders.get("/asset/find/{id}", 12345))
         // Check the JSON properties of the returned asset
-        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(12332))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Toast"));
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(12345))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Beans"));
 
   }
 
