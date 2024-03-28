@@ -5,17 +5,17 @@ import * as UserApi from "../utility/UserAPI"
 
 import styles from "../style/Dashboard.module.css"; // Import the CSS module file
 
-// function which handles displaying the main dashboard of the web application, showing information and some asset details and a description of the web application
+//function which handles displaying the main dashboard of the web application, showing information and some asset details and a description of the website
 export default function Dashboard() {
   const [user, setUser] = React.useState({})
 
-  React.useEffect (() => {
-    const getUser = async () =>{
+  React.useEffect(() => {
+    const getUser = async () => {
       const res = await UserApi.get(sessionStorage.getItem("username"));
       setUser(res);
     }
     getUser();
-  },[]);
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -27,22 +27,22 @@ export default function Dashboard() {
             </Typography>
             <Avatar alt={user.firstname} src="https://via.placeholder.com/150" />
             <Typography variant="h6">{user.firstname + " " + user.lastname}</Typography>
-            {user.role === "ADMIN" && 
-            <Typography variant="body2">
-              You have an ADMIN role which gives you access to all available actions within this application.
-            </Typography>
+            {user.role === "ADMIN" &&
+              <Typography variant="body2">
+                You have an ADMIN role which gives you access to all available actions within this application.
+              </Typography>
             }
-            {user.role === "USER" && 
-            <Typography variant="body2">
-              You have an USER role gives you permission to search, add, edit and comment on Assets as well as to search for Types within this application.
-            </Typography>
+            {user.role === "USER" &&
+              <Typography variant="body2">
+                You have an USER role gives you permission to search, add, edit and comment on Assets as well as to search for Types within this application.
+              </Typography>
             }
-            {user.role === "READER" && 
-            <Typography variant="body2">
-              You have an READER role gives you limited permission to search for Assets and Types in this application.
-            </Typography>
+            {user.role === "READER" &&
+              <Typography variant="body2">
+                You have an READER role gives you limited permission to search for Assets and Types in this application.
+              </Typography>
             }
-            
+
             <Typography variant="body2" color="textSecondary">
             </Typography>
           </Grid>
@@ -60,13 +60,13 @@ export default function Dashboard() {
               Application Description
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Our project aims to create a fantastic website for any company, 
-              not just software ones, to manage all their important stuff in one place. 
-              Instead of just handling code, this website will organize everything, from documents to videos, 
-              making it easy to find and use. You can save different types of assets, like documents or videos, 
-              along with their details. Plus, you can connect them to show how they're related. 
-              There will be three roles: Readers who can view, Users who can add or edit, and Admins who can do everything. 
-              The website will have a powerful search tool and keep track of changes made, ensuring everyone stays informed. 
+              Our project aims to create a fantastic website for any company,
+              not just software ones, to manage all their important stuff in one place.
+              Instead of just handling code, this website will organize everything, from documents to videos,
+              making it easy to find and use. You can save different types of assets, like documents or videos,
+              along with their details. Plus, you can connect them to show how they're related.
+              There will be three roles: Readers who can view, Users who can add or edit, and Admins who can do everything.
+              The website will have a powerful search tool and keep track of changes made, ensuring everyone stays informed.
               Later on, we might even add more cool features!
             </Typography>
           </Grid>

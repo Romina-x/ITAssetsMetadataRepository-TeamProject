@@ -33,7 +33,7 @@ export const update = (asset) =>
     body: JSON.stringify({ asset }),
   }).then((res) => res.json());
 
-//Function that takes in an ID for an assert and deletes it
+//Function that takes in an ID for an asset and deletes it
 export const deleteById = async (id) => {
   try {
     const response = await fetch(`${api}/asset/delete/${id}`, {

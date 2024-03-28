@@ -5,23 +5,23 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
-// Functions shows a dialog box to confirm deletion of an asset
+//function that displays a dialog box to confirm deletion of an asset
 export default function DeleteConfirmationDialog({ open, handleClose, handleConfirm, assetId }) {
-    return (
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>You are deleting an Asset</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete asset with ID: {assetId}? <br/>
-            This cannot be undone!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleConfirm} autoFocus>
-            Delete
-          </Button>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>You are deleting an Asset</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete asset with ID: {assetId}? <br />
+          This cannot be undone!
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleConfirm} autoFocus>
+          Delete
+        </Button>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}

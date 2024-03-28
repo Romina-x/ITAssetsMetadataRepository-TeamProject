@@ -8,7 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 
-//function which shows a form with text fields to input data
+//function that displays a form with text fields when an Asset is deleted
 export default function FormPropsTextFields() {
   return (
     <Box

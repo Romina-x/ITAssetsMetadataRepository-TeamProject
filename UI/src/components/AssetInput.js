@@ -12,7 +12,7 @@ import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI";
 import * as AssetAPI from "../utility/AssetAPI";
 
-// function that handles form fields for a specific type of data entry
+//function that creates form fields to input Asset Data which can then be saved
 export default function FormPropsTextFields() {
   //state variables for save and cancel buttons
   const [save, setSave] = useState("Save");

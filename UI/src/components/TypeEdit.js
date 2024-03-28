@@ -10,7 +10,6 @@ import Grid from "@mui/material/Grid";
 import * as TypeAPI from "../utility/TypeAPI"
 import { useParams } from "react-router-dom";
 
-
 //function cretes a form to edit an asset data type
 export default function FormPropsTextFields() {
   let { editTypeId } = useParams();
@@ -26,12 +25,12 @@ export default function FormPropsTextFields() {
   const [customAttribute4, setCustomAttribute4] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [type, setType] = useState([]);
-  
+
   React.useEffect(() => {
     const getType = async () => {
       const res = await TypeAPI.get(editTypeId);
       setType(res)
-      
+
       setTypeName(res.typeName || "");
       setCustomAttribute1(res.customAttribute1 || "");
       setCustomAttribute2(res.customAttribute2 || "");
@@ -41,7 +40,7 @@ export default function FormPropsTextFields() {
 
     getType();
   }, []);
-  
+
   //useEffect hook to handle changes after save button is clicked
   useEffect(() => {
     if (save === "Saved") {
@@ -70,12 +69,12 @@ export default function FormPropsTextFields() {
     setSave("Saved");
     // logic for what happens when the asset is saved goes here
     event.preventDefault();
-    
+
     let newAlertMessage = "";
     if (!typeName || !customAttribute1) {
       newAlertMessage = "Please fill in all mandatory fields";
     }
-     
+
     if (newAlertMessage) {
       setAlertMessage(newAlertMessage);
       return; // Return early if invalid input
@@ -84,15 +83,15 @@ export default function FormPropsTextFields() {
 
     try {
       const response = await TypeAPI.addType({
-          id: editTypeId,
-          typeName,
-          customAttribute1,
-          customAttribute2,
-          customAttribute3,
-          customAttribute4
+        id: editTypeId,
+        typeName,
+        customAttribute1,
+        customAttribute2,
+        customAttribute3,
+        customAttribute4
       });
-      
-      
+
+
       if (!response.ok) {
         throw new Error('Failed to add type');
       }
@@ -117,7 +116,7 @@ export default function FormPropsTextFields() {
     cancelButtonStyle.backgroundColor = "blue";
     cancelButtonStyle.color = "red";
     setCancel("Cancelled");
-    
+
     resetValue()
   };
 
@@ -157,8 +156,8 @@ export default function FormPropsTextFields() {
             label="Type Name"
             placeholder="Document"
             multiline
-            value = {typeName}
-            onChange={ (e) => setTypeName(e.target.value)}
+            value={typeName}
+            onChange={(e) => setTypeName(e.target.value)}
             disabled
           />
         </Grid>
@@ -169,8 +168,8 @@ export default function FormPropsTextFields() {
             placeholder="Author"
             multiline
             required
-            value = {customAttribute1}
-            onChange={ (e) => setCustomAttribute1(e.target.value)}
+            value={customAttribute1}
+            onChange={(e) => setCustomAttribute1(e.target.value)}
           />
         </Grid>
         <Grid item xs={5}>
@@ -179,9 +178,9 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 2"
             placeholder="Security Rating"
             multiline
-            value = {customAttribute2}
-            onChange={ (e) => setCustomAttribute2(e.target.value)}
-            
+            value={customAttribute2}
+            onChange={(e) => setCustomAttribute2(e.target.value)}
+
           />
         </Grid>
         <Grid item xs={5}>
@@ -190,8 +189,8 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 3"
             placeholder="Location"
             multiline
-            value = {customAttribute3}
-            onChange={ (e) => setCustomAttribute3(e.target.value)}
+            value={customAttribute3}
+            onChange={(e) => setCustomAttribute3(e.target.value)}
           />
         </Grid>
         <Grid item xs={5}>
@@ -200,8 +199,8 @@ export default function FormPropsTextFields() {
             label="Custom Attribute Name 4"
             placeholder="Project Name"
             multiline
-            value = {customAttribute4}
-            onChange={ (e) => setCustomAttribute4(e.target.value)}
+            value={customAttribute4}
+            onChange={(e) => setCustomAttribute4(e.target.value)}
           />
         </Grid>
       </Grid>

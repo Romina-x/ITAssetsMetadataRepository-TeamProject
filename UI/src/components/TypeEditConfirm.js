@@ -7,8 +7,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { Link } from 'react-router-dom';
 
-// function which shows a dialog box to confirm when editting an asset data type
-export default function EditConfirmationDialog({ open, handleClose,  typeId }) {
+// function which displays a dialog box to confirm when editing a Type
+export default function EditConfirmationDialog({ open, handleClose, typeId }) {
   const handleEdit = () => {
     // Navigate to the edit page when the "Edit" button is clicked in the popup
     window.location.href = `/type/edit/${typeId}`;
@@ -19,7 +19,7 @@ export default function EditConfirmationDialog({ open, handleClose,  typeId }) {
       <DialogTitle>You are Editing A Type</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to edit type with ID: {typeId}? <br/>
+          Are you sure you want to edit type with ID: {typeId}? <br />
           This may affect assets of this type.
           <Link to={`/asset/edit/${typeId}`}></Link>
         </DialogContentText>
