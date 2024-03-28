@@ -6,7 +6,7 @@ You may edit it as you like, but please do not remove the default topics or the 
 
 ---
 
-#Contents:
+# Contents:
 
 - [Running with a Script](#running-with-a-script)
 - [Running the SQL db](#running-the-sql-db)
@@ -75,3 +75,18 @@ Pre-requisties:<br>
  4.1.1.1. If on Windows and install freezes (>10 mins) run 'npm cache clean --force' and use the command 'npm i --omit=optional' <br>
 5. Run the Code: <br>
  5.1.2. Start the web app with the command 'npm start' (This will open a new browser window at http://localhost:3000 )
+
+ ---
+
+# Running Cypress:
+
+6. Set up Cypress: <br>
+ 6.1. Open a cmd at the location of the UI folder of the repo <br>
+ 6.1.1. run the command 'npm install cypress --save-dev' (This may take a *significant* amount of time to run)<br>
+7. Run Cypress: <br>
+ 7.1.1. Start the cypress app with the command 'npx cypress open' (This will open a new cypress application)<br>
+ 7.1.2. Select the 'E2E Testing' option<br>
+ 7.1.3. Continue and choose the browser of your choice (This will open a new browser window where Cypress tests can be run)
+
+
+ ---
