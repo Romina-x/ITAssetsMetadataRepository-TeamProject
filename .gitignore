@@ -3,4 +3,5 @@
 .project
 .idea
 .vscode
+.checkstyle
 target/
