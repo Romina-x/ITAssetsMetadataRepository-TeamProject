@@ -53,12 +53,32 @@ public class Asset {
 
   public Asset() {}
 
+  /**
+   * Creates asset.
+   * 
+   * @param id id
+   * @param type of asset
+   * @param title of asset
+   * @param link to asset
+   * @param author of asset
+   * @param customAttribute1 type attribute content
+   * @param customAttribute2 type attribute content
+   * @param customAttribute3 type attribute content
+   * @param customAttribute4 type attribute content
+   * @param association1 description of association
+   * @param association2 description of association
+   * @param association3 description of association
+   * @param association4 description of association
+   * @param associationRelation1 id of asset to associate 
+   * @param associationRelation2 id of asset to associate 
+   * @param associationRelation3 id of asset to associate 
+   * @param associationRelation4 id of asset to associate 
+   */
   public Asset(Integer id, String type, String title, String link, String author,
       String customAttribute1, String customAttribute2, String customAttribute3,
       String customAttribute4, String association1, String association2, String association3,
       String association4, String associationRelation1, String associationRelation2,
-      String associationRelation3, String associationRelation4) {// , List<String>
-                                                                 // associationRelationList) {
+      String associationRelation3, String associationRelation4) {
     this.id = id;
     this.type = type;
     this.title = title;

@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Jay Bryant (https://spring.io/guides/gs/accessing-data-mysql/)
  * @author Sarah Haines
  * @author Romina Petrozzi
+ * @author Yusur Taha
+ * @author Kyle Piazza-Nickson
  */
 @Controller // This means that this class is a Controller
 public class MainController {
@@ -39,10 +41,10 @@ public class MainController {
 
   @Autowired // This gets the bean called actionLogRepository
   private ActionLogRepository actionLogRepository;
-  
-  @Autowired 
+
+  @Autowired
   private AssetCommentRepository assetCommentRepository;
-  
+
   @Autowired
   public MainController(AssetRepository assetRepository) {
     this.assetRepository = assetRepository;
@@ -53,11 +55,8 @@ public class MainController {
     this.actionLogRepository = actionLogRepository;
   }
 
-
   /**
-   * This method allows for the application of CORS cross origin compatibility with the API
-   *
-   * @return
+   * This method allows for the application of CORS cross origin compatibility with the API.
    */
   @RequestMapping(value = "/products")
   @CrossOrigin(origins = "http://localhost:8080")
@@ -65,26 +64,25 @@ public class MainController {
     return null;
   }
 
+  // Start of asset functions
+
   /**
    * This method is a map only for POST requests. It takes the parameters supplied by the user for
    * the asset and inputs it into the database.
    *
-   * @param type the type format that the asset aligns to
-   * @param title what the asset should be called
-   * @param link location of where the asset is hosted
-   * @param lineNum how long the asset is
-   * @param progLang what language is the asset written in (English/Java/etc)
    * @return confirmation string
    */
-  @PostMapping(path = "/asset/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  @PostMapping(path = "/asset/add", consumes = "application/json")
+  // Map ONLY POST Requests and consume JSON
   public ResponseEntity<String> addNewAsset(@RequestBody Asset asset) {
     try {
-        assetRepository.save(asset);
-        addActionLog(asset.getId(), null, "Added asset"); // Adds an action record to the log    
-        return ResponseEntity.ok("Asset saved successfully");
+      assetRepository.save(asset);
+      addActionLog(asset.getId(), null, "Added asset"); // Adds an action record to the log
+      return ResponseEntity.ok("Asset saved successfully");
     } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error: " + e.getMessage());
     }
   }
 
@@ -128,199 +126,26 @@ public class MainController {
     return "resultDeleteAsset";
   }
 
-  //// End of Asset functions. Start of Type functions.
-
-
   /**
-   * Post request to fetch type data from UI form and add it to the database.
+   * This method checks whether a given asset by the same name and type already exists in the
+   * database.
    * 
-   * @param type
-   * @return response entity depending on outcome
+   * @param assetName of asset
+   * @param typeName of asset
+   * @return boolean depending on whether the asset exists
    */
-  @PostMapping(path = "/type/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
-  public ResponseEntity<String> addNewType(@RequestBody Type type) {
-    try {
-        typeRepository.save(type);    
-        addActionLog(null, type.getId(), "Added type"); // Adds an action record to the log
-        return ResponseEntity.ok("Type saved successfully");
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-    }
-  }
-  
-  @PostMapping(path = "/type/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewType(@RequestParam String type,
-      @RequestParam String customAttribute1, @RequestParam String customAttribute2,
-      @RequestParam String customAttribute3, @RequestParam String customAttribute4) {
-    // @ResponseBody means the returned String is the response, not a view name
-    // @RequestParam means it is a parameter from the GET or POST request
-
-    Type t = new Type();
-    t.setTypeName(type);
-    t.setCustomAttribute1(customAttribute1);
-    t.setCustomAttribute2(customAttribute2);
-    t.setCustomAttribute3(customAttribute3);
-    t.setCustomAttribute4(customAttribute4);
-    typeRepository.save(t);
-    return "Saved";
-  }
-  
-  /**
-   * This method fetches all the types stored in the database and returns a JSON file of the content
-   * to the web page.
-   *
-   * @return all types and their custom attributes
-   */
-  @GetMapping(path = "/type/find/all")
-  public @ResponseBody Iterable<Type> getAllTypes() {
-    // This returns a JSON or XML with the assets
-    return typeRepository.findAll();
-  }
-
-  /**
-   * This method is a query function to request the details of a type by its Id number in the url
-   * localhost:8080/type/find/{id}.
-   *
-   * @param id of the type to be queried
-   * @return JSON of the type returned by the id number search
-   */
-  @GetMapping(path = "/type/find/{id}")
-  public @ResponseBody Optional<Type> getTypeById(@PathVariable("id") Integer id) {
-    // This returns a JSON or XML with the assets
-    return typeRepository.findById(id);
-  }
-  
-  @GetMapping(path = "/type/findName/{typeName}")
-  public @ResponseBody Optional<Type> getTypeByName(@PathVariable("typeName") String typeName) {
-    // This returns a JSON or XML with the assets
-    return typeRepository.findByTypeName(typeName);
-  }
-  
-  @GetMapping(path = "/type/getTypeExists/{typeName}")
-  public @ResponseBody Boolean getTypeExists(@PathVariable("typeName") String typeName) {
-	Optional<Type> optType = getTypeByName(typeName);
-	return (optType.isPresent());
-  }
-  
   @GetMapping(path = "/asset/getAssetExists/{title}/{type}")
-  public @ResponseBody Boolean getAssetExists(@PathVariable("title") String assetName, @PathVariable("type") String typeName) {
-	List<Asset> assetList = getAssetByTitle(assetName);
-	if (assetList.size() > 0) {
-		for (Asset i: assetList) {
-			if (i.getType().equalsIgnoreCase(typeName)) {
-				return true;
-			}
-		}
-	}
-	return false;
-  }
-
-  /**
-   * This method allows for the deletion of individual types and corresponding assets by referencing their id numbers in the
-   * url localhost:8080/type/delete/{id}.
-   *
-   * @param id of the type to be deleted
-   * @return onward path routing for the resultDeleteType.html page
-   */
-  @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String deleteType(@PathVariable("id") Integer id) {
-      Optional<Type> typeOptional = typeRepository.findById(id);
-      if (!typeOptional.isPresent()) {
-          // Handle case where type with the provided id doesn't exist
-          return "Type not found"; 
+  public @ResponseBody Boolean getAssetExists(@PathVariable("title") String assetName,
+      @PathVariable("type") String typeName) {
+    List<Asset> assetList = getAssetByTitle(assetName);
+    if (assetList.size() > 0) {
+      for (Asset i : assetList) {
+        if (i.getType().equalsIgnoreCase(typeName)) {
+          return true;
+        }
       }
-      Type typeToDelete = typeOptional.get();
-      
-      // Find all assets with matching type name
-      List<Asset> assetsToDelete = assetRepository.findByType(typeToDelete.getTypeName());
-      for (Asset asset : assetsToDelete) {
-          // Delete each associated asset
-          assetRepository.delete(asset);
-          addActionLog(asset.getId(), null, "Deleted asset"); // Add an action record to the log for each deleted asset
-      }
-      
-      // Delete the type itself
-      typeRepository.deleteById(id);
-      addActionLog(null, id, "Deleted type"); // Add an action record to the log for the deleted type
-      
-      return "Type deleted";
-  }
-  //// End of Type functions. Start of Log functions.
-
-  /**
-   * This method is a map only for POST requests, It thakes the parameters supplied by the user for
-   * the action log and inputs it in to the database.
-   * 
-   * @param itemId reference id for the item being recorded in the log
-   * @param action what task was being undertaken on that item id (such as: deleted)
-   * @return confirmation string
-   */
-  public @ResponseBody String addActionLog(@RequestParam Integer assetId, @RequestParam Integer typeId,
-      @RequestParam String action) {
-    
-    LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    ActionLog al = new ActionLog();
-    al.setAssetId(assetId);
-    al.setTypeId(typeId);
-    al.setAction(action);
-    al.setTimestamp(now.format(formatter));
-    actionLogRepository.save(al);
-    return "Saved";
-  }
-
-  /**
-   * This method fetches all the action logs stored in the database and returns a JSON file of the
-   * content to the web page.
-   *
-   * @return all the action logs and their details
-   */
-  @GetMapping(path = "/log/find/all")
-  public @ResponseBody Iterable<ActionLog> getAllLog() {
-    // This returns a JSON or XML with the assets
-    return actionLogRepository.findAll();
-  }
-
-  /**
-   * This method is a query function to request the details of an asset by its Id number in the url
-   * localhost:8080/asset/find/{id}.
-   *
-   * @param id of the log entry to be queried
-   * @return JSON of the action log to be returned by the id number search
-   */
-  @GetMapping(path = "/log/find/{id}")
-  public @ResponseBody Optional<ActionLog> getLogById(@PathVariable("id") Integer id) {
-    // This returns a JSON or XML with the assets
-    return actionLogRepository.findById(id);
-  }
-
-  //// End of log functions, start of user functions.
-
-  /**
-   * This method renders the edit type page depending on a given type id.
-   * 
-   * @param id
-   * @param model
-   * @return edit type page or error page This method creates a new user, for use on command line.
-   * @param name - name of the user to be created
-   * @param password - password of the user to be created
-   * @param role - permission level of user to be created (e.g.: user/ admin)
-   * @return a string indicating the created user has been successfully saved to the database
-   */
-  @GetMapping("/type/editType/{id}")
-  public String editTypeForm(@PathVariable("id") Integer id, Model model) {
-    Optional<Type> typeOptional = typeRepository.findById(id);
-    if (typeOptional.isPresent()) { // check if asset to edit is present
-      Type type = typeOptional.get();
-      model.addAttribute("type", type);
-      model.addAttribute("id", id);
-      return "editType";
-    } else {
-      // Handle type not found
-      return "typeNotFound";
     }
+    return false;
   }
 
   /**
@@ -383,8 +208,8 @@ public class MainController {
   }
 
   /**
-   * This method is a query function to request the details of assets by their author
-   * in the url localhost:8080/asset/findAuthor/{author}.
+   * This method is a query function to request the details of assets by their author in the url
+   * localhost:8080/asset/findAuthor/{author}.
    *
    * @param author of asset that user wants
    * @return asset that has same author as the searched author
@@ -403,13 +228,195 @@ public class MainController {
   }
 
 
-    //// Start of Comment functions.
+  //// End of Asset functions. Start of Type functions.
+
 
   /**
-   * This method fetches all the asset comments stored in the database and returns a JSON file of the
+   * Post request to fetch type data from UI form and add it to the database.
+   * 
+   * @param type type object to submit
+   * @return response entity depending on outcome
+   */
+  @PostMapping(path = "/type/add", consumes = "application/json")
+  public ResponseEntity<String> addNewType(@RequestBody Type type) {
+    try {
+      typeRepository.save(type);
+      addActionLog(null, type.getId(), "Added type"); // Adds an action record to the log
+      return ResponseEntity.ok("Type saved successfully");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error: " + e.getMessage());
+    }
+  }
+
+  /**
+   * Path to add types to the database using parameters. Used by loading scripts.
+   * 
+   * @param type name of type
+   * @param customAttribute1 type attribute
+   * @param customAttribute2 type attribute
+   * @param customAttribute3 type attribute
+   * @param customAttribute4 type attribute
+   * @return confirmation string
+   */
+  @PostMapping(path = "/type/add") // Map ONLY POST Requests
+  public @ResponseBody String addNewType(@RequestParam String type,
+      @RequestParam String customAttribute1, @RequestParam String customAttribute2,
+      @RequestParam String customAttribute3, @RequestParam String customAttribute4) {
+    // @ResponseBody means the returned String is the response, not a view name
+    // @RequestParam means it is a parameter from the GET or POST request
+
+    Type t = new Type();
+    t.setTypeName(type);
+    t.setCustomAttribute1(customAttribute1);
+    t.setCustomAttribute2(customAttribute2);
+    t.setCustomAttribute3(customAttribute3);
+    t.setCustomAttribute4(customAttribute4);
+    typeRepository.save(t);
+    return "Saved";
+  }
+
+  /**
+   * This method fetches all the types stored in the database and returns a JSON file of the content
+   * to the web page.
+   *
+   * @return all types and their custom attributes
+   */
+  @GetMapping(path = "/type/find/all")
+  public @ResponseBody Iterable<Type> getAllTypes() {
+    // This returns a JSON or XML with the assets
+    return typeRepository.findAll();
+  }
+
+  /**
+   * This method is a query function to request the details of a type by its Id number in the url
+   * localhost:8080/type/find/{id}.
+   *
+   * @param id of the type to be queried
+   * @return JSON of the type returned by the id number search
+   */
+  @GetMapping(path = "/type/find/{id}")
+  public @ResponseBody Optional<Type> getTypeById(@PathVariable("id") Integer id) {
+    // This returns a JSON or XML with the assets
+    return typeRepository.findById(id);
+  }
+
+  /**
+   * This method is a query function to request the details of a type by its name in the url
+   * localhost:8080/type/find/{typeName}.
+   *
+   * @param typeName of the type to be queried
+   * @return JSON of the type returned by the name search
+   */
+  @GetMapping(path = "/type/findName/{typeName}")
+  public @ResponseBody Optional<Type> getTypeByName(@PathVariable("typeName") String typeName) {
+    // This returns a JSON or XML with the assets
+    return typeRepository.findByTypeName(typeName);
+  }
+
+  /**
+   * This method checks whether a given type by the same name already exists in the database.
+   *
+   * @param typeName name of type
+   * @return boolean depending on whether the type exists
+   */
+  @GetMapping(path = "/type/getTypeExists/{typeName}")
+  public @ResponseBody Boolean getTypeExists(@PathVariable("typeName") String typeName) {
+    Optional<Type> optType = getTypeByName(typeName);
+    return (optType.isPresent());
+  }
+
+  /**
+   * This method allows for the deletion of individual types and corresponding assets by referencing
+   * their id numbers in the url localhost:8080/type/delete/{id}.
+   *
+   * @param id of the type to be deleted
+   * @return confirmation string
+   */
+  @RequestMapping(value = "/type/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String deleteType(@PathVariable("id") Integer id) {
+    Optional<Type> typeOptional = typeRepository.findById(id);
+    if (!typeOptional.isPresent()) {
+      // Handle case where type with the provided id doesn't exist
+      return "Type not found";
+    }
+    Type typeToDelete = typeOptional.get();
+
+    // Find all assets with matching type name
+    List<Asset> assetsToDelete = assetRepository.findByType(typeToDelete.getTypeName());
+    for (Asset asset : assetsToDelete) {
+      // Delete each associated asset
+      assetRepository.delete(asset);
+      // Add an action record to the log for each deleted asset
+      addActionLog(asset.getId(), null, "Deleted asset");
+    }
+
+    // Delete the type itself
+    typeRepository.deleteById(id);
+    addActionLog(null, id, "Deleted type"); // Add an action record to the log for the deleted type
+
+    return "Type deleted";
+  }
+
+  //// End of Type functions. Start of Log functions.
+
+  /**
+   * This method is a map only for POST requests, It takes the parameters for the action log and
+   * inputs it in to the database.
+   * 
+   * @param assetId reference id for the asset being recorded in the log
+   * @param typeId reference id for the type being recorded in the log
+   * @param action what task was being undertaken on that item id (such as: deleted)
+   * @return confirmation string
+   */
+  public @ResponseBody String addActionLog(@RequestParam Integer assetId,
+      @RequestParam Integer typeId, @RequestParam String action) {
+
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    ActionLog al = new ActionLog();
+    al.setAssetId(assetId);
+    al.setTypeId(typeId);
+    al.setAction(action);
+    al.setTimestamp(now.format(formatter));
+    actionLogRepository.save(al);
+    return "Saved";
+  }
+
+  /**
+   * This method fetches all the action logs stored in the database and returns a JSON file of the
    * content to the web page.
    *
-   * @return all the assetcomments and their details
+   * @return all the action logs and their details
+   */
+  @GetMapping(path = "/log/find/all")
+  public @ResponseBody Iterable<ActionLog> getAllLog() {
+    // This returns a JSON or XML with the assets
+    return actionLogRepository.findAll();
+  }
+
+  /**
+   * This method is a query function to request the details of an asset by its Id number in the url
+   * localhost:8080/asset/find/{id}.
+   *
+   * @param id of the log entry to be queried
+   * @return JSON of the action log to be returned by the id number search
+   */
+  @GetMapping(path = "/log/find/{id}")
+  public @ResponseBody Optional<ActionLog> getLogById(@PathVariable("id") Integer id) {
+    // This returns a JSON or XML with the assets
+    return actionLogRepository.findById(id);
+  }
+
+  //// End of log functions, Start of Comment functions.
+
+  /**
+   * This method fetches all the asset comments stored in the database and returns a JSON file of
+   * the content to the web page.
+   *
+   * @return all the asset comments and their details
    */
   @GetMapping(path = "/comment/find/all")
   public @ResponseBody Iterable<AssetComment> getAllComment() {
@@ -433,18 +440,19 @@ public class MainController {
   /**
    * Post request to fetch comment data from UI form and add it to the database.
    * 
-   * @param comment
+   * @param comment from user
    * @return response entity depending on outcome
    */
-  @PostMapping(path = "/comment/add", consumes = "application/json") // Map ONLY POST Requests and consume JSON
+  @PostMapping(path = "/comment/add", consumes = "application/json")
   public ResponseEntity<String> addNewComment(@RequestBody AssetComment comment) {
     try {
-        assetCommentRepository.save(comment);    
-        addActionLog(comment.getItemId(), null, "Added comment"); // Adds an action record to the log
-        return ResponseEntity.ok("Comment saved successfully");
+      assetCommentRepository.save(comment);
+      addActionLog(comment.getItemId(), null, "Added comment"); // Adds an action record to the log
+      return ResponseEntity.ok("Comment saved successfully");
     } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error: " + e.getMessage());
     }
   }
 }
