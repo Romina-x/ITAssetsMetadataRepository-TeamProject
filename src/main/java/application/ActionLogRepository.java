@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 // CRUD refers Create, Read, Update, Delete
 
 /**
- * This interface holds the type records and is automatically implemented.
+ * This interface holds the log of actions and is automatically implemented.
  *
  * @author Sarah Haines
  */
