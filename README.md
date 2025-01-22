@@ -1,8 +1,8 @@
-# Team Project
+# IT Assets Metadata Repository
 
-This repository has been created to store your Team Project.
+This web-based application provides a comprehensive platform for organizing and managing IT assets and their metadata in a software company. It allows users to store, categorize, and associate source code assets, documentation, and related information, offering advanced search capabilities and a unified view of the company's assets. Features include role-based access control (RBAC), a searchable repository with asset associations, activity logs, and extensibility to support projects, people, and discussion boards. Designed for production use, the system aims to centralize knowledge and enhance accessibility.
 
-You may edit it as you like, but please do not remove the default topics or the project members list. These need to stay as currently defined in order for your lecturer to be able to find and mark your work.
+- Demo Video: https://www.youtube.com/watch?v=kajFrvryAFg
 
 ---
 
